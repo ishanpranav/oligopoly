@@ -58,6 +58,9 @@ public abstract class Square : IWritable
             case SquareType.Card:
                 return CardSquare.Read(reader);
 
+            case SquareType.Tax:
+                return TaxSquare.Read(reader);
+
             default:
                 throw new FormatException();
         }

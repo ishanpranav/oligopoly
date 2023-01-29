@@ -25,8 +25,12 @@ function New-Square {
             return New-Object Oligopoly.Squares.CardSquare
         }
         
+        "Tax" {
+            return New-Object Oligopoly.Squares.TaxSquare ($square.name, $square.cost)
+        }
+
         Default {
-            throw "Square type '$($square.type)' is out of range."
+            throw "Square type $($square.type) is out of range."
         }
     }
 }

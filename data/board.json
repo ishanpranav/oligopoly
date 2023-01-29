@@ -22,11 +22,9 @@
       "rents": [ 4, 20, 60, 180, 320, 450 ]
     },
     {
+      "name": "Income Tax",
       "type": "Tax",
-      "amount": 200
-    },
-    {
-
+      "cost": 200
     }
   ]
 }
