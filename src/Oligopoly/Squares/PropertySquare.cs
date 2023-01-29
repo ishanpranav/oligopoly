@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using Oligopoly.Writers;
 
 namespace Oligopoly.Squares;
 
-public class TaxSquare : Square
+public abstract class PropertySquare : Square
 {
-    public TaxSquare(string name, int cost)
+    protected PropertySquare(string name, int cost, IReadOnlyList<int> rents)
     {
         ArgumentNullException.ThrowIfNull(name);
 
@@ -16,6 +17,7 @@ public class TaxSquare : Square
 
         Name = name;
         Cost = cost;
+        Rents = rents;
     }
 
     /// <inheritdoc/>
@@ -26,11 +28,13 @@ public class TaxSquare : Square
     {
         get
         {
-            return SquareType.Tax;
+            return SquareType.Street;
         }
     }
 
+    public Group? Group { get; set; }
     public int Cost { get; }
+    public IReadOnlyList<int> Rents { get; }
 
     /// <inheritdoc/>
     public override void Write(Writer writer)
@@ -38,6 +42,5 @@ public class TaxSquare : Square
         base.Write(writer);
 
         writer.Write(Name);
-        writer.Write(Cost);
     }
 }

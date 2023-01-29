@@ -1,21 +1,10 @@
-﻿using System;
-using Oligopoly.Writers;
+﻿using System.Collections.Generic;
 
 namespace Oligopoly.Squares;
 
-public class RailroadSquare : Square
+public class RailroadSquare : PropertySquare
 {
-    public RailroadSquare(string name)
-    {
-        ArgumentNullException.ThrowIfNull(name);
-
-        Name = name;
-    }
-
-    /// <inheritdoc/>
-    public override string Name { get; }
-
-    public Group? Group { get; set; }
+    public RailroadSquare(string name, int cost, IReadOnlyList<int> rents) : base(name, cost, rents) { }
 
     /// <inheritdoc/>
     public override SquareType Type
@@ -24,13 +13,5 @@ public class RailroadSquare : Square
         {
             return SquareType.Railroad;
         }
-    }
-
-    /// <inheritdoc/>
-    public override void Write(Writer writer)
-    {
-        base.Write(writer);
-
-        writer.Write(Name);
     }
 }

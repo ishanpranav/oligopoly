@@ -6,6 +6,8 @@ $source = $jsonContent | ConvertFrom-Json
 Add-Type -LiteralPath (Join-Path $location "../src/Oligopoly/bin/Release/net6.0/Oligopoly.dll")
 
 $squares = New-Object Oligopoly.Squares.Square[] ($source.squares.Count)
+$utilityRents = [int[]] $source.utilityRents
+$railroadRents = [int[]] $source.railroadRents
 
 function New-Square {
     param (
@@ -30,11 +32,15 @@ function New-Square {
         }
 
         "Railroad" {
-            return New-Object Oligopoly.Squares.RailroadSquare ($square.name)
+            return New-Object Oligopoly.Squares.RailroadSquare ($square.name, $source.railroadCost, $railroadRents)
         }
         
         "Jail" {
             return [Oligopoly.Squares.Square]::Jail
+        }
+
+        "Utility" {
+            return New-Object Oligopoly.Squares.UtilitySquare ($square.name, $source.utilityCost, $utilityRents)
         }
 
         Default {
@@ -48,12 +54,11 @@ for ($i = 0; $i -lt $squares.Count; $i++) {
 }
 
 $groups = [System.Array]::Empty[Oligopoly.Group]()
-$board = New-Object Oligopoly.Board ($source.railroadCost, $squares, [int[]] $source.railroadRents, $groups)
+$board = New-Object Oligopoly.Board ((New-Object Oligopoly.BoardSettings ($source.maxImprovements)), $squares, $groups)
 $datPath = Join-Path $location "../data/board.dat"
 $output = [System.IO.File]::Create($datPath)
-$writer = (New-Object Oligopoly.Writers.BinaryWriter ($output))
+$writer = New-Object Oligopoly.Writers.BinaryWriter ($output)
 
-$writer.WriteVersion()
 $writer.Write($board)
 $writer.Dispose()
 $output.Dispose()
@@ -72,5 +77,5 @@ $datLength = $(((Get-Item $datPath).length))
 
 Write-Output "JavaScript Object Notation`t(*.json):`t$jsonLength bytes"
 Write-Output "Binary Data`t`t`t(*.dat):`t$datLength bytes"
-Write-Output $("Ratio:`t`t`t`t`t`t{0:n2} : 1" -f ($datLength / $jsonLength))
-Write-Output $("Multiplier:`t`t`t`t`t{0:p2}" -f $($jsonLength / $datLength))
+Write-Output $("Compression Ratio:`t`t`t`t{0:n2} : 1" -f ($jsonLength / $datLength))
+Write-Output $("Space Saving:`t`t`t`t`t{0:p2}" -f $(1 - ($datLength / $jsonLength)))

@@ -1,7 +1,10 @@
 {
   "$schema": "board-schema.json",
+  "utilityCost": 75,
+  "utilityRents": [ 4 ],
   "railroadCost": 200,
   "railroadRents": [ 25 ],
+  "maxImprovements": 5,
   "squares": [
     {
       "type": "Start"
@@ -53,6 +56,16 @@
     },
     {
       "type": "Jail"
+    },
+    {
+      "name": "Pall Mall",
+      "type": "Street",
+      "cost": 140,
+      "rents": [ 10, 50, 150, 450, 625, 750 ]
+    },
+    {
+      "name": "Electric Company",
+      "type": "Utility"
     }
   ]
 }

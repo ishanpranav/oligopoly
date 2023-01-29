@@ -33,7 +33,8 @@
               "Card",
               "Tax",
               "Railroad",
-              "Jail"
+              "Jail",
+              "Utility"
             ]
           },
           "cost": {

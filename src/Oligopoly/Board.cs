@@ -7,51 +7,69 @@ namespace Oligopoly;
 
 public class Board : IWritable
 {
-    public Board(int railroadCost, IReadOnlyCollection<Square> squares, IReadOnlyList<int> railroadRents, IReadOnlyCollection<Group> groups)
+    public Board(BoardSettings settings, IReadOnlyCollection<Square> squares, IReadOnlyCollection<Group> groups)
     {
-        if (railroadCost <= 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(railroadCost));
-        }
-
+        ArgumentNullException.ThrowIfNull(settings);
         ArgumentNullException.ThrowIfNull(squares);
-        ArgumentNullException.ThrowIfNull(railroadRents);
-
-        if (railroadRents.Count < 1)
-        {
-            throw new ArgumentException(string.Empty, nameof(railroadRents));
-        }
-
-        foreach (int railroadRent in railroadRents)
-        {
-            if (railroadRent <= 0)
-            {
-                throw new ArgumentException(string.Empty, nameof(railroadRents));
-            }
-        }
-
         ArgumentNullException.ThrowIfNull(groups);
 
-        RailroadCost = railroadCost;
+        Settings = settings;
         Squares = squares;
-        RailroadRents = railroadRents;
         Groups = groups;
     }
 
-    public int RailroadCost { get; }
+    public BoardSettings Settings { get; }
     public IReadOnlyCollection<Square> Squares { get; }
-    public IReadOnlyList<int> RailroadRents { get; }
     public IReadOnlyCollection<Group> Groups { get; }
 
     /// <inheritdoc/>
     public void Write(Writer writer)
     {
-        writer.Write(RailroadCost);
+        writer.Write(Settings);
+
+        int utilityCost = 0;
+        int railroadCost = 0;
+        IEnumerable<int>? utilityRents = null;
+        IEnumerable<int>? railroadRents = null;
+        
+        foreach (Square square in Squares)
+        {
+            if (utilityCost is not 0 && railroadCost is not 0)
+            {
+                break;
+            }
+
+            if (square is UtilitySquare utilitySquare)
+            {
+                utilityCost = utilitySquare.Cost;
+                utilityRents = utilitySquare.Rents;
+            }
+
+            if (square is RailroadSquare railroadSquare)
+            {
+                railroadCost = railroadSquare.Cost;
+                railroadRents = railroadSquare.Rents;
+            }
+        }
+
+        writer.Write(utilityCost);
+        writer.Write(railroadCost);
         writer.Write(Squares);
 
-        foreach (int railroadRent in RailroadRents)
+        if (utilityRents is not null)
         {
-            writer.Write(railroadRent);
+            foreach (int utilityRent in utilityRents)
+            {
+                writer.Write(utilityRent);
+            }
+        }
+
+        if (railroadRents is not null)
+        {
+            foreach (int railroadRent in railroadRents)
+            {
+                writer.Write(railroadRent);
+            }
         }
 
         writer.Write(Groups);

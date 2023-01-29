@@ -18,15 +18,23 @@ public class BinaryReader : IDisposable
         _reader = new System.IO.BinaryReader(input);
     }
 
-    public Board ReadBoard()
+    public BoardSettings ReadBoardSettings()
     {
         if (_reader.ReadUInt16() is not 12004)
         {
             throw new FormatException();
         }
 
+        return new BoardSettings(_reader.ReadInt32());
+    }
+
+    public Board ReadBoard()
+    {
+        BoardSettings settings = ReadBoardSettings();
+        int utilityCost = _reader.ReadInt32();
         int railroadCost = _reader.ReadInt32();
         int squareLength = _reader.ReadInt32();
+        List<int> utilityRents = new List<int>();
         List<int> railroadRents = new List<int>();
         Square[] squares = new Square[squareLength];
 
@@ -42,10 +50,9 @@ public class BinaryReader : IDisposable
                 case SquareType.Street:
                     string name = _reader.ReadString();
                     int cost = _reader.ReadInt32();
-                    int rentLength = _reader.ReadInt32();
-                    int[] rents = new int[rentLength];
+                    int[] rents = new int[settings.MaxImprovements + 1];
 
-                    for (int j = 0; j < rentLength; j++)
+                    for (int j = 0; j < rents.Length; j++)
                     {
                         rents[j] = _reader.ReadInt32();
                     }
@@ -65,7 +72,7 @@ public class BinaryReader : IDisposable
                     break;
 
                 case SquareType.Railroad:
-                    squares[i] = new RailroadSquare(_reader.ReadString());
+                    squares[i] = new RailroadSquare(_reader.ReadString(), railroadCost, railroadRents);
 
                     railroadRents.Add(0);
                     break;
@@ -75,9 +82,20 @@ public class BinaryReader : IDisposable
 
                     break;
 
+                case SquareType.Utility:
+                    squares[i] = new UtilitySquare(_reader.ReadString(), utilityCost, utilityRents);
+
+                    utilityRents.Add(0);
+                    break;
+
                 default:
                     throw new FormatException();
             }
+        }
+
+        for (int i = 0; i < utilityRents.Count; i++)
+        {
+            utilityRents[i] = _reader.ReadInt32();
         }
 
         for (int i = 0; i < railroadRents.Count; i++)
@@ -89,7 +107,7 @@ public class BinaryReader : IDisposable
 
         Group[] groups = Array.Empty<Group>();
 
-        return new Board(railroadCost, squares, railroadRents, groups);
+        return new Board(settings, squares, groups);
     }
 
     protected virtual void Dispose(bool disposing)

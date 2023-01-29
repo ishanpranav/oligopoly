@@ -7,5 +7,6 @@ public enum SquareType : byte
     Card,
     Tax,
     Railroad,
-    Jail
+    Jail,
+    Utility
 }
