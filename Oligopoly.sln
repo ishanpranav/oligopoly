@@ -10,13 +10,13 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CA96762D-31A0-416C-9C7A-7D2EE61DC31F}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
-		data\board-schema.json = data\board-schema.json
+		docs\board-schema.json = docs\board-schema.json
 		data\board.json = data\board.json
 		tools\New-BinarySpecification.ps1 = tools\New-BinarySpecification.ps1
 		tools\New-BinaryStorage.ps1 = tools\New-BinaryStorage.ps1
 	EndProjectSection
 	ProjectSection(FolderGlobals) = preProject
-		C_5_4Users_4ishan_4source_4repos_4oligopoly_4data_4board_1json__JsonSchema = board-schema.json
+		C_5_4Users_4ishan_4source_4repos_4oligopoly_4data_4board_1json__JsonSchema = ../docs/board-schema.json
 	EndProjectSection
 EndProject
 Global

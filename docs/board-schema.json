@@ -1,10 +1,25 @@
 {
   "$schema": "http://json-schema.org/draft-06/schema",
   "type": "object",
-  "required": [],
+  "additionalProperties": false,
   "properties": {
+    "utilityCost": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "utilityRents": {
+      "type": "array",
+      "items": [
+        {
+          "type": "integer",
+          "minimum": 1
+        }
+      ],
+      "minLength": 1
+    },
     "railroadCost": {
-      "type": "integer"
+      "type": "integer",
+      "minimum": 1
     },
     "railroadRents": {
       "type": "array",
@@ -16,11 +31,16 @@
       ],
       "minLength": 1
     },
+    "maxImprovements": {
+      "type": "integer",
+      "minimum": 0
+    },
     "squares": {
       "type": "array",
       "items": {
         "type": "object",
-        "required": [],
+        "required": [ "type" ],
+        "additionalProperties": false,
         "properties": {
           "name": {
             "type": "string"
@@ -28,14 +48,19 @@
           "type": {
             "type": "string",
             "enum": [
-              "Start",
+              "None",
               "Street",
               "Card",
               "Tax",
               "Railroad",
               "Jail",
-              "Utility"
+              "Utility",
+              "Police"
             ]
+          },
+          "deck": {
+            "type": "integer",
+            "minimum": 0
           },
           "cost": {
             "type": "integer",

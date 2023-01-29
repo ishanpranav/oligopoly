@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using Oligopoly.Squares;
 
 namespace Oligopoly.Writers;
@@ -12,13 +13,18 @@ public class BinaryWriter : Writer, IDisposable
 
     public BinaryWriter(Stream output)
     {
-        _writer = new System.IO.BinaryWriter(output);
+        _writer = new System.IO.BinaryWriter(output, Encoding.ASCII);
     }
 
     /// <inheritdoc/>
     public override void Write(int value)
     {
-        _writer.Write(value);
+        if (value < ushort.MinValue || value > ushort.MaxValue)
+        {
+            throw new ArgumentOutOfRangeException(nameof(value));
+        }
+
+        _writer.Write((ushort)value);
     }
 
     /// <inheritdoc/>

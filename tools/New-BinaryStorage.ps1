@@ -1,6 +1,9 @@
 $location = Get-Location
 $jsonPath = Join-Path $location "../data/board.json"
 $jsonContent = Get-Content -Raw $jsonPath
+
+Test-Json $jsonContent -SchemaFile (Join-Path $location '../docs/board-schema.json')
+
 $source = $jsonContent | ConvertFrom-Json
 
 Add-Type -LiteralPath (Join-Path $location "../src/Oligopoly/bin/Release/net6.0/Oligopoly.dll")
@@ -15,32 +18,36 @@ function New-Square {
     )
 
     switch ($square.type) {
-        "Start" { 
-            return [Oligopoly.Squares.Square]::Start
-        }
-
-        "Street" {
-            return New-Object Oligopoly.Squares.StreetSquare ($square.name, $square.cost, [int[]] $square.rents)
-        }
-
-        "Card" {
-            return New-Object Oligopoly.Squares.CardSquare
-        }
-        
-        "Tax" {
-            return New-Object Oligopoly.Squares.TaxSquare ($square.name, $square.cost)
-        }
-
-        "Railroad" {
-            return New-Object Oligopoly.Squares.RailroadSquare ($square.name, $source.railroadCost, $railroadRents)
+        "None" {
+            return [Oligopoly.Squares.Square]::Empty
         }
         
         "Jail" {
             return [Oligopoly.Squares.Square]::Jail
         }
 
+        "Police" {
+            return [Oligopoly.Squares.Square]::Police
+        }
+        
+        "Card" {
+            return New-Object Oligopoly.Squares.CardSquare ($square.deck)
+        }
+
         "Utility" {
             return New-Object Oligopoly.Squares.UtilitySquare ($square.name, $source.utilityCost, $utilityRents)
+        }
+
+        "Railroad" {
+            return New-Object Oligopoly.Squares.RailroadSquare ($square.name, $source.railroadCost, $railroadRents)
+        }
+        
+        "Street" {
+            return New-Object Oligopoly.Squares.StreetSquare ($square.name, $square.cost, [int[]] $square.rents)
+        }
+
+        "Tax" {
+            return New-Object Oligopoly.Squares.TaxSquare ($square.name, $square.cost)
         }
 
         Default {
@@ -53,13 +60,12 @@ for ($i = 0; $i -lt $squares.Count; $i++) {
     $squares[$i] = New-Square $source.squares[$i]
 }
 
-$groups = [System.Array]::Empty[Oligopoly.Group]()
-$board = New-Object Oligopoly.Board ((New-Object Oligopoly.BoardSettings ($source.maxImprovements)), $squares, $groups)
+$groups = [System.Array]::Empty[Oligopoly.Group]() 
 $datPath = Join-Path $location "../data/board.dat"
 $output = [System.IO.File]::Create($datPath)
 $writer = New-Object Oligopoly.Writers.BinaryWriter ($output)
 
-$writer.Write($board)
+$writer.Write((New-Object Oligopoly.Board ((New-Object Oligopoly.BoardSettings ($source.maxImprovements)), $squares, $groups)))
 $writer.Dispose()
 $output.Dispose()
 

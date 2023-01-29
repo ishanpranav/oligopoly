@@ -4,21 +4,22 @@ namespace Oligopoly.Squares;
 
 public abstract class Square : IWritable
 {
-    private static StartSquare? s_startSquare;
+    private static EmptySquare? s_emptySquare;
     private static JailSquare? s_jailSquare;
+    private static PoliceSquare? s_policeSquare;
 
     protected Square() { }
 
-    public static Square Start
+    public static Square Empty
     {
         get
         {
-            if (s_startSquare is null)
+            if (s_emptySquare is null)
             {
-                s_startSquare = new StartSquare();
+                s_emptySquare = new EmptySquare();
             }
 
-            return s_startSquare;
+            return s_emptySquare;
         }
     }
 
@@ -32,6 +33,19 @@ public abstract class Square : IWritable
             }
 
             return s_jailSquare;
+        }
+    }
+
+    public static Square Police
+    {
+        get
+        {
+            if (s_policeSquare is null)
+            {
+                s_policeSquare = new PoliceSquare();
+            }
+
+            return s_policeSquare;
         }
     }
 

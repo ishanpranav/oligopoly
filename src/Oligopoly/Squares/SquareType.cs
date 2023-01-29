@@ -2,11 +2,12 @@
 
 public enum SquareType : byte
 {
-    Start,
-    Street,
-    Card,
-    Tax,
-    Railroad,
+    None = 0,
     Jail,
-    Utility
+    Police,
+    Card,
+    Utility,
+    Railroad,
+    Street,
+    Tax
 }

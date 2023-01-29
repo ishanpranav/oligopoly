@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using Oligopoly.Squares;
 
 namespace Oligopoly;
@@ -15,7 +16,17 @@ public class BinaryReader : IDisposable
     {
         ArgumentNullException.ThrowIfNull(input);
 
-        _reader = new System.IO.BinaryReader(input);
+        _reader = new System.IO.BinaryReader(input, Encoding.ASCII);
+    }
+
+    public int ReadInteger()
+    {
+        return _reader.ReadUInt16();
+    }
+
+    public string ReadString()
+    {
+        return _reader.ReadString();
     }
 
     public BoardSettings ReadBoardSettings()
@@ -25,15 +36,15 @@ public class BinaryReader : IDisposable
             throw new FormatException();
         }
 
-        return new BoardSettings(_reader.ReadInt32());
+        return new BoardSettings(ReadInteger());
     }
 
     public Board ReadBoard()
     {
         BoardSettings settings = ReadBoardSettings();
-        int utilityCost = _reader.ReadInt32();
-        int railroadCost = _reader.ReadInt32();
-        int squareLength = _reader.ReadInt32();
+        int utilityCost = ReadInteger();
+        int railroadCost = ReadInteger();
+        int squareLength = ReadInteger();
         List<int> utilityRents = new List<int>();
         List<int> railroadRents = new List<int>();
         Square[] squares = new Square[squareLength];
@@ -42,39 +53,9 @@ public class BinaryReader : IDisposable
         {
             switch ((SquareType)_reader.ReadByte())
             {
-                case SquareType.Start:
-                    squares[i] = Square.Start;
+                case SquareType.None:
+                    squares[i] = Square.Empty;
 
-                    break;
-
-                case SquareType.Street:
-                    string name = _reader.ReadString();
-                    int cost = _reader.ReadInt32();
-                    int[] rents = new int[settings.MaxImprovements + 1];
-
-                    for (int j = 0; j < rents.Length; j++)
-                    {
-                        rents[j] = _reader.ReadInt32();
-                    }
-
-                    squares[i] = new StreetSquare(name, cost, rents);
-
-                    break;
-
-                case SquareType.Card:
-                    squares[i] = new CardSquare();
-
-                    break;
-
-                case SquareType.Tax:
-                    squares[i] = new TaxSquare(_reader.ReadString(), _reader.ReadInt32());
-
-                    break;
-
-                case SquareType.Railroad:
-                    squares[i] = new RailroadSquare(_reader.ReadString(), railroadCost, railroadRents);
-
-                    railroadRents.Add(0);
                     break;
 
                 case SquareType.Jail:
@@ -82,10 +63,45 @@ public class BinaryReader : IDisposable
 
                     break;
 
+                case SquareType.Police:
+                    squares[i] = Square.Police;
+
+                    break;
+
+                case SquareType.Card:
+                    squares[i] = new CardSquare(ReadInteger());
+
+                    break;
+
                 case SquareType.Utility:
-                    squares[i] = new UtilitySquare(_reader.ReadString(), utilityCost, utilityRents);
+                    squares[i] = new UtilitySquare(ReadString(), utilityCost, utilityRents);
 
                     utilityRents.Add(0);
+                    break;
+
+                case SquareType.Railroad:
+                    squares[i] = new RailroadSquare(ReadString(), railroadCost, railroadRents);
+
+                    railroadRents.Add(0);
+                    break;
+
+                case SquareType.Street:
+                    string name = ReadString();
+                    int cost = ReadInteger();
+                    int[] rents = new int[settings.MaxImprovements + 1];
+
+                    for (int j = 0; j < rents.Length; j++)
+                    {
+                        rents[j] = ReadInteger();
+                    }
+
+                    squares[i] = new StreetSquare(name, cost, rents);
+
+                    break;
+
+                case SquareType.Tax:
+                    squares[i] = new TaxSquare(ReadString(), ReadInteger());
+
                     break;
 
                 default:
@@ -95,15 +111,15 @@ public class BinaryReader : IDisposable
 
         for (int i = 0; i < utilityRents.Count; i++)
         {
-            utilityRents[i] = _reader.ReadInt32();
+            utilityRents[i] = ReadInteger();
         }
 
         for (int i = 0; i < railroadRents.Count; i++)
         {
-            railroadRents[i] = _reader.ReadInt32();
+            railroadRents[i] = ReadInteger();
         }
 
-        int groupLength = _reader.ReadInt32();
+        int groupLength = ReadInteger();
 
         Group[] groups = Array.Empty<Group>();
 

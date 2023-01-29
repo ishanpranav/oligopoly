@@ -1,13 +1,12 @@
 {
-  "$schema": "board-schema.json",
-  "utilityCost": 75,
-  "utilityRents": [ 4 ],
+  "utilityCost": 150,
+  "utilityRents": [ 4, 10 ],
   "railroadCost": 200,
-  "railroadRents": [ 25 ],
+  "railroadRents": [ 25, 50, 100 ],
   "maxImprovements": 5,
   "squares": [
     {
-      "type": "Start"
+      "type": "None"
     },
     {
       "name": "Old Kent Road",
@@ -16,7 +15,8 @@
       "rents": [ 2, 10, 30, 90, 160, 250 ]
     },
     {
-      "type": "Card"
+      "type": "Card",
+      "deck": 1
     },
     {
       "name": "Whitechapel Road",
@@ -40,7 +40,8 @@
       "rents": [ 6, 30, 90, 270, 400, 550 ]
     },
     {
-      "type": "Card"
+      "type": "Card",
+      "deck": 0
     },
     {
       "name": "Euston Road",
@@ -66,6 +67,98 @@
     {
       "name": "Electric Company",
       "type": "Utility"
+    },
+    {
+      "name": "Whitehall",
+      "type": "Street",
+      "cost": 140,
+      "rents": [ 10, 50, 150, 450, 625, 750 ]
+    },
+    {
+      "name": "Northumberland Avenue",
+      "type": "Street",
+      "cost": 160,
+      "rents": [ 12, 60, 180, 500, 700, 900 ]
+    },
+    {
+      "name": "Marylebone Station",
+      "type": "Railroad"
+    },
+    {
+      "name": "Bow Street",
+      "type": "Street",
+      "cost": 180,
+      "rents": [ 14, 70, 200, 550, 750, 950 ]
+    },
+    {
+      "type": "Card",
+      "deck": 1
+    },
+    {
+      "name": "Marlborough Street",
+      "type": "Street",
+      "cost": 180,
+      "rents": [ 14, 70, 200, 550, 750, 950 ]
+    },
+    {
+      "name": "Vine Street",
+      "type": "Street",
+      "cost": 200,
+      "rents": [ 16, 80, 220, 600, 800, 1000 ]
+    },
+    {
+      "type": "None"
+    },
+    {
+      "name": "Strand",
+      "type": "Street",
+      "cost": 220,
+      "rents": [ 18, 90, 250, 700, 875, 1050 ]
+    },
+    {
+      "type": "Card",
+      "deck": 0
+    },
+    {
+      "name": "Fleet Street",
+      "type": "Street",
+      "cost": 220,
+      "rents": [ 18, 90, 250, 700, 875, 1050 ]
+    },
+    {
+      "name": "Trafalgar Square",
+      "type": "Street",
+      "cost": 240,
+      "rents": [ 20, 100, 300, 750, 925, 1100 ]
+    },
+    {
+      "name": "Fenchurch Street Station",
+      "type": "Railroad"
+    },
+    {
+      "name": "Leicester Square",
+      "type": "Street",
+      "cost": 260,
+      "rents": [ 22, 110, 330, 800, 975, 1150 ]
+    },
+    {
+      "name": "Coventry Street",
+      "type": "Street",
+      "cost": 260,
+      "rents": [ 22, 110, 330, 800, 975, 1150 ]
+    },
+    {
+      "name": "Water Works",
+      "type": "Utility"
+    },
+    {
+      "name": "Piccadilly",
+      "type": "Street",
+      "cost": 280,
+      "rents": [ 22, 120, 360, 850, 1025, 1200 ]
+    },
+    {
+      "type": "Police"
     }
   ]
 }
