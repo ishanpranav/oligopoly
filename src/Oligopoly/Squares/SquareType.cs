@@ -6,5 +6,6 @@ public enum SquareType : byte
     Street,
     Card,
     Tax,
-    Railroad
+    Railroad,
+    Jail
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Oligopoly.Writers;
 
 namespace Oligopoly.Squares;

@@ -32,7 +32,8 @@
               "Street",
               "Card",
               "Tax",
-              "Railroad"
+              "Railroad",
+              "Jail"
             ]
           },
           "cost": {

@@ -32,6 +32,10 @@ function New-Square {
         "Railroad" {
             return New-Object Oligopoly.Squares.RailroadSquare ($square.name)
         }
+        
+        "Jail" {
+            return [Oligopoly.Squares.Square]::Jail
+        }
 
         Default {
             throw "Square type $($square.type) is out of range."
@@ -69,4 +73,4 @@ $datLength = $(((Get-Item $datPath).length))
 Write-Output "JavaScript Object Notation`t(*.json):`t$jsonLength bytes"
 Write-Output "Binary Data`t`t`t(*.dat):`t$datLength bytes"
 Write-Output $("Ratio:`t`t`t`t`t`t{0:n2} : 1" -f ($datLength / $jsonLength))
-Write-Output $("Multiplier:`t`t`t`t`t{0:n2}x" -f $($jsonLength / $datLength))
+Write-Output $("Multiplier:`t`t`t`t`t{0:p2}" -f $($jsonLength / $datLength))

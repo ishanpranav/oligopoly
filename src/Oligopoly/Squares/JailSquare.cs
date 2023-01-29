@@ -1,15 +1,15 @@
 ﻿namespace Oligopoly.Squares;
 
-internal sealed class StartSquare : Square
+internal sealed class JailSquare : Square
 {
-    public StartSquare() { }
+    public JailSquare() { }
 
     /// <inheritdoc/>
     public override SquareType Type
     {
         get
         {
-            return SquareType.Start;
+            return SquareType.Jail;
         }
     }
 }

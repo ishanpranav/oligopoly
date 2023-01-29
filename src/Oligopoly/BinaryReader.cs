@@ -70,6 +70,11 @@ public class BinaryReader : IDisposable
                     railroadRents.Add(0);
                     break;
 
+                case SquareType.Jail:
+                    squares[i] = Square.Jail;
+
+                    break;
+
                 default:
                     throw new FormatException();
             }
