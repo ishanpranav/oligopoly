@@ -9,6 +9,7 @@ function Write-Specification {
         $model
     )
 
+    $writer.Write("## ")
     $writer.WriteLine($model.GetType().Name)
 
     $htmlFragmentWriter = New-Object Oligopoly.Writers.HtmlFragmentWriter ($writer, $true)
@@ -25,8 +26,8 @@ $writer.WriteLine("This is the specification for the fast, lightweight binary se
 
 Write-Specification (New-Object Oligopoly.Board)
 Write-Specification (New-Object Oligopoly.Group)
-Write-Specification (New-Object Oligopoly.Squares.Square)
-Write-Specification (New-Object Oligopoly.Squares.StartSquare)
+Write-Specification ([Oligopoly.Squares]::Start)
 Write-Specification (New-Object Oligopoly.Squares.StreetSquare)
+Write-Specification (New-Object Oligopoly.Squares.CardSquare)
 
 $writer.Dispose()

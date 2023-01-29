@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema",
+  "type": "object",
+  "required": [],
+  "properties": {
+    "squares": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "Start",
+              "Street",
+              "Card",
+              "Tax"
+            ]
+          },
+          "cost": {
+            "type": "integer"
+          },
+          "improvementCost": {
+            "type": "integer"
+          },
+          "rents": {
+            "type": "array",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  }
+}

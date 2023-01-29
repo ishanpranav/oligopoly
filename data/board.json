@@ -1,21 +1,32 @@
 {
+  "$schema": "board-schema.json",
   "squares": [
     {
       "type": "Start"
     },
     {
-      "type": "Street",
       "name": "Old Kent Road",
+      "type": "Street",
       "cost": 60,
       "improvementCost": 50,
-      "rents": [
-        2,
-        10,
-        30,
-        90,
-        160,
-        250
-      ]
+      "rents": [ 2, 10, 30, 90, 160, 250 ]
+    },
+    {
+      "type": "Card"
+    },
+    {
+      "name": "Whitechapel Road",
+      "type": "Street",
+      "cost": 60,
+      "improvementCost": 50,
+      "rents": [ 4, 20, 60, 180, 320, 450 ]
+    },
+    {
+      "type": "Tax",
+      "amount": 200
+    },
+    {
+
     }
   ]
 }

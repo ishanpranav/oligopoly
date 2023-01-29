@@ -30,6 +30,9 @@ public class StreetSquare : Square
     }
 
     /// <inheritdoc/>
+    public override string Name { get; }
+
+    /// <inheritdoc/>
     public override SquareType Type
     {
         get
@@ -38,7 +41,6 @@ public class StreetSquare : Square
         }
     }
 
-    public string Name { get; }
     public Group? Group { get; set; }
     public int Cost { get; }
     public int ImprovementCost { get; }

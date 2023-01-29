@@ -1,5 +1,7 @@
 $location = Get-Location
-$source = Get-Content -Raw (Join-Path $location "../data/board.json") | ConvertFrom-Json
+$jsonPath = Join-Path $location "../data/board.json"
+$jsonContent = Get-Content -Raw $jsonPath
+$source = $jsonContent | ConvertFrom-Json
 
 Add-Type -LiteralPath (Join-Path $location "../src/Oligopoly/bin/Release/net6.0/Oligopoly.dll")
 
@@ -10,19 +12,21 @@ function New-Square {
         $square
     )
 
-    $type = [Oligopoly.Squares.SquareType] $square.type
-
-    switch ($type) {
-        Start { 
-            return New-Object Oligopoly.Squares.StartSquare
+    switch ($square.type) {
+        "Start" { 
+            return [Oligopoly.Squares.Square]::Start
         }
 
-        Street {
+        "Street" {
             return New-Object Oligopoly.Squares.StreetSquare ($square.name, $square.cost, $square.improvementCost, [int[]] $square.rents)
         }
 
+        "Card" {
+            return New-Object Oligopoly.Squares.CardSquare
+        }
+        
         Default {
-            throw "Square type '$type' is out of range."
+            throw "Square type '$($square.type)' is out of range."
         }
     }
 }
@@ -33,10 +37,28 @@ for ($i = 0; $i -lt $squares.Count; $i++) {
 
 $groups = [System.Array]::Empty[Oligopoly.Group]()
 $board = New-Object Oligopoly.Board ($squares, $groups)
-$output = [System.IO.File]::Create((Join-Path $location "../data/board.dat"))
+$datPath = Join-Path $location "../data/board.dat"
+$output = [System.IO.File]::Create($datPath)
 $writer = (New-Object Oligopoly.Writers.BinaryWriter ($output))
 
 $writer.WriteVersion()
 $writer.Write($board)
 $writer.Dispose()
 $output.Dispose()
+
+$jsonLength = 0
+
+foreach ($symbol in [char[]]$jsonContent) {
+    if ([char]::IsWhiteSpace($symbol)) {
+        continue;
+    }
+
+    $jsonLength++
+}
+
+$datLength = $(((Get-Item $datPath).length))
+
+Write-Output "JavaScript Object Notation`t(*.json):`t$jsonLength bytes"
+Write-Output "Binary Data`t`t`t(*.dat):`t$datLength bytes"
+Write-Output $("Ratio:`t`t`t`t`t`t{0:n2} : 1" -f ($datLength / $jsonLength))
+Write-Output $("Multiplier:`t`t`t`t`t{0:n2}x" -f $($jsonLength / $datLength))

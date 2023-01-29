@@ -3,5 +3,7 @@
 public enum SquareType : byte
 {
     Start,
-    Street
+    Street,
+    Card,
+    Tax
 }

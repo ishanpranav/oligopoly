@@ -1,7 +1,8 @@
 # Binary specification
 ## Description
 This is the specification for the fast, lightweight binary serialization format used to store _machine-readable_ Oligopoly data files. This specialized, raw format allows a high degree of flexibility while avoiding the serialization and storage overhead of structured data. It is both minimalistic and portable, although it requires more code, testing, and maintenance and is not generalizable.
-## Board
+## 
+Board
 <table>
   <thead>
     <tr>
@@ -14,7 +15,7 @@ This is the specification for the fast, lightweight binary serialization format 
   <tbody>
     <tr>
       <td>0</td>
-      <td rowspan="2">Version</td>
+      <td>Byte</td>
       <td>
         <code>228</code>
       </td>
@@ -22,6 +23,7 @@ This is the specification for the fast, lightweight binary serialization format 
     </tr>
     <tr>
       <td>1</td>
+      <td>Byte</td>
       <td>
         <code>46</code>
       </td>
@@ -76,7 +78,8 @@ This is the specification for the fast, lightweight binary serialization format 
   </tbody>
 </table>
 
-## Group
+## 
+Group
 <table>
   <thead>
     <tr>
@@ -89,7 +92,7 @@ This is the specification for the fast, lightweight binary serialization format 
   <tbody>
     <tr>
       <td>0</td>
-      <td rowspan="2">Version</td>
+      <td>Byte</td>
       <td>
         <code>228</code>
       </td>
@@ -97,6 +100,7 @@ This is the specification for the fast, lightweight binary serialization format 
     </tr>
     <tr>
       <td>1</td>
+      <td>Byte</td>
       <td>
         <code>46</code>
       </td>
@@ -105,7 +109,8 @@ This is the specification for the fast, lightweight binary serialization format 
   </tbody>
 </table>
 
-## StartSquare
+## 
+StartSquare
 <table>
   <thead>
     <tr>
@@ -118,7 +123,7 @@ This is the specification for the fast, lightweight binary serialization format 
   <tbody>
     <tr>
       <td>0</td>
-      <td rowspan="2">Version</td>
+      <td>Byte</td>
       <td>
         <code>228</code>
       </td>
@@ -126,14 +131,15 @@ This is the specification for the fast, lightweight binary serialization format 
     </tr>
     <tr>
       <td>1</td>
+      <td>Byte</td>
       <td>
         <code>46</code>
       </td>
       <td>Specifies the version byte.</td>
     </tr>
     <tr>
-      <td rowspan="2">2</td>
-      <td rowspan="2">Square Type</td>
+      <td rowspan="4">2</td>
+      <td rowspan="4">Square Type</td>
       <td>
         <code>0</code>
       </td>
@@ -145,10 +151,23 @@ This is the specification for the fast, lightweight binary serialization format 
       </td>
       <td>Street</td>
     </tr>
+    <tr>
+      <td>
+        <code>2</code>
+      </td>
+      <td>Chance</td>
+    </tr>
+    <tr>
+      <td>
+        <code>3</code>
+      </td>
+      <td>Community</td>
+    </tr>
   </tbody>
 </table>
 
-## StreetSquare
+## 
+StreetSquare
 <table>
   <thead>
     <tr>
@@ -161,7 +180,7 @@ This is the specification for the fast, lightweight binary serialization format 
   <tbody>
     <tr>
       <td>0</td>
-      <td rowspan="2">Version</td>
+      <td>Byte</td>
       <td>
         <code>228</code>
       </td>
@@ -169,14 +188,15 @@ This is the specification for the fast, lightweight binary serialization format 
     </tr>
     <tr>
       <td>1</td>
+      <td>Byte</td>
       <td>
         <code>46</code>
       </td>
       <td>Specifies the version byte.</td>
     </tr>
     <tr>
-      <td rowspan="2">2</td>
-      <td rowspan="2">Square Type</td>
+      <td rowspan="4">2</td>
+      <td rowspan="4">Square Type</td>
       <td>
         <code>0</code>
       </td>
@@ -187,6 +207,18 @@ This is the specification for the fast, lightweight binary serialization format 
         <code>1</code>
       </td>
       <td>Street</td>
+    </tr>
+    <tr>
+      <td>
+        <code>2</code>
+      </td>
+      <td>Chance</td>
+    </tr>
+    <tr>
+      <td>
+        <code>3</code>
+      </td>
+      <td>Community</td>
     </tr>
     <tr>
       <td>⋮</td>

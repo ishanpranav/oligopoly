@@ -2,7 +2,7 @@
 
 namespace Oligopoly.Squares;
 
-public class StartSquare : Square
+internal sealed class StartSquare : Square
 {
     public StartSquare() { }
 
@@ -13,10 +13,5 @@ public class StartSquare : Square
         {
             return SquareType.Start;
         }
-    }
-
-    internal static new StartSquare Read(BinaryReader reader)
-    {
-        return new StartSquare();
     }
 }
