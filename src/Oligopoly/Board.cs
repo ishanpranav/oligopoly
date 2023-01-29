@@ -1,74 +1,55 @@
 ﻿using System;
-using Oligopoly.Readers;
+using System.Collections.Generic;
+using Oligopoly.Squares;
 using Oligopoly.Writers;
 
 namespace Oligopoly;
 
 public class Board : IWritable
 {
-    private readonly Square[] _squares;
-    private readonly Group[] _groups;
-
     public Board()
     {
-        _squares = Array.Empty<Square>();
-        _groups = Array.Empty<Group>();
+        Squares = Array.Empty<Square>();
+        Groups = Array.Empty<Group>();
     }
 
     public Board(int squares, int groups)
     {
         if (squares is 0)
         {
-            _squares = Array.Empty<Square>();
+            Squares = Array.Empty<Square>();
         }
         else
         {
-            _squares = new Square[squares];
+            Squares = new Square[squares];
         }
 
         if (groups is 0)
         {
-            _groups = Array.Empty<Group>();
+            Groups = Array.Empty<Group>();
         }
         else
         {
-            _groups = new Group[groups];
+            Groups = new Group[groups];
         }
     }
 
-    private Board(Square[] squares, Group[] groups)
+    public Board(IReadOnlyCollection<Square> squares, IReadOnlyCollection<Group> groups)
     {
-        _squares = squares;
-        _groups = groups;
+        ArgumentNullException.ThrowIfNull(squares);
+        ArgumentNullException.ThrowIfNull(groups);
+
+        Squares = squares;
+        Groups = groups;
     }
 
-    public int Squares
-    {
-        get
-        {
-            return _squares.Length;
-        }
-    }
-
-    public int Groups
-    {
-        get
-        {
-            return _groups.Length;
-        }
-    }
+    public IReadOnlyCollection<Square> Squares { get; }
+    public IReadOnlyCollection<Group> Groups { get; }
 
     /// <inheritdoc/>
     public void Write(Writer writer)
     {
-        writer.Write(_squares);
-        writer.Write(_groups);
-    }
-
-    public static Board Deserialize(Reader reader)
-    {
-        return new Board(
-            reader.ReadArray(reader.ReadSquare),
-            reader.ReadArray(reader.ReadGroup));
+        writer.Write(Squares);
+        writer.Write(Groups);
     }
 }

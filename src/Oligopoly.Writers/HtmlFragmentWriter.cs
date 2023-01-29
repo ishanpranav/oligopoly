@@ -53,7 +53,11 @@ public class HtmlFragmentWriter : Writer, IDisposable
     /// <inheritdoc/>
     public override void Write(IWritable value)
     {
-        if (_byteIndex > 0)
+        if (_byteIndex is 0)
+        {
+            WriteVersion();
+        }
+        else
         {
             WriteStartTableRow(value.GetType());
             WriteEndTableRow();

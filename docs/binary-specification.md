@@ -15,10 +15,6 @@ This is the specification for the fast, lightweight binary serialization format 
   <tbody>
     <tr>
       <td colspan="5">
-        <a href="board">Board</a> Collection</td>
-    </tr>
-    <tr>
-      <td colspan="5">
         <a href="square">Square</a> Collection</td>
     </tr>
     <tr>
@@ -26,7 +22,7 @@ This is the specification for the fast, lightweight binary serialization format 
       <td rowspan="4">1</td>
       <td rowspan="4">Integer</td>
       <td rowspan="4">—</td>
-      <td rowspan="4" />
+      <td rowspan="4">The number of elements contained in the collection.</td>
     </tr>
     <tr>
       <td>1</td>
@@ -46,7 +42,7 @@ This is the specification for the fast, lightweight binary serialization format 
       <td rowspan="4">2</td>
       <td rowspan="4">Integer</td>
       <td rowspan="4">—</td>
-      <td rowspan="4" />
+      <td rowspan="4">The number of elements contained in the collection.</td>
     </tr>
     <tr>
       <td>5</td>
@@ -56,24 +52,6 @@ This is the specification for the fast, lightweight binary serialization format 
     </tr>
     <tr>
       <td>7</td>
-    </tr>
-  </tbody>
-</table>
-## Square
-<table>
-  <thead>
-    <tr>
-      <th>Byte</th>
-      <th>Field</th>
-      <th>Type</th>
-      <th>Value</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td colspan="5">
-        <a href="square">Square</a> Collection</td>
     </tr>
   </tbody>
 </table>
@@ -88,10 +66,5 @@ This is the specification for the fast, lightweight binary serialization format 
       <th>Description</th>
     </tr>
   </thead>
-  <tbody>
-    <tr>
-      <td colspan="5">
-        <a href="group">Group</a> Collection</td>
-    </tr>
-  </tbody>
+  <tbody />
 </table>
