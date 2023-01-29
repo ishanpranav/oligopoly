@@ -32,6 +32,7 @@
     },
     {
       "name": "The Angel Islington",
+      "type": "Street",
       "cost": 100,
       "rents": [ 6, 30, 90, 270, 400, 550 ]
     },
@@ -40,11 +41,13 @@
     },
     {
       "name": "Euston Road",
+      "type": "Street",
       "cost": 100,
       "rents": [ 6, 30, 90, 270, 400, 550 ]
     },
     {
       "name": "Pentonville Road",
+      "type": "Street",
       "cost": 120,
       "rents": [ 8, 40, 100, 300, 450, 600 ]
     }

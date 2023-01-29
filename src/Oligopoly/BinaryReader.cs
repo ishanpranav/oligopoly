@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection.PortableExecutable;
 using Oligopoly.Squares;
 
 namespace Oligopoly;
@@ -43,7 +42,6 @@ public class BinaryReader : IDisposable
                 case SquareType.Street:
                     string name = _reader.ReadString();
                     int cost = _reader.ReadInt32();
-                    int developmentCost = _reader.ReadInt32();
                     int rentLength = _reader.ReadInt32();
                     int[] rents = new int[rentLength];
 
@@ -52,7 +50,7 @@ public class BinaryReader : IDisposable
                         rents[j] = _reader.ReadInt32();
                     }
 
-                    squares[i] = new StreetSquare(name, cost, developmentCost, rents);
+                    squares[i] = new StreetSquare(name, cost, rents);
 
                     break;
 

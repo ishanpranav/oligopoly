@@ -18,7 +18,7 @@ function New-Square {
         }
 
         "Street" {
-            return New-Object Oligopoly.Squares.StreetSquare ($square.name, $square.cost, $square.improvementCost, [int[]] $square.rents)
+            return New-Object Oligopoly.Squares.StreetSquare ($square.name, $square.cost, [int[]] $square.rents)
         }
 
         "Card" {
