@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "Oligopoly.Writers/1.0.0": {
+        "dependencies": {
+          "Oligopoly": "1.0.0"
+        },
+        "runtime": {
+          "Oligopoly.Writers.dll": {}
+        }
+      },
+      "Oligopoly/1.0.0": {
+        "runtime": {
+          "Oligopoly.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Oligopoly.Writers/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Oligopoly/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
