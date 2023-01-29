@@ -1,14 +1,33 @@
-﻿using Oligopoly.Writers;
+﻿using System;
+using System.IO;
+using Oligopoly.Writers;
 
 namespace Oligopoly.Squares;
 
 public abstract class Square : IWritable
 {
-    public SquareType Type { get; }
+    protected Square() { }
+
+    public abstract SquareType Type { get; }
 
     /// <inheritdoc/>
-    public void Write(Writer writer)
+    public virtual void Write(Writer writer)
     {
-        writer.Write((byte)Type);
+        writer.Write(Type);
+    }
+
+    internal static Square Read(BinaryReader reader)
+    {
+        switch ((SquareType)reader.ReadByte())
+        {
+            case SquareType.Start:
+                return StartSquare.Read(reader);
+
+            case SquareType.Street:
+                return StreetSquare.Read(reader);
+
+            default:
+                throw new FormatException();
+        }
     }
 }

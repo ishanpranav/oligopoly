@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using Oligopoly.Squares;
 
 namespace Oligopoly.Writers;
 
 public abstract class Writer
 {
-    public const byte FormatByte = 46;
-    public const byte VersionByte = 228;
+    public const byte FormatByte = 228;
+    public const byte VersionByte = 46;
 
     public abstract void Write(int value);
+    public abstract void Write(SquareType value);
+    public abstract void Write(string value);
 
     public virtual void Write(IWritable value)
     {
@@ -17,13 +20,13 @@ public abstract class Writer
         value.Write(this);
     }
 
-    public virtual void Write<TWritable>(IReadOnlyCollection<TWritable> value) where TWritable : IWritable
+    public virtual void Write(IReadOnlyCollection<IWritable> value)
     {
         ArgumentNullException.ThrowIfNull(value);
 
         Write(value.Count);
 
-        foreach (TWritable item in value)
+        foreach (IWritable item in value)
         {
             item.Write(this);
         }

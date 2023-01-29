@@ -10,27 +10,33 @@ function New-Square {
         $square
     )
 
-    switch ([Oligopoly.Squares.SquareType]$square.type) {
-        Oligopoly.Squares.SquareType.Start { 
+    $type = [Oligopoly.Squares.SquareType] $square.type
+
+    switch ($type) {
+        Start { 
             return New-Object Oligopoly.Squares.StartSquare
         }
 
+        Street {
+            return New-Object Oligopoly.Squares.StreetSquare ($square.name, $square.cost, $square.improvementCost, [int[]] $square.rents)
+        }
+
         Default {
-            return New-Object Oligopoly.Squares.StartSquare
+            throw "Square type '$type' is out of range."
         }
     }
 }
 
 for ($i = 0; $i -lt $squares.Count; $i++) {
     $squares[$i] = New-Square $source.squares[$i]
-
-    Write-Output $squares[$i]
 }
 
 $groups = [System.Array]::Empty[Oligopoly.Group]()
 $board = New-Object Oligopoly.Board ($squares, $groups)
 $output = [System.IO.File]::Create((Join-Path $location "../data/board.dat"))
+$writer = (New-Object Oligopoly.Writers.BinaryWriter ($output))
 
-(New-Object Oligopoly.Writers.BinaryWriter ($output)).Write($board)
-
+$writer.WriteVersion()
+$writer.Write($board)
+$writer.Dispose()
 $output.Dispose()

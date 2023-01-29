@@ -6,7 +6,6 @@ This is the specification for the fast, lightweight binary serialization format 
   <thead>
     <tr>
       <th>Byte</th>
-      <th>Field</th>
       <th>Type</th>
       <th>Value</th>
       <th>Description</th>
@@ -14,35 +13,195 @@ This is the specification for the fast, lightweight binary serialization format 
   </thead>
   <tbody>
     <tr>
-      <td colspan="5">
-        <a href="square">Square</a> Collection</td>
-    </tr>
-    <tr>
       <td>0</td>
-      <td rowspan="4">1</td>
-      <td rowspan="4">Integer</td>
-      <td rowspan="4">—</td>
-      <td rowspan="4">The number of elements contained in the collection.</td>
+      <td rowspan="2">Version</td>
+      <td>
+        <code>228</code>
+      </td>
+      <td>Specifies the format byte.</td>
     </tr>
     <tr>
       <td>1</td>
+      <td>
+        <code>46</code>
+      </td>
+      <td>Specifies the version byte.</td>
     </tr>
     <tr>
       <td>2</td>
+      <td rowspan="4">Integer</td>
+      <td></td>
+      <td rowspan="4">Specifies the number of records in the succeeding collection.</td>
     </tr>
     <tr>
       <td>3</td>
     </tr>
     <tr>
-      <td colspan="5">
-        <a href="group">Group</a> Collection</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>⋮</td>
+      <td>
+        <a href="#Square">Square[]</a>
+      </td>
+      <td></td>
+      <td>A collection of data models repeated as many times as specified by the preceding integer value.</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td rowspan="4">Integer</td>
+      <td></td>
+      <td rowspan="4">Specifies the number of records in the succeeding collection.</td>
+    </tr>
+    <tr>
+      <td>7</td>
+    </tr>
+    <tr>
+      <td>8</td>
+    </tr>
+    <tr>
+      <td>9</td>
+    </tr>
+    <tr>
+      <td>⋮</td>
+      <td>
+        <a href="#Group">Group[]</a>
+      </td>
+      <td></td>
+      <td>A collection of data models repeated as many times as specified by the preceding integer value.</td>
+    </tr>
+  </tbody>
+</table>
+
+## Group
+<table>
+  <thead>
+    <tr>
+      <th>Byte</th>
+      <th>Type</th>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td rowspan="2">Version</td>
+      <td>
+        <code>228</code>
+      </td>
+      <td>Specifies the format byte.</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>
+        <code>46</code>
+      </td>
+      <td>Specifies the version byte.</td>
+    </tr>
+  </tbody>
+</table>
+
+## StartSquare
+<table>
+  <thead>
+    <tr>
+      <th>Byte</th>
+      <th>Type</th>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td rowspan="2">Version</td>
+      <td>
+        <code>228</code>
+      </td>
+      <td>Specifies the format byte.</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>
+        <code>46</code>
+      </td>
+      <td>Specifies the version byte.</td>
+    </tr>
+    <tr>
+      <td rowspan="2">2</td>
+      <td rowspan="2">Square Type</td>
+      <td>
+        <code>0</code>
+      </td>
+      <td>Start</td>
+    </tr>
+    <tr>
+      <td>
+        <code>1</code>
+      </td>
+      <td>Street</td>
+    </tr>
+  </tbody>
+</table>
+
+## StreetSquare
+<table>
+  <thead>
+    <tr>
+      <th>Byte</th>
+      <th>Type</th>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td rowspan="2">Version</td>
+      <td>
+        <code>228</code>
+      </td>
+      <td>Specifies the format byte.</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>
+        <code>46</code>
+      </td>
+      <td>Specifies the version byte.</td>
+    </tr>
+    <tr>
+      <td rowspan="2">2</td>
+      <td rowspan="2">Square Type</td>
+      <td>
+        <code>0</code>
+      </td>
+      <td>Start</td>
+    </tr>
+    <tr>
+      <td>
+        <code>1</code>
+      </td>
+      <td>Street</td>
+    </tr>
+    <tr>
+      <td>⋮</td>
+      <td>String</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td rowspan="4">Integer</td>
+      <td></td>
+      <td></td>
     </tr>
     <tr>
       <td>4</td>
-      <td rowspan="4">2</td>
-      <td rowspan="4">Integer</td>
-      <td rowspan="4">—</td>
-      <td rowspan="4">The number of elements contained in the collection.</td>
     </tr>
     <tr>
       <td>5</td>
@@ -52,19 +211,49 @@ This is the specification for the fast, lightweight binary serialization format 
     </tr>
     <tr>
       <td>7</td>
+      <td rowspan="4">Integer</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>8</td>
+    </tr>
+    <tr>
+      <td>9</td>
+    </tr>
+    <tr>
+      <td>10</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td rowspan="4">Integer</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>12</td>
+    </tr>
+    <tr>
+      <td>13</td>
+    </tr>
+    <tr>
+      <td>14</td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td rowspan="4">Integer</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>16</td>
+    </tr>
+    <tr>
+      <td>17</td>
+    </tr>
+    <tr>
+      <td>18</td>
     </tr>
   </tbody>
 </table>
-## Group
-<table>
-  <thead>
-    <tr>
-      <th>Byte</th>
-      <th>Field</th>
-      <th>Type</th>
-      <th>Value</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody />
-</table>
+

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Oligopoly.Squares;
 using Oligopoly.Writers;
 
@@ -11,27 +12,6 @@ public class Board : IWritable
     {
         Squares = Array.Empty<Square>();
         Groups = Array.Empty<Group>();
-    }
-
-    public Board(int squares, int groups)
-    {
-        if (squares is 0)
-        {
-            Squares = Array.Empty<Square>();
-        }
-        else
-        {
-            Squares = new Square[squares];
-        }
-
-        if (groups is 0)
-        {
-            Groups = Array.Empty<Group>();
-        }
-        else
-        {
-            Groups = new Group[groups];
-        }
     }
 
     public Board(IReadOnlyCollection<Square> squares, IReadOnlyCollection<Group> groups)
@@ -51,5 +31,22 @@ public class Board : IWritable
     {
         writer.Write(Squares);
         writer.Write(Groups);
+    }
+
+    internal static Board Read(BinaryReader reader)
+    {
+        int length = reader.ReadInt32();
+        Square[] squares = new Square[length];
+
+        for (int i = 0; i < length; i++)
+        {
+            squares[i] = Square.Read(reader);
+        }
+
+        length = reader.ReadInt32();
+
+        Group[] groups = Array.Empty<Group>();
+
+        return new Board(squares, groups);
     }
 }

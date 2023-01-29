@@ -9,6 +9,6 @@ internal static class Program
         using Stream input = File.OpenRead("../../../../../data/board.dat");
         using BinaryReader reader = new BinaryReader(input);
 
-        Board board = reader.ReadBoard();
+        Board board = Board.Read(reader);
     }
 }

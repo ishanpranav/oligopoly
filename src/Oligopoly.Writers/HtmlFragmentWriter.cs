@@ -1,4 +1,5 @@
 ﻿using System.Xml;
+using Oligopoly.Squares;
 
 namespace Oligopoly.Writers;
 
@@ -6,16 +7,13 @@ public class HtmlFragmentWriter : Writer, IDisposable
 {
     private const string TableRowElement = "tr";
     private const string TableRowDataElement = "td";
-    private const string RowSpanAttribute = "rowspan";
 
     private static XmlWriterSettings? s_settings;
 
     private readonly XmlWriter _writer;
 
     private int _byteIndex;
-    private int _fieldIndex = 1;
     private bool _disposedValue;
-    private string? _description;
 
     public HtmlFragmentWriter(TextWriter writer, bool leaveOpen = false)
     {
@@ -35,19 +33,61 @@ public class HtmlFragmentWriter : Writer, IDisposable
         _writer.WriteStartElement("thead");
         _writer.WriteStartElement(TableRowElement);
         WriteTableRowHeader("Byte");
-        WriteTableRowHeader("Field");
         WriteTableRowHeader("Type");
         WriteTableRowHeader("Value");
         WriteTableRowHeader("Description");
-        _writer.WriteEndElement();
-        _writer.WriteEndElement();
+        _writer.WriteFullEndElement();
+        _writer.WriteFullEndElement();
         _writer.WriteStartElement("tbody");
     }
 
     /// <inheritdoc/>
     public override void Write(int value)
     {
-        WriteTableRow("Integer", rowSpan: 4);
+        NextByte();
+        WriteTableRowData("Integer", rowSpan: 4);
+        WriteTableRowData();
+        WriteTableRowData();
+        _writer.WriteEndElement();
+        NextByte();
+        _writer.WriteEndElement();
+        NextByte();
+        _writer.WriteEndElement();
+        NextByte();
+        _writer.WriteEndElement();
+    }
+
+    /// <inheritdoc/>
+    public override void Write(SquareType value)
+    {
+        SquareType[] items = Enum.GetValues<SquareType>();
+
+        NextByte(items.Length);
+        WriteTableRowData("Square Type", items.Length);
+
+        for (int i = 0; i < items.Length; i++)
+        {
+            SquareType item = items[i];
+
+            WriteTableRowDataCode((int)item);
+            WriteTableRowData(item.ToString());
+            _writer.WriteEndElement();
+
+            if (i < items.Length - 1)
+            {
+                _writer.WriteStartElement(TableRowElement);
+            }
+        }
+    }
+
+    /// <inheritdoc/>
+    public override void Write(string value)
+    {
+        NextObject();
+        WriteTableRowData("String");
+        WriteTableRowData();
+        WriteTableRowData();
+        _writer.WriteEndElement();
     }
 
     /// <inheritdoc/>
@@ -59,121 +99,105 @@ public class HtmlFragmentWriter : Writer, IDisposable
         }
         else
         {
-            WriteStartTableRow(value.GetType());
-            WriteEndTableRow();
+            NextObject(value.GetType());
+            WriteTableRowData();
+            WriteTableRowData();
+            _writer.WriteEndElement();
         }
 
         base.Write(value);
     }
 
     /// <inheritdoc/>
-    public override void Write<TWritable>(IReadOnlyCollection<TWritable> value)
+    public override void Write(IReadOnlyCollection<IWritable> value)
     {
-        WriteStartTableRow(typeof(TWritable));
-        _writer.WriteString(" Collection");
-        WriteEndTableRow();
-
-        _description = "The number of elements contained in the collection.";
-
-        base.Write(value);
+        NextByte();
+        WriteTableRowData("Integer", rowSpan: 4);
+        WriteTableRowData();
+        WriteTableRowData("Specifies the number of records in the succeeding collection.", rowSpan: 4);
+        _writer.WriteEndElement();
+        NextByte();
+        _writer.WriteEndElement();
+        NextByte();
+        _writer.WriteEndElement();
+        NextByte();
+        _writer.WriteEndElement();
+        NextObject(value.GetType());
+        WriteTableRowData();
+        WriteTableRowData("A collection of data models repeated as many times as specified by the preceding integer value.");
+        _writer.WriteEndElement();
     }
 
     /// <inheritdoc/>
     public override void WriteVersion()
     {
-        WriteTableRow(FormatByte);
-        WriteTableRow(VersionByte);
+        const string Type = "Byte";
+
+        NextByte();
+        WriteTableRowData(Type);
+        WriteTableRowDataCode(FormatByte);
+        WriteTableRowData("Specifies the format byte.");
+        _writer.WriteEndElement();
+        NextByte();
+        WriteTableRowData(Type);
+        WriteTableRowDataCode(VersionByte);
+        WriteTableRowData("Specifies the version byte.");
+        _writer.WriteEndElement();
     }
 
-    private void WriteStartTableRow(Type type)
+    private void NextByte(int rowSpan = 1)
     {
         _writer.WriteStartElement(TableRowElement);
+        WriteTableRowData(XmlConvert.ToString(_byteIndex), rowSpan);
+
+        _byteIndex++;
+    }
+
+    private void NextObject()
+    {
+        _writer.WriteStartElement(TableRowElement);
+        WriteTableRowData("\u22ee");
+    }
+
+    private void NextObject(Type type)
+    {
+        NextObject();
         _writer.WriteStartElement(TableRowDataElement);
-        _writer.WriteAttributeString("colspan", XmlConvert.ToString(5));
         _writer.WriteStartElement("a");
-        _writer.WriteAttributeString("href", type.Name.ToLower());
+        _writer.WriteAttributeString("href", '#' + type.Name.TrimEnd('[', ']'));
         _writer.WriteString(type.Name);
         _writer.WriteEndElement();
-    }
-
-    private void WriteEndTableRow()
-    {
-        _writer.WriteEndElement();
         _writer.WriteEndElement();
     }
 
-    private void WriteTableRow(byte value)
+    private void WriteTableRowDataCode(int value)
     {
-        _writer.WriteStartElement(TableRowElement);
-        WriteTableRowData(_byteIndex);
-        WriteTableRowData(_fieldIndex);
-        WriteTableRowData("Byte");
         _writer.WriteStartElement(TableRowDataElement);
         _writer.WriteElementString("code", XmlConvert.ToString(value));
         _writer.WriteEndElement();
-        WriteTableRowData(_description);
-        _writer.WriteEndElement();
-
-        _byteIndex++;
-        _fieldIndex++;
-        _description = null;
     }
 
-    private void WriteTableRow(string type, int rowSpan)
+    private void WriteTableRowData(string? value = null, int rowSpan = 1, int columnSpan = 1)
     {
-        string rowSpanString = XmlConvert.ToString(rowSpan);
-
-        _writer.WriteStartElement(TableRowElement);
-        WriteTableRowData(_byteIndex);
-        WriteTableRowData(_fieldIndex, rowSpanString);
-        WriteTableRowData(type, rowSpanString);
         _writer.WriteStartElement(TableRowDataElement);
-        _writer.WriteAttributeString(RowSpanAttribute, rowSpanString);
-        _writer.WriteString("—");
-        _writer.WriteEndElement();
-        WriteTableRowData(_description, rowSpanString);
-        _writer.WriteEndElement();
 
-        _description = null;
-        _byteIndex++;
-        _fieldIndex++;
-
-        for (int i = 1; i < rowSpan; i++)
+        if (rowSpan is not 1)
         {
-            _writer.WriteStartElement(TableRowElement);
-            WriteTableRowData(_byteIndex);
-            _writer.WriteEndElement();
-
-            _byteIndex++;
+            _writer.WriteAttributeString("rowspan", XmlConvert.ToString(rowSpan));
         }
+
+        if (columnSpan is not 1)
+        {
+            _writer.WriteAttributeString("colspan", XmlConvert.ToString(columnSpan));
+        }
+
+        _writer.WriteString(value);
+        _writer.WriteFullEndElement();
     }
 
     private void WriteTableRowHeader(string value)
     {
         _writer.WriteElementString("th", value);
-    }
-
-    private void WriteTableRowData(string? value)
-    {
-        _writer.WriteElementString(TableRowDataElement, value);
-    }
-
-    private void WriteTableRowData(int value)
-    {
-        WriteTableRowData(XmlConvert.ToString(value));
-    }
-
-    private void WriteTableRowData(string? value, string rowSpan)
-    {
-        _writer.WriteStartElement(TableRowDataElement);
-        _writer.WriteAttributeString(RowSpanAttribute, rowSpan);
-        _writer.WriteString(value);
-        _writer.WriteEndElement();
-    }
-
-    private void WriteTableRowData(int value, string rowSpan)
-    {
-        WriteTableRowData(XmlConvert.ToString(value), rowSpan);
     }
 
     protected virtual void Dispose(bool disposing)

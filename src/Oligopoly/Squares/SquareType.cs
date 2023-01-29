@@ -2,5 +2,6 @@
 
 public enum SquareType : byte
 {
-    Start
+    Start,
+    Street
 }

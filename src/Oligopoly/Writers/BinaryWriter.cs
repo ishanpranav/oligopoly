@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Oligopoly.Squares;
 
 namespace Oligopoly.Writers;
 
@@ -16,6 +17,18 @@ public class BinaryWriter : Writer, IDisposable
 
     /// <inheritdoc/>
     public override void Write(int value)
+    {
+        _writer.Write(value);
+    }
+
+    /// <inheritdoc/>
+    public override void Write(SquareType value)
+    {
+        _writer.Write((byte)value);
+    }
+
+    /// <inheritdoc/>
+    public override void Write(string value)
     {
         _writer.Write(value);
     }
