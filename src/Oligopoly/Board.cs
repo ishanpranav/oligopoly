@@ -7,54 +7,48 @@ namespace Oligopoly;
 
 public class Board : IWritable
 {
-    public Board(BoardSettings settings, IReadOnlyCollection<Square> squares, IReadOnlyCollection<Group> groups)
+    private readonly BoardSettings _settings;
+    private readonly IReadOnlyList<Square> _squares;
+    private readonly IReadOnlyCollection<Group> _groups;
+
+    public Board(BoardSettings settings, IReadOnlyList<Square> squares, IReadOnlyCollection<Group> groups)
     {
         ArgumentNullException.ThrowIfNull(settings);
         ArgumentNullException.ThrowIfNull(squares);
         ArgumentNullException.ThrowIfNull(groups);
 
-        Settings = settings;
-        Squares = squares;
-        Groups = groups;
+        _settings = settings;
+        _squares = squares;
+        _groups = groups;
     }
 
-    public BoardSettings Settings { get; }
-    public IReadOnlyCollection<Square> Squares { get; }
-    public IReadOnlyCollection<Group> Groups { get; }
-
     /// <inheritdoc/>
-    public void Write(Writer writer)
+    void IWritable.Write(Writer writer)
     {
-        writer.Write(Settings);
+        writer.Write(_settings);
+        writer.Write(_groups);
+        writer.Write(_squares);
 
-        int utilityCost = 0;
-        int railroadCost = 0;
         IEnumerable<int>? utilityRents = null;
         IEnumerable<int>? railroadRents = null;
-        
-        foreach (Square square in Squares)
+
+        foreach (Square square in _squares)
         {
-            if (utilityCost is not 0 && railroadCost is not 0)
+            if (utilityRents is not null && railroadRents is not null)
             {
                 break;
             }
 
             if (square is UtilitySquare utilitySquare)
             {
-                utilityCost = utilitySquare.Cost;
                 utilityRents = utilitySquare.Rents;
             }
 
             if (square is RailroadSquare railroadSquare)
             {
-                railroadCost = railroadSquare.Cost;
                 railroadRents = railroadSquare.Rents;
             }
         }
-
-        writer.Write(utilityCost);
-        writer.Write(railroadCost);
-        writer.Write(Squares);
 
         if (utilityRents is not null)
         {
@@ -71,7 +65,5 @@ public class Board : IWritable
                 writer.Write(railroadRent);
             }
         }
-
-        writer.Write(Groups);
     }
 }

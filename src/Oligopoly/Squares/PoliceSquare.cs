@@ -1,7 +1,20 @@
-﻿namespace Oligopoly.Squares;
+﻿using System;
+using Oligopoly.Writers;
 
-internal sealed class PoliceSquare : Square
+namespace Oligopoly.Squares;
+
+public class PoliceSquare : Square
 {
+    public PoliceSquare(string name)
+    {
+        ArgumentNullException.ThrowIfNull(name);
+
+        Name = name;
+    }
+
+    /// <inheritdoc/>
+    public override string Name { get; }
+
     /// <inheritdoc/>
     public override SquareType Type
     {
@@ -9,5 +22,13 @@ internal sealed class PoliceSquare : Square
         {
             return SquareType.Police;
         }
+    }
+
+    /// <inheritdoc/>
+    public override void Write(Writer writer)
+    {
+        base.Write(writer);
+
+        writer.Write(Name);
     }
 }

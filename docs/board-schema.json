@@ -3,33 +3,49 @@
   "type": "object",
   "additionalProperties": false,
   "properties": {
-    "utilityCost": {
-      "type": "integer",
-      "minimum": 1
-    },
-    "utilityRents": {
-      "type": "array",
-      "items": [
-        {
+    "utilityInfo": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "cost": {
           "type": "integer",
           "minimum": 1
+        },
+        "rents": {
+          "type": "array",
+          "items": [
+            {
+              "type": "integer",
+              "minimum": 1
+            }
+          ]
         }
-      ],
-      "minLength": 1
+      }
     },
-    "railroadCost": {
-      "type": "integer",
-      "minimum": 1
-    },
-    "railroadRents": {
-      "type": "array",
-      "items": [
-        {
+    "railroadInfo": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "cost": {
           "type": "integer",
           "minimum": 1
+        },
+        "rents": {
+          "type": "array",
+          "items": [
+            {
+              "type": "integer",
+              "minimum": 1
+            }
+          ]
         }
-      ],
-      "minLength": 1
+      }
     },
     "maxImprovements": {
       "type": "integer",
@@ -48,19 +64,19 @@
           "type": {
             "type": "string",
             "enum": [
-              "None",
-              "Street",
-              "Card",
-              "Tax",
-              "Railroad",
-              "Jail",
-              "Utility",
-              "Police"
+              "none",
+              "street",
+              "card",
+              "tax",
+              "railroad",
+              "jail",
+              "utility",
+              "police"
             ]
           },
           "deck": {
             "type": "integer",
-            "minimum": 0
+            "minimum": 1
           },
           "cost": {
             "type": "integer",
@@ -75,6 +91,26 @@
               }
             ],
             "minLength": 1
+          },
+          "group": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      }
+    },
+    "groups": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [ "name", "improvementCost" ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "improvementCost": {
+            "type": "integer"
           }
         }
       }

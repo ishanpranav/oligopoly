@@ -4,7 +4,7 @@ namespace Oligopoly.Squares;
 
 public class RailroadSquare : PropertySquare
 {
-    public RailroadSquare(string name, int cost, IReadOnlyList<int> rents) : base(name, cost, rents) { }
+    public RailroadSquare(string name, IReadOnlyList<int> rents, Group group) : base(name, rents, group) { }
 
     /// <inheritdoc/>
     public override SquareType Type
@@ -12,6 +12,15 @@ public class RailroadSquare : PropertySquare
         get
         {
             return SquareType.Railroad;
+        }
+    }
+
+    /// <inheritdoc/>
+    public override int Cost
+    {
+        get
+        {
+            return Group.ImprovementCost;
         }
     }
 }

@@ -6,18 +6,17 @@ namespace Oligopoly.Squares;
 
 public abstract class PropertySquare : Square
 {
-    protected PropertySquare(string name, int cost, IReadOnlyList<int> rents)
+    protected PropertySquare(string name, IReadOnlyList<int> rents, Group group)
     {
         ArgumentNullException.ThrowIfNull(name);
+        ArgumentNullException.ThrowIfNull(rents);
+        ArgumentNullException.ThrowIfNull(group);
 
-        if (cost <= 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(cost));
-        }
+        group.Add(this);
 
         Name = name;
-        Cost = cost;
         Rents = rents;
+        Group = group;
     }
 
     /// <inheritdoc/>
@@ -32,9 +31,9 @@ public abstract class PropertySquare : Square
         }
     }
 
-    public Group? Group { get; set; }
-    public int Cost { get; }
+    public abstract int Cost { get; }
     public IReadOnlyList<int> Rents { get; }
+    protected Group Group { get; }
 
     /// <inheritdoc/>
     public override void Write(Writer writer)

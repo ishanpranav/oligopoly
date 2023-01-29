@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Oligopoly.Squares;
 
 public class UtilitySquare : PropertySquare
 {
-    public UtilitySquare(string name, int cost, IReadOnlyList<int> rents) : base(name, cost, rents) { }
+    public UtilitySquare(string name, IReadOnlyList<int> rents, Group group) : base(name, rents, group) { }
 
     /// <inheritdoc/>
     public override SquareType Type
@@ -13,6 +12,15 @@ public class UtilitySquare : PropertySquare
         get
         {
             return SquareType.Utility;
+        }
+    }
+
+    /// <inheritdoc/>
+    public override int Cost
+    {
+        get
+        {
+            return Group.ImprovementCost;
         }
     }
 }

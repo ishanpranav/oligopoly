@@ -42,8 +42,14 @@ public class BinaryReader : IDisposable
     public Board ReadBoard()
     {
         BoardSettings settings = ReadBoardSettings();
-        int utilityCost = ReadInteger();
-        int railroadCost = ReadInteger();
+        int groupLength = ReadInteger();
+        Group[] groups = new Group[groupLength];
+        
+        for (int id = 0; id < groupLength; id++)
+        {
+            groups[id] = new Group(id, ReadString(), ReadInteger());
+        }
+
         int squareLength = ReadInteger();
         List<int> utilityRents = new List<int>();
         List<int> railroadRents = new List<int>();
@@ -54,17 +60,17 @@ public class BinaryReader : IDisposable
             switch ((SquareType)_reader.ReadByte())
             {
                 case SquareType.None:
-                    squares[i] = Square.Empty;
+                    squares[i] = new EmptySquare(ReadString());
 
                     break;
 
                 case SquareType.Jail:
-                    squares[i] = Square.Jail;
+                    squares[i] = new JailSquare(ReadString());
 
                     break;
 
                 case SquareType.Police:
-                    squares[i] = Square.Police;
+                    squares[i] = new PoliceSquare(ReadString());
 
                     break;
 
@@ -74,20 +80,19 @@ public class BinaryReader : IDisposable
                     break;
 
                 case SquareType.Utility:
-                    squares[i] = new UtilitySquare(ReadString(), utilityCost, utilityRents);
+                    squares[i] = new UtilitySquare(ReadString(), utilityRents, groups[0]);
 
                     utilityRents.Add(0);
                     break;
 
                 case SquareType.Railroad:
-                    squares[i] = new RailroadSquare(ReadString(), railroadCost, railroadRents);
+                    squares[i] = new RailroadSquare(ReadString(), railroadRents, groups[1]);
 
                     railroadRents.Add(0);
                     break;
 
                 case SquareType.Street:
                     string name = ReadString();
-                    int cost = ReadInteger();
                     int[] rents = new int[settings.MaxImprovements + 1];
 
                     for (int j = 0; j < rents.Length; j++)
@@ -95,7 +100,7 @@ public class BinaryReader : IDisposable
                         rents[j] = ReadInteger();
                     }
 
-                    squares[i] = new StreetSquare(name, cost, rents);
+                    squares[i] = new StreetSquare(name, rents, groups[ReadInteger()], ReadInteger());
 
                     break;
 
@@ -118,10 +123,6 @@ public class BinaryReader : IDisposable
         {
             railroadRents[i] = ReadInteger();
         }
-
-        int groupLength = ReadInteger();
-
-        Group[] groups = Array.Empty<Group>();
 
         return new Board(settings, squares, groups);
     }

@@ -20,6 +20,18 @@ public abstract class Writer
         value.Write(this);
     }
 
+    public virtual void Write(IReadOnlyCollection<int> value)
+    {
+        ArgumentNullException.ThrowIfNull(value);
+
+        Write(value.Count);
+
+        foreach (int item in value)
+        {
+            Write(item);
+        }
+    }
+
     public virtual void Write(IReadOnlyCollection<IWritable> value)
     {
         ArgumentNullException.ThrowIfNull(value);
