@@ -2,6 +2,7 @@
 # Source: https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 # License: Creative Commons Zero v1.0 Universal
 
+*.dat
 .vscode/
 
 # User-specific files
