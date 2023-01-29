@@ -27,35 +27,35 @@ function New-Square {
     )
 
     switch ($square.type) {
-        "None" {
+        "none" {
             return New-Object Oligopoly.Squares.EmptySquare ($square.name)
         }
         
-        "Jail" {
+        "jail" {
             return New-Object Oligopoly.Squares.JailSquare ($square.name)
         }
 
-        "Police" {
+        "police" {
             return New-Object Oligopoly.Squares.PoliceSquare ($square.name)
         }
         
-        "Card" {
+        "card" {
             return New-Object Oligopoly.Squares.CardSquare ($square.deck)
         }
 
-        "Utility" {
+        "utility" {
             return New-Object Oligopoly.Squares.UtilitySquare ($square.name, $utilityRents, $groups[0])
         }
 
-        "Railroad" {
+        "railroad" {
             return New-Object Oligopoly.Squares.RailroadSquare ($square.name, $railroadRents, $groups[1])
         }
         
-        "Street" {
+        "street" {
             return New-Object Oligopoly.Squares.StreetSquare ($square.name, [int[]] $square.rents, $groups[[int] $square.group + 1], $square.cost)
         }
 
-        "Tax" {
+        "tax" {
             return New-Object Oligopoly.Squares.TaxSquare ($square.name, $square.cost)
         }
 

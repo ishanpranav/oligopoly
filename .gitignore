@@ -2,6 +2,8 @@
 # Source: https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 # License: Creative Commons Zero v1.0 Universal
 
+.vscode/
+
 # User-specific files
 *.rsuser
 *.suo
