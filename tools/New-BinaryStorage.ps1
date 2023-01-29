@@ -29,6 +29,10 @@ function New-Square {
             return New-Object Oligopoly.Squares.TaxSquare ($square.name, $square.cost)
         }
 
+        "Railroad" {
+            return New-Object Oligopoly.Squares.RailroadSquare ($square.name)
+        }
+
         Default {
             throw "Square type $($square.type) is out of range."
         }
@@ -40,7 +44,7 @@ for ($i = 0; $i -lt $squares.Count; $i++) {
 }
 
 $groups = [System.Array]::Empty[Oligopoly.Group]()
-$board = New-Object Oligopoly.Board ($squares, $groups)
+$board = New-Object Oligopoly.Board ($source.railroadCost, $squares, [int[]] $source.railroadRents, $groups)
 $datPath = Join-Path $location "../data/board.dat"
 $output = [System.IO.File]::Create($datPath)
 $writer = (New-Object Oligopoly.Writers.BinaryWriter ($output))

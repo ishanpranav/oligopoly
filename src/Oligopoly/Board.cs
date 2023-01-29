@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using Oligopoly.Squares;
 using Oligopoly.Writers;
 
@@ -8,45 +7,53 @@ namespace Oligopoly;
 
 public class Board : IWritable
 {
-    public Board()
+    public Board(int railroadCost, IReadOnlyCollection<Square> squares, IReadOnlyList<int> railroadRents, IReadOnlyCollection<Group> groups)
     {
-        Squares = Array.Empty<Square>();
-        Groups = Array.Empty<Group>();
-    }
+        if (railroadCost <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(railroadCost));
+        }
 
-    public Board(IReadOnlyCollection<Square> squares, IReadOnlyCollection<Group> groups)
-    {
         ArgumentNullException.ThrowIfNull(squares);
+        ArgumentNullException.ThrowIfNull(railroadRents);
+
+        if (railroadRents.Count < 1)
+        {
+            throw new ArgumentException(string.Empty, nameof(railroadRents));
+        }
+
+        foreach (int railroadRent in railroadRents)
+        {
+            if (railroadRent <= 0)
+            {
+                throw new ArgumentException(string.Empty, nameof(railroadRents));
+            }
+        }
+
         ArgumentNullException.ThrowIfNull(groups);
 
+        RailroadCost = railroadCost;
         Squares = squares;
+        RailroadRents = railroadRents;
         Groups = groups;
     }
 
+    public int RailroadCost { get; }
     public IReadOnlyCollection<Square> Squares { get; }
+    public IReadOnlyList<int> RailroadRents { get; }
     public IReadOnlyCollection<Group> Groups { get; }
 
     /// <inheritdoc/>
     public void Write(Writer writer)
     {
+        writer.Write(RailroadCost);
         writer.Write(Squares);
-        writer.Write(Groups);
-    }
 
-    internal static Board Read(BinaryReader reader)
-    {
-        int length = reader.ReadInt32();
-        Square[] squares = new Square[length];
-
-        for (int i = 0; i < length; i++)
+        foreach (int railroadRent in RailroadRents)
         {
-            squares[i] = Square.Read(reader);
+            writer.Write(railroadRent);
         }
 
-        length = reader.ReadInt32();
-
-        Group[] groups = Array.Empty<Group>();
-
-        return new Board(squares, groups);
+        writer.Write(Groups);
     }
 }

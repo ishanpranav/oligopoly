@@ -3,6 +3,19 @@
   "type": "object",
   "required": [],
   "properties": {
+    "railroadCost": {
+      "type": "integer"
+    },
+    "railroadRents": {
+      "type": "array",
+      "items": [
+        {
+          "type": "integer",
+          "minimum": 1
+        }
+      ],
+      "minLength": 1
+    },
     "squares": {
       "type": "array",
       "items": {
@@ -18,17 +31,22 @@
               "Start",
               "Street",
               "Card",
-              "Tax"
+              "Tax",
+              "Railroad"
             ]
           },
           "cost": {
-            "type": "integer"
-          },
-          "improvementCost": {
-            "type": "integer"
+            "type": "integer",
+            "minimum": 1
           },
           "rents": {
             "type": "array",
+            "items": [
+              {
+                "type": "integer",
+                "minimum": 1
+              }
+            ],
             "minLength": 1
           }
         }

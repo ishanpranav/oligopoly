@@ -1,5 +1,7 @@
 {
   "$schema": "board-schema.json",
+  "railroadCost": 200,
+  "railroadRents": [ 25 ],
   "squares": [
     {
       "type": "Start"
@@ -8,7 +10,6 @@
       "name": "Old Kent Road",
       "type": "Street",
       "cost": 60,
-      "improvementCost": 50,
       "rents": [ 2, 10, 30, 90, 160, 250 ]
     },
     {
@@ -18,13 +19,34 @@
       "name": "Whitechapel Road",
       "type": "Street",
       "cost": 60,
-      "improvementCost": 50,
       "rents": [ 4, 20, 60, 180, 320, 450 ]
     },
     {
       "name": "Income Tax",
       "type": "Tax",
       "cost": 200
+    },
+    {
+      "name": "King's Cross Station",
+      "type": "Railroad"
+    },
+    {
+      "name": "The Angel Islington",
+      "cost": 100,
+      "rents": [ 6, 30, 90, 270, 400, 550 ]
+    },
+    {
+      "type": "Card"
+    },
+    {
+      "name": "Euston Road",
+      "cost": 100,
+      "rents": [ 6, 30, 90, 270, 400, 550 ]
+    },
+    {
+      "name": "Pentonville Road",
+      "cost": 120,
+      "rents": [ 8, 40, 100, 300, 450, 600 ]
     }
   ]
 }

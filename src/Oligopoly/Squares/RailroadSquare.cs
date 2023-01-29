@@ -1,37 +1,31 @@
 ﻿using System;
-using System.IO;
+using System.Collections.Generic;
 using Oligopoly.Writers;
 
 namespace Oligopoly.Squares;
 
-public class TaxSquare : Square
+public class RailroadSquare : Square
 {
-    public TaxSquare(string name, int cost)
+    public RailroadSquare(string name)
     {
         ArgumentNullException.ThrowIfNull(name);
 
-        if (cost <= 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(cost));
-        }
-
         Name = name;
-        Cost = cost;
     }
 
     /// <inheritdoc/>
     public override string Name { get; }
+
+    public Group? Group { get; set; }
 
     /// <inheritdoc/>
     public override SquareType Type
     {
         get
         {
-            return SquareType.Tax;
+            return SquareType.Railroad;
         }
     }
-
-    public int Cost { get; }
 
     /// <inheritdoc/>
     public override void Write(Writer writer)
@@ -39,6 +33,5 @@ public class TaxSquare : Square
         base.Write(writer);
 
         writer.Write(Name);
-        writer.Write(Cost);
     }
 }

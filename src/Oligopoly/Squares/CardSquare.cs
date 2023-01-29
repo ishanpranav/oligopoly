@@ -14,9 +14,4 @@ public class CardSquare : Square
             return SquareType.Card;
         }
     }
-
-    internal static new CardSquare Read(BinaryReader reader)
-    {
-        return new CardSquare();
-    }
 }

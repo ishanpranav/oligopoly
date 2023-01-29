@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using Oligopoly.Writers;
+﻿using Oligopoly.Writers;
 
 namespace Oligopoly.Squares;
 
@@ -43,26 +41,5 @@ public abstract class Square : IWritable
     public override string ToString()
     {
         return Name;
-    }
-
-    internal static Square Read(BinaryReader reader)
-    {
-        switch ((SquareType)reader.ReadByte())
-        {
-            case SquareType.Start:
-                return Start;
-
-            case SquareType.Street:
-                return StreetSquare.Read(reader);
-
-            case SquareType.Card:
-                return CardSquare.Read(reader);
-
-            case SquareType.Tax:
-                return TaxSquare.Read(reader);
-
-            default:
-                throw new FormatException();
-        }
     }
 }
