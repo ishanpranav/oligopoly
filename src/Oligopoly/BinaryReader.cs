@@ -29,22 +29,18 @@ public class BinaryReader : IDisposable
         return _reader.ReadString();
     }
 
-    public BoardSettings ReadBoardSettings()
+    public Game ReadGame()
     {
         if (_reader.ReadUInt16() is not 12004)
         {
             throw new FormatException();
         }
 
-        return new BoardSettings(ReadInteger());
-    }
-
-    public Board ReadBoard()
-    {
-        BoardSettings settings = ReadBoardSettings();
+        int seed = ReadInteger();
+        int maxImprovements = ReadInteger();
         int groupLength = ReadInteger();
         Group[] groups = new Group[groupLength];
-        
+
         for (int id = 0; id < groupLength; id++)
         {
             groups[id] = new Group(id, ReadString(), ReadInteger());
@@ -93,7 +89,7 @@ public class BinaryReader : IDisposable
 
                 case SquareType.Street:
                     string name = ReadString();
-                    int[] rents = new int[settings.MaxImprovements + 1];
+                    int[] rents = new int[maxImprovements + 1];
 
                     for (int j = 0; j < rents.Length; j++)
                     {
@@ -124,7 +120,10 @@ public class BinaryReader : IDisposable
             railroadRents[i] = ReadInteger();
         }
 
-        return new Board(settings, squares, groups);
+        return new Game(maxImprovements, squares, groups)
+        {
+            Seed = seed
+        };
     }
 
     protected virtual void Dispose(bool disposing)

@@ -43,4 +43,10 @@ public class Group : IWritable
         writer.Write(_name);
         writer.Write(ImprovementCost);
     }
+
+    /// <inheritdoc/>
+    public override string ToString()
+    {
+        return _name;
+    }
 }

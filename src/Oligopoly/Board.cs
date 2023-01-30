@@ -7,25 +7,24 @@ namespace Oligopoly;
 
 public class Board : IWritable
 {
-    private readonly BoardSettings _settings;
+    private readonly Game _game;
     private readonly IReadOnlyList<Square> _squares;
     private readonly IReadOnlyCollection<Group> _groups;
 
-    public Board(BoardSettings settings, IReadOnlyList<Square> squares, IReadOnlyCollection<Group> groups)
+    public Board(Game game, IReadOnlyList<Square> squares, IReadOnlyCollection<Group> groups)
     {
-        ArgumentNullException.ThrowIfNull(settings);
+        ArgumentNullException.ThrowIfNull(game);
         ArgumentNullException.ThrowIfNull(squares);
         ArgumentNullException.ThrowIfNull(groups);
 
-        _settings = settings;
+        _game = game;
         _squares = squares;
         _groups = groups;
     }
 
     /// <inheritdoc/>
-    void IWritable.Write(Writer writer)
+    public void Write(Writer writer)
     {
-        writer.Write(_settings);
         writer.Write(_groups);
         writer.Write(_squares);
 

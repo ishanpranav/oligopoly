@@ -68,18 +68,18 @@ function New-Square {
 for ($i = 0; $i -lt $squares.Count; $i++) {
     $squares[$i] = New-Square $source.squares[$i]
 }
- 
+
 $datPath = Join-Path $location "../data/board.dat"
 $output = [System.IO.File]::Create($datPath)
 $writer = New-Object Oligopoly.Writers.BinaryWriter ($output)
 
-$writer.Write((New-Object Oligopoly.Board ((New-Object Oligopoly.BoardSettings ($source.maxImprovements)), $squares, $groups)))
+$writer.Write((New-Object Oligopoly.Game ($source.maxImprovements, $squares, $groups)))
 $writer.Dispose()
 $output.Dispose()
 
 $jsonLength = 0
 
-foreach ($symbol in [char[]]$jsonContent) {
+foreach ($symbol in [char[]] $jsonContent) {
     if ([char]::IsWhiteSpace($symbol)) {
         continue;
     }
