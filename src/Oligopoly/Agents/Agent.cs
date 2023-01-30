@@ -6,7 +6,22 @@ namespace Oligopoly.Agents;
 
 public class Agent
 {
-    public Agent() { }
+    private static Agent? s_instance;
+
+    private Agent() { }
+
+    public static Agent Default
+    {
+        get
+        {
+            if (s_instance is null)
+            {
+                s_instance = new Agent();
+            }
+
+            return s_instance;
+        }
+    }
 
     public void Start(Game game)
     {

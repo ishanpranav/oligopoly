@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using System.Text.Json;
 using MessagePack;
 using Oligopoly.Agents;
@@ -9,9 +10,12 @@ internal static class Program
 {
     private static void Main()
     {
+        const string jsonPath = "../../../../../data/board.json";
+        const string msgpackPath = "../../../../../data/board.msgpack";
+        const string gamePath = "../../../../../data/game.msgpack";
+
+        Game game;
         Board board;
-        string jsonPath = "../../../../../data/board.json";
-        string msgpackPath = "../../../../../data/board.msgpack";
         MessagePackSerializerOptions msgpackOptions = MessagePackSerializerOptions.Standard.WithCompression(MessagePackCompression.Lz4Block);
 
         if (File.Exists(msgpackPath))
@@ -39,13 +43,35 @@ internal static class Program
             MessagePackSerializer.Serialize(output, board, msgpackOptions);
         }
 
-        Agent agent = new Agent();
-        Game game = new Game(board);
+        Agent agent = Agent.Default;
+
+        if (File.Exists(gamePath))
+        {
+            using Stream input = File.OpenRead(gamePath);
+
+            game = MessagePackSerializer.Deserialize<Game>(input, msgpackOptions);
+
+            foreach (Player player in game.Players)
+            {
+                player.Agent = agent;
+            }
+        }
+        else
+        {
+            game = new Game(new Player[]
+            {
+                new Player("Mark") { Agent = agent },
+                new Player("Jacob") { Agent = agent },
+                new Player("Alexander") { Agent = agent }
+            }, Enumerable.Empty<Player>());
+
+            using Stream output = File.Create(gamePath);
+
+            MessagePackSerializer.Serialize<Game>(output, game, msgpackOptions);
+        }
+
         GameController controller = new GameController(game);
 
-        game.Add("Mark", agent);
-        game.Add("Jacob", agent);
-        game.Add("Alexander", agent);
-        //controller.Start();
+        controller.Start();
     }
 }

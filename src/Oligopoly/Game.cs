@@ -1,22 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using Oligopoly.Agents;
+using MessagePack;
 
 namespace Oligopoly;
 
+[MessagePackObject]
 public class Game
 {
-    private readonly Board _board;
-    private readonly List<Player> _players = new List<Player>();
-    private readonly List<Player> _observers = new List<Player>();
+    private readonly List<Player> _players;
+    private readonly List<Player> _observers;
 
-    public Game(Board board)
+    public Game(IEnumerable<Player> players, IEnumerable<Player> observers)
     {
-        ArgumentNullException.ThrowIfNull(board);
+        ArgumentNullException.ThrowIfNull(players);
+        ArgumentNullException.ThrowIfNull(observers);
 
-        _board = board;
+        _players = new List<Player>(players);
+        _observers = new List<Player>(observers);
     }
 
+    [IgnoreMember]
     public bool Terminated
     {
         get
@@ -25,6 +28,7 @@ public class Game
         }
     }
 
+    [Key(1)]
     public IReadOnlyCollection<Player> Players
     {
         get
@@ -33,9 +37,13 @@ public class Game
         }
     }
 
-    internal void Add(string name, Agent agent)
+    [Key(2)]
+    public IReadOnlyCollection<Player> Observers
     {
-        _players.Add(new Player(name, agent, _board));
+        get
+        {
+            return _observers;
+        }
     }
 
     //public event EventHandler? Started;

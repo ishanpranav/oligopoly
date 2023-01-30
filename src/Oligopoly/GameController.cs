@@ -13,11 +13,6 @@ public class GameController
         _game = game;
     }
 
-    public void Add(string name, Agent agent)
-    {
-        _game.Add(name, agent);
-    }
-
     public void Start()
     {
         Console.WriteLine("Start of game. Players:");
@@ -51,7 +46,7 @@ public class GameController
     {
         Console.WriteLine();
         Console.WriteLine("Start of turn for {0}", player);
-        Console.WriteLine("Cash=${0}, Net Worth=${1}", player.Portfolio.Cash, player.Portfolio.Appraise());
+        Console.WriteLine("Cash=${0}, Net Worth=${1}", player.Cash, player.Appraise());
     }
 
     private Roll Roll()
