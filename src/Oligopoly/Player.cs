@@ -1,23 +1,27 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using Oligopoly.Agents;
+using Oligopoly.Assets;
 
 namespace Oligopoly;
 
 public class Player
 {
-    private readonly int _id;
     private readonly Board _board;
 
-    public Player(int id, Agent agent, Board board)
+    internal Player(string name, Agent agent, Board board)
     {
-        ArgumentNullException.ThrowIfNull(agent);
-        ArgumentNullException.ThrowIfNull(board);
-
-        _id = id;
+        Name = name;
         Agent = agent;
         _board = board;
     }
 
+    public string Name { get; }
     public Agent Agent { get; }
+    public Portfolio Portfolio { get; } = new Portfolio();
+
+    /// <inheritdoc/>
+    public override string ToString()
+    {
+        return Name;
+    }
 }

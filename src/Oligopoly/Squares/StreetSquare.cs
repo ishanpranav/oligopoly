@@ -1,44 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
-using Oligopoly.Writers;
+using MessagePack;
 
 namespace Oligopoly.Squares;
 
-public class StreetSquare : PropertySquare
+[MessagePackObject]
+public class StreetSquare : ISquare
 {
-    public StreetSquare(string name, IReadOnlyList<int> rents, Group group, int cost) : base(name, rents, group)
+    public StreetSquare(string name, int cost, int group, IReadOnlyList<int> rents)
     {
+        ArgumentNullException.ThrowIfNull(name);
+
         if (cost <= 0)
         {
             throw new ArgumentOutOfRangeException(nameof(cost));
         }
 
+        Name = name;
         Cost = cost;
+        Group = group;
+        Rents = rents;
     }
 
     /// <inheritdoc/>
-    public override SquareType Type
-    {
-        get
-        {
-            return SquareType.Street;
-        }
-    }
+    [Key(0)]
+    public string Name { get; }
 
-    /// <inheritdoc/>
-    public override int Cost { get; }
+    [Key(1)]
+    public int Cost { get; }
 
-    /// <inheritdoc/>
-    public override void Write(Writer writer)
-    {
-        base.Write(writer);
+    [Key(2)]
+    public int Group { get; }
 
-        foreach (int rent in Rents)
-        {
-            writer.Write(rent);
-        }
-
-        writer.Write(Group.Id);
-        writer.Write(Cost);
-    }
+    [Key(3)]
+    public IReadOnlyList<int> Rents { get; }
 }

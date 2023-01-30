@@ -1,9 +1,10 @@
 ﻿using System;
-using Oligopoly.Writers;
+using MessagePack;
 
 namespace Oligopoly.Squares;
 
-public class CardSquare : Square
+[MessagePackObject]
+public class CardSquare : ISquare
 {
     public CardSquare(int deck)
     {
@@ -15,22 +16,16 @@ public class CardSquare : Square
         Deck = deck;
     }
 
-    /// <inheritdoc/>
-    public override SquareType Type
-    {
-        get
-        {
-            return SquareType.Card;
-        }
-    }
-
+    [Key(0)]
     public int Deck { get; }
 
     /// <inheritdoc/>
-    public override void Write(Writer writer)
+    [IgnoreMember]
+    public string Name
     {
-        base.Write(writer);
-
-        writer.Write(Deck);
+        get
+        {
+            return Deck.ToString();
+        }
     }
 }

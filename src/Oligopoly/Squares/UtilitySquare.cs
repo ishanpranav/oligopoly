@@ -1,26 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using MessagePack;
 
 namespace Oligopoly.Squares;
 
-public class UtilitySquare : PropertySquare
+[MessagePackObject]
+public class UtilitySquare : ISquare
 {
-    public UtilitySquare(string name, IReadOnlyList<int> rents, Group group) : base(name, rents, group) { }
-
-    /// <inheritdoc/>
-    public override SquareType Type
+    public UtilitySquare(string name)
     {
-        get
-        {
-            return SquareType.Utility;
-        }
+        ArgumentNullException.ThrowIfNull(name);
+
+        Name = name; 
     }
 
     /// <inheritdoc/>
-    public override int Cost
-    {
-        get
-        {
-            return Group.ImprovementCost;
-        }
-    }
+    [Key(0)]
+    public string Name { get; }
 }

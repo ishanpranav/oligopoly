@@ -55,13 +55,13 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": [ "type" ],
+        "required": [ "$type" ],
         "additionalProperties": false,
         "properties": {
           "name": {
             "type": "string"
           },
-          "type": {
+          "$type": {
             "type": "string",
             "enum": [
               "none",
@@ -79,6 +79,10 @@
             "minimum": 1
           },
           "cost": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "amount": {
             "type": "integer",
             "minimum": 1
           },

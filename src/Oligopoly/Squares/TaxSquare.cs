@@ -1,43 +1,28 @@
 ﻿using System;
-using Oligopoly.Writers;
+using MessagePack;
 
 namespace Oligopoly.Squares;
 
-public class TaxSquare : Square
+[MessagePackObject]
+public class TaxSquare : ISquare
 {
-    public TaxSquare(string name, int cost)
+    public TaxSquare(string name, int amount)
     {
         ArgumentNullException.ThrowIfNull(name);
 
-        if (cost <= 0)
+        if (amount <= 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(cost));
+            throw new ArgumentOutOfRangeException(nameof(amount));
         }
 
         Name = name;
-        Cost = cost;
+        Amount = amount;
     }
 
     /// <inheritdoc/>
-    public override string Name { get; }
+    [Key(0)]
+    public string Name { get; }
 
-    /// <inheritdoc/>
-    public override SquareType Type
-    {
-        get
-        {
-            return SquareType.Tax;
-        }
-    }
-
-    public int Cost { get; }
-
-    /// <inheritdoc/>
-    public override void Write(Writer writer)
-    {
-        base.Write(writer);
-
-        writer.Write(Name);
-        writer.Write(Cost);
-    }
+    [Key(1)]
+    public int Amount { get; }
 }

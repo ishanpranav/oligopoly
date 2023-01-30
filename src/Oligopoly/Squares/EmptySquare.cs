@@ -1,9 +1,10 @@
 ﻿using System;
-using Oligopoly.Writers;
+using MessagePack;
 
 namespace Oligopoly.Squares;
 
-public class EmptySquare : Square
+[MessagePackObject]
+public class EmptySquare : ISquare
 {
     public EmptySquare(string name)
     {
@@ -13,22 +14,6 @@ public class EmptySquare : Square
     }
 
     /// <inheritdoc/>
-    public override string Name { get; }
-
-    /// <inheritdoc/>
-    public override SquareType Type
-    {
-        get
-        {
-            return SquareType.None;
-        }
-    }
-
-    /// <inheritdoc/>
-    public override void Write(Writer writer)
-    {
-        base.Write(writer);
-
-        writer.Write(Name);
-    }
+    [Key(0)]
+    public string Name { get; }
 }

@@ -1,230 +1,229 @@
 {
-  "maxImprovements": 5,
   "squares": [
     {
-      "name": "Go",
-      "type": "none"
+      "$type": "none",
+      "name": "Go"
     },
     {
+      "$type": "street",
       "name": "Old Kent Road",
-      "type": "street",
       "cost": 60,
       "rents": [ 2, 10, 30, 90, 160, 250 ],
       "group": 1
     },
     {
-      "type": "card",
+      "$type": "card",
       "deck": 2
     },
     {
+      "$type": "street",
       "name": "Whitechapel Road",
-      "type": "street",
       "cost": 60,
       "rents": [ 4, 20, 60, 180, 320, 450 ],
       "group": 1
     },
     {
+      "$type": "tax",
       "name": "Income Tax",
-      "type": "tax",
-      "cost": 200
+      "amount": 200
     },
     {
-      "name": "King's Cross Station",
-      "type": "railroad"
+      "$type": "railroad",
+      "name": "King's Cross Station"
     },
     {
+      "$type": "street",
       "name": "The Angel Islington",
-      "type": "street",
       "cost": 100,
       "rents": [ 6, 30, 90, 270, 400, 550 ],
       "group": 2
     },
     {
-      "type": "card",
+      "$type": "card",
       "deck": 1
     },
     {
+      "$type": "street",
       "name": "Euston Road",
-      "type": "street",
       "cost": 100,
       "rents": [ 6, 30, 90, 270, 400, 550 ],
       "group": 2
     },
     {
+      "$type": "street",
       "name": "Pentonville Road",
-      "type": "street",
       "cost": 120,
       "rents": [ 8, 40, 100, 300, 450, 600 ],
       "group": 2
     },
     {
-      "name": "Jail",
-      "type": "jail"
+      "$type": "jail",
+      "name": "Jail"
     },
     {
+      "$type": "street",
       "name": "Pall Mall",
-      "type": "street",
       "cost": 140,
       "rents": [ 10, 50, 150, 450, 625, 750 ],
       "group": 3
     },
     {
-      "name": "Electric Company",
-      "type": "utility"
+      "$type": "utility",
+      "name": "Electric Company"
     },
     {
+      "$type": "street",
       "name": "Whitehall",
-      "type": "street",
       "cost": 140,
       "rents": [ 10, 50, 150, 450, 625, 750 ],
       "group": 3
     },
     {
+      "$type": "street",
       "name": "Northumberland Avenue",
-      "type": "street",
       "cost": 160,
       "rents": [ 12, 60, 180, 500, 700, 900 ],
       "group": 3
     },
     {
-      "name": "Marylebone Station",
-      "type": "railroad"
+      "$type": "railroad",
+      "name": "Marylebone Station"
     },
     {
+      "$type": "street",
       "name": "Bow Street",
-      "type": "street",
       "cost": 180,
       "rents": [ 14, 70, 200, 550, 750, 950 ],
       "group": 4
     },
     {
-      "type": "card",
+      "$type": "card",
       "deck": 2
     },
     {
+      "$type": "street",
       "name": "Marlborough Street",
-      "type": "street",
       "cost": 180,
       "rents": [ 14, 70, 200, 550, 750, 950 ],
       "group": 4
     },
     {
+      "$type": "street",
       "name": "Vine Street",
-      "type": "street",
       "cost": 200,
       "rents": [ 16, 80, 220, 600, 800, 1000 ],
       "group": 4
     },
     {
-      "name": "Free Parking",
-      "type": "none"
+      "$type": "none",
+      "name": "Free Parking"
     },
     {
+      "$type": "street",
       "name": "Strand",
-      "type": "street",
       "cost": 220,
       "rents": [ 18, 90, 250, 700, 875, 1050 ],
       "group": 5
     },
     {
-      "type": "card",
+      "$type": "card",
       "deck": 1
     },
     {
+      "$type": "street",
       "name": "Fleet Street",
-      "type": "street",
       "cost": 220,
       "rents": [ 18, 90, 250, 700, 875, 1050 ],
       "group": 5
     },
     {
+      "$type": "street",
       "name": "Trafalgar Square",
-      "type": "street",
       "cost": 240,
       "rents": [ 20, 100, 300, 750, 925, 1100 ],
       "group": 5
     },
     {
-      "name": "Fenchurch Street Station",
-      "type": "railroad"
+      "$type": "railroad",
+      "name": "Fenchurch Street Station"
     },
     {
+      "$type": "street",
       "name": "Leicester Square",
-      "type": "street",
       "cost": 260,
       "rents": [ 22, 110, 330, 800, 975, 1150 ],
       "group": 6
     },
     {
+      "$type": "street",
       "name": "Coventry Street",
-      "type": "street",
       "cost": 260,
       "rents": [ 22, 110, 330, 800, 975, 1150 ],
       "group": 6
     },
     {
-      "name": "Water Works",
-      "type": "utility"
+      "$type": "utility",
+      "name": "Water Works"
     },
     {
+      "$type": "street",
       "name": "Piccadilly",
-      "type": "street",
       "cost": 280,
       "rents": [ 22, 120, 360, 850, 1025, 1200 ],
       "group": 6
     },
     {
-      "name": "Go to Jail",
-      "type": "police"
+      "$type": "police",
+      "name": "Go to Jail"
     },
     {
+      "$type": "street",
       "name": "Regent Street",
-      "type": "street",
       "cost": 300,
       "rents": [ 26, 130, 390, 900, 1100, 1275 ],
       "group": 7
     },
     {
+      "$type": "street",
       "name": "Oxford Street",
-      "type": "street",
       "cost": 300,
       "rents": [ 26, 130, 390, 900, 1100, 1275 ],
       "group": 7
     },
     {
-      "type": "card",
+      "$type": "card",
       "deck": 2
     },
     {
+      "$type": "street",
       "name": "Bond Street",
-      "type": "street",
       "cost": 320,
       "rents": [ 28, 150, 450, 1000, 1200, 1400 ],
       "group": 7
     },
     {
-      "name": "Liverpool Street Station",
-      "type": "railroad"
+      "$type": "railroad",
+      "name": "Liverpool Street Station"
     },
     {
-      "type": "card",
+      "$type": "card",
       "deck": 1
     },
     {
+      "$type": "street",
       "name": "Park Lane",
-      "type": "street",
       "cost": 350,
       "rents": [ 35, 175, 500, 1100, 1300, 1500 ],
       "group": 8
     },
     {
+      "$type": "tax",
       "name": "Super Tax",
-      "type": "tax",
-      "cost": 100
+      "amount": 100
     },
     {
+      "$type": "street",
       "name": "Mayfair",
-      "type": "street",
       "cost": 400,
       "rents": [ 50, 200, 600, 1400, 1700, 2000 ],
       "group": 8

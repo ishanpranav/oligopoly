@@ -5,8 +5,6 @@ VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Oligopoly", "src\Oligopoly\Oligopoly.csproj", "{0BA0A6A0-3B15-4C13-8B7E-5C9D635472BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Oligopoly.Writers", "src\Oligopoly.Writers\Oligopoly.Writers.csproj", "{480D0D2A-D27D-471C-A0D5-16A2EC0AF333}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CA96762D-31A0-416C-9C7A-7D2EE61DC31F}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
@@ -29,10 +27,6 @@ Global
 		{0BA0A6A0-3B15-4C13-8B7E-5C9D635472BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0BA0A6A0-3B15-4C13-8B7E-5C9D635472BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0BA0A6A0-3B15-4C13-8B7E-5C9D635472BF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{480D0D2A-D27D-471C-A0D5-16A2EC0AF333}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{480D0D2A-D27D-471C-A0D5-16A2EC0AF333}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{480D0D2A-D27D-471C-A0D5-16A2EC0AF333}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{480D0D2A-D27D-471C-A0D5-16A2EC0AF333}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
