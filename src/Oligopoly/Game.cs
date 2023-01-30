@@ -55,6 +55,22 @@ public class Game : IWritable
         }
     }
 
+    public event EventHandler? Started;
+    public event EventHandler? TurnStarted; // Player
+    public event EventHandler? TurnEnded;   // Player
+    public event EventHandler? Moved; // Player
+    public event EventHandler? Charging; // Player, Amount
+    public event EventHandler? Charged;  // Player, Amount
+    public event EventHandler? Paid; // Player, Amount
+    public event EventHandler? JailEscapeAcquired;
+    public event EventHandler? AuctionSucceded; // Property, Player (winner), Amount (bid)
+    public event EventHandler? AuctionFailed; // Property
+    public event EventHandler? DealResponded; // Outcome
+    public event EventHandler? DealClosed; // Deal
+    public event EventHandler? Bankrupted; // Player
+    public event EventHandler? Ended; // Player (winner), Amount (rounds)
+    public event EventHandler? Error; // Message
+
     public void Add(Player player)
     {
         _players.Add(player);
@@ -62,7 +78,10 @@ public class Game : IWritable
 
     public void Start()
     {
-
+        foreach (Player player in _players)
+        {
+            player.Agent.Start(game: this);
+        }
     }
 
     private Roll Roll()

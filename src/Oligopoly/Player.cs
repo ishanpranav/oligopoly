@@ -6,28 +6,18 @@ namespace Oligopoly;
 
 public class Player
 {
-    private readonly Agent _agent;
+    private readonly int _id;
     private readonly Board _board;
-
-    private TimeSpan _elapsed;
-    private TimeSpan _remaining;
 
     public Player(int id, Agent agent, Board board)
     {
         ArgumentNullException.ThrowIfNull(agent);
         ArgumentNullException.ThrowIfNull(board);
+
+        _id = id;
+        Agent = agent;
+        _board = board;
     }
 
-    public void Execute(Action<Agent> action)
-    {
-        ArgumentNullException.ThrowIfNull(action);
-
-        Stopwatch stopwatch = Stopwatch.StartNew();
-
-        action(_agent);
-        stopwatch.Stop();
-
-        _elapsed += stopwatch.Elapsed;
-        _remaining -= stopwatch.Elapsed;
-    }
+    public Agent Agent { get; }
 }
