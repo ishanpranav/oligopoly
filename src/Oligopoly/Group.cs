@@ -6,8 +6,6 @@ namespace Oligopoly;
 [MessagePackObject]
 public class Group
 {
-    //private readonly List<PropertySquare> _properties = new List<PropertySquare>();
-
     public Group(string name, int improvementCost)
     {
         ArgumentNullException.ThrowIfNull(name);
