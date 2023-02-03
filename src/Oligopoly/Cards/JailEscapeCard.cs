@@ -1,14 +1,27 @@
-﻿using MessagePack;
+﻿using System;
+using MessagePack;
 
 namespace Oligopoly.Cards;
 
 [MessagePackObject]
-public class JailEscapeCard : Card
+public class JailEscapeCard : ICard
 {
-    public JailEscapeCard(string name) : base(name) { }
-
-    public override void Play(Player player)
+    public JailEscapeCard(string name)
     {
-        player.JailTurns = 0;
+        ArgumentNullException.ThrowIfNull(name);
+
+        Name = name;
+    }
+
+    [IgnoreMember]
+    public CardId Id { get; set; }
+
+    [Key(0)]
+    public string Name { get; }
+
+    /// <inheritdoc/>
+    public override string ToString()
+    {
+        return Name;
     }
 }

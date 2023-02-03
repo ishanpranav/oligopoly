@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using MessagePack;
 using Oligopoly.Agents;
 using Oligopoly.Assets;
@@ -12,7 +13,7 @@ public class Player : IAsset
 {
     private Agent? _agent;
 
-    private readonly Queue<Card> _queue;
+    private readonly Queue<CardId> _queue;
 
     public Player(int id, string name)
     {
@@ -26,11 +27,11 @@ public class Player : IAsset
         Id = id;
         Name = name;
         Deeds = Array.Empty<Deed>();
-        _queue = new Queue<Card>();
+        _queue = new Queue<CardId>();
     }
 
     [SerializationConstructor]
-    public Player(int id, string name, IEnumerable<Card> cards)
+    public Player(int id, string name, IEnumerable<CardId> cards)
     {
         if (id < 0)
         {
@@ -43,7 +44,7 @@ public class Player : IAsset
         Id = id;
         Name = name;
         Deeds = Array.Empty<Deed>();
-        _queue = new Queue<Card>(cards);
+        _queue = new Queue<CardId>(cards);
     }
 
     [Key(0)]
@@ -56,7 +57,7 @@ public class Player : IAsset
     public int Cash { get; set; }
 
     [Key(3)]
-    public IEnumerable<Card> Cards
+    public IEnumerable<CardId> CardIds
     {
         get
         {
@@ -88,12 +89,13 @@ public class Player : IAsset
     [Key(5)]
     public int JailTurns { get; set; }
 
-    public void Play(DeckCollection decks)
+    public void PlayJailEscapeCard(DeckCollection decks)
     {
-        if (_queue.TryDequeue(out Card? card))
+        if (_queue.TryDequeue(out CardId cardId))
         {
-            card.Play(player: this);
-            decks.Discard(card);
+            JailTurns = 0;
+
+            decks.Discard(cardId);
         }
     }
 

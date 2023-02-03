@@ -29,7 +29,7 @@ public class DeckCollection
 
         for (int i = 0; i < decks.Count; i++)
         {
-            _deques[i] = new Deque<int>(decks[i].Cards.Select(x => x.Id));
+            _deques[i] = new Deque<int>(decks[i].Cards.Select(x => x.Id.Id));
         }
     }
 
@@ -52,13 +52,13 @@ public class DeckCollection
         }
     }
 
-    public Card Draw(Deck deck)
+    public ICard Draw(Deck deck)
     {
-        return deck.Cards[_deques[deck.Id].RemoveFromFront()];
+        return deck.Cards[_deques[deck.Id - 1].RemoveFromFront() - 1];
     }
 
-    public void Discard(Card card)
+    public void Discard(CardId card)
     {
-        _deques[card.DeckId].AddToBack(card.Id);
+        _deques[card.DeckId - 1].AddToBack(card.Id);
     }
 }

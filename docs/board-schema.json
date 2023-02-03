@@ -19,13 +19,13 @@
             "type": "string",
             "enum": [
               "none",
-              "street",
               "card",
-              "tax",
-              "railroad",
               "jail",
-              "utility",
-              "police"
+              "police",
+              "railroad",
+              "street",
+              "tax",
+              "utility"
             ]
           },
           "name": {
@@ -66,7 +66,10 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": [ "name", "improvementCost" ],
+        "required": [
+          "name",
+          "improvementCost"
+        ],
         "properties": {
           "name": {
             "type": "string"
@@ -83,7 +86,10 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": [ "name", "cards" ],
+        "required": [
+          "name",
+          "cards"
+        ],
         "properties": {
           "name": {
             "type": "string"
@@ -94,7 +100,10 @@
             "items": {
               "type": "object",
               "additionalProperties": false,
-              "required": [ "name", "$type" ],
+              "required": [
+                "name",
+                "$type"
+              ],
               "properties": {
                 "name": {
                   "type": "string"
@@ -102,8 +111,13 @@
                 "$type": {
                   "type": "string",
                   "enum": [
+                    "advance",
                     "jailEscape"
                   ]
+                },
+                "destination": {
+                  "type": "integer",
+                  "minimum": 1
                 }
               }
             }

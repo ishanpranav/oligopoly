@@ -8,7 +8,7 @@ namespace Oligopoly;
 [MessagePackObject]
 public class Deck
 {
-    public Deck(string name, IReadOnlyList<Card> cards)
+    public Deck(string name, IReadOnlyList<ICard> cards)
     {
         ArgumentNullException.ThrowIfNull(name);
         ArgumentNullException.ThrowIfNull(cards);
@@ -21,8 +21,14 @@ public class Deck
     public string Name { get; }
 
     [Key(1)]
-    public IReadOnlyList<Card> Cards { get; }
+    public IReadOnlyList<ICard> Cards { get; }
 
     [IgnoreMember]
     public int Id { get; set; }
+
+    /// <inheritdoc/>
+    public override string ToString()
+    {
+        return Name;
+    }
 }

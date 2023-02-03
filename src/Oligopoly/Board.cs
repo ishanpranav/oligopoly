@@ -35,10 +35,9 @@ public class Board
 
             for (int j = 0; j < deck.Cards.Count; j++)
             {
-                Card card = deck.Cards[j];
+                ICard card = deck.Cards[j];
 
-                card.Id = j;
-                card.DeckId = i;
+                card.Id = new CardId(i + 1, j + 1);
             }
         }
 

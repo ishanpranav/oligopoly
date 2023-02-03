@@ -39,4 +39,10 @@ public class CardSquare : ISquare
             return Deck.ToString();
         }
     }
+
+    /// <inheritdoc/>
+    public override string ToString()
+    {
+        return Name;
+    }
 }

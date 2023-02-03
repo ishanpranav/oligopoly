@@ -25,4 +25,10 @@ public class TaxSquare : ISquare
 
     [Key(1)]
     public int Amount { get; }
+
+    /// <inheritdoc/>
+    public override string ToString()
+    {
+        return Name;
+    }
 }

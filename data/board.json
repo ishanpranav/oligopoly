@@ -271,6 +271,16 @@
         {
           "$type": "jailEscape",
           "name": "Get Out of Jail Free"
+        },
+        {
+          "$type": "advance",
+          "destination": 40,
+          "name": "Advance to Mayfair"
+        },
+        {
+          "$type": "advance",
+          "destination": 1,
+          "name": "Advance to GO"
         }
       ]
     },

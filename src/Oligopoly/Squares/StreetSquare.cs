@@ -47,4 +47,10 @@ public class StreetSquare : ISquare
 
     [Key(3)]
     public IReadOnlyList<int> Rents { get; }
+
+    /// <inheritdoc/>
+    public override string ToString()
+    {
+        return Name;
+    }
 }

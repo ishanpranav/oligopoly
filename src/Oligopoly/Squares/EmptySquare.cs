@@ -16,4 +16,10 @@ public class EmptySquare : ISquare
     /// <inheritdoc/>
     [Key(0)]
     public string Name { get; }
+
+    /// <inheritdoc/>
+    public override string ToString()
+    {
+        return Name;
+    }
 }

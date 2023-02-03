@@ -88,7 +88,7 @@ public class GameController
                 break;
 
             case JailExitStrategy.Escape:
-                player.Play(_game.Decks);
+                player.PlayJailEscapeCard(_game.Decks);
                 break;
 
             default:
