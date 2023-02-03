@@ -1,5 +1,5 @@
-﻿using System.IO;
-using System.Linq;
+﻿using System;
+using System.IO;
 using System.Text.Json;
 using MessagePack;
 using Oligopoly.Agents;
@@ -16,7 +16,9 @@ internal static class Program
 
         Game game;
         Board board;
-        MessagePackSerializerOptions msgpackOptions = MessagePackSerializerOptions.Standard.WithCompression(MessagePackCompression.Lz4Block);
+        MessagePackSerializerOptions msgpackOptions = MessagePackSerializerOptions.Standard
+            .WithCompression(MessagePackCompression.Lz4Block)
+            .WithSecurity(MessagePackSecurity.UntrustedData);
 
         if (File.Exists(msgpackPath))
         {
@@ -36,9 +38,10 @@ internal static class Program
             };
 
             using Stream input = File.OpenRead(jsonPath);
-            using Stream output = File.Create(msgpackPath);
 
             board = JsonSerializer.Deserialize<Board>(input, options)!;
+
+            using Stream output = File.Create(msgpackPath);
 
             MessagePackSerializer.Serialize(output, board, msgpackOptions);
         }
@@ -58,20 +61,29 @@ internal static class Program
         }
         else
         {
+            DeckCollection decks = new DeckCollection(board.Decks);
+
+            decks.Shuffle();
+
             game = new Game(new Player[]
             {
-                new Player("Mark") { Agent = agent },
-                new Player("Jacob") { Agent = agent },
-                new Player("Alexander") { Agent = agent }
-            }, Enumerable.Empty<Player>());
-
-            using Stream output = File.Create(gamePath);
-
-            MessagePackSerializer.Serialize<Game>(output, game, msgpackOptions);
+                new Player(1, "Mark") { Agent = agent, Cash = board.InitialCash  },
+                new Player(2, "Jacob") { Agent = agent, Cash = board.InitialCash },
+                new Player(3, "Alexander") { Agent = agent, Cash = board.InitialCash }
+            }, decks);
         }
 
         GameController controller = new GameController(game);
 
         controller.Start();
+
+        while (controller.MoveNext())
+        {
+            Console.ReadLine();
+        }
+
+        using Stream gameOutput = File.Create(gamePath);
+
+        MessagePackSerializer.Serialize(gameOutput, game, msgpackOptions);
     }
 }

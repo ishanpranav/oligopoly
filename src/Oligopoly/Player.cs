@@ -3,35 +3,66 @@ using System.Collections.Generic;
 using MessagePack;
 using Oligopoly.Agents;
 using Oligopoly.Assets;
+using Oligopoly.Cards;
 
 namespace Oligopoly;
 
 [MessagePackObject]
 public class Player : IAsset
 {
-    private const int FreeJailDuration = -1;
-
-    private readonly HashSet<Deed> _deeds;
-
     private Agent? _agent;
 
-    public Player(string name)
+    private readonly Queue<Card> _queue;
+
+    public Player(int id, string name)
     {
+        if (id < 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(id));
+        }
+
+        ArgumentNullException.ThrowIfNull(name);
+
+        Id = id;
         Name = name;
-        _deeds = new HashSet<Deed>();
+        Deeds = Array.Empty<Deed>();
+        _queue = new Queue<Card>();
     }
 
-    public Player(string name, IEnumerable<Deed> deeds)
+    [SerializationConstructor]
+    public Player(int id, string name, IEnumerable<Card> cards)
     {
+        if (id < 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(id));
+        }
+
+        ArgumentNullException.ThrowIfNull(name);
+        ArgumentNullException.ThrowIfNull(cards);
+
+        Id = id;
         Name = name;
-        _deeds = new HashSet<Deed>(deeds);
+        Deeds = Array.Empty<Deed>();
+        _queue = new Queue<Card>(cards);
     }
 
     [Key(0)]
-    public string Name { get; }
+    public int Id { get; }
 
     [Key(1)]
+    public string Name { get; }
+
+    [Key(2)]
     public int Cash { get; set; }
+
+    [Key(3)]
+    public IEnumerable<Card> Cards
+    {
+        get
+        {
+            return _queue;
+        }
+    }
 
     [IgnoreMember]
     public Agent Agent
@@ -51,35 +82,19 @@ public class Player : IAsset
         }
     }
 
-    [IgnoreMember]
-    public bool Jailed
+    [Key(4)]
+    public IReadOnlyCollection<Deed> Deeds { get; }
+
+    [Key(5)]
+    public int JailTurns { get; set; }
+
+    public void Play(DeckCollection decks)
     {
-        get
+        if (_queue.TryDequeue(out Card? card))
         {
-            return JailDuration is not FreeJailDuration;
+            card.Play(player: this);
+            decks.Discard(card);
         }
-    }
-
-    [Key(2)]
-    public int JailDuration { get; private set; } = FreeJailDuration;
-
-    [Key(3)]
-    public IReadOnlyCollection<Deed> Deeds
-    {
-        get
-        {
-            return _deeds;
-        }
-    }
-
-    public void Arrest()
-    {
-        if (Jailed)
-        {
-            throw new InvalidOperationException();
-        }
-
-        JailDuration = 0;
     }
 
     /// <inheritdoc/>
@@ -87,7 +102,7 @@ public class Player : IAsset
     {
         int result = Cash;
 
-        foreach (Deed deed in _deeds)
+        foreach (Deed deed in Deeds)
         {
             result += deed.Appraise();
         }

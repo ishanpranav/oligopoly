@@ -5,49 +5,59 @@ using MessagePack;
 namespace Oligopoly;
 
 [MessagePackObject]
-public class Game
+public partial class Game
 {
-    private readonly List<Player> _players;
-    private readonly List<Player> _observers;
-
-    public Game(IEnumerable<Player> players, IEnumerable<Player> observers)
+    private int _turn;
+    
+    public Game(IReadOnlyList<Player> players, DeckCollection decks)
     {
         ArgumentNullException.ThrowIfNull(players);
-        ArgumentNullException.ThrowIfNull(observers);
+        ArgumentNullException.ThrowIfNull(decks);
 
-        _players = new List<Player>(players);
-        _observers = new List<Player>(observers);
+        Players = players;
+        Decks = decks;
     }
 
     [IgnoreMember]
-    public bool Terminated
+    public Player Current
     {
         get
         {
-            return _players.Count <= 1;
+            int id = Turn % Players.Count;
+
+            if (id >= Players.Count)
+            {
+                throw new InvalidOperationException();
+            }
+
+            return Players[id];
         }
     }
+
+    [Key(0)]
+    public IReadOnlyList<Player> Players { get; }
 
     [Key(1)]
-    public IReadOnlyCollection<Player> Players
-    {
-        get
-        {
-            return _players;
-        }
-    }
+    public DeckCollection Decks { get; }
 
     [Key(2)]
-    public IReadOnlyCollection<Player> Observers
+    public int Turn
     {
         get
         {
-            return _observers;
+            return _turn;
+        }
+        set
+        {
+            if (value < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(value));
+            }
+
+            _turn = value;
         }
     }
 
-    //public event EventHandler? Started;
-    //public event EventHandler? TurnStarted; // Player
     //public event EventHandler? TurnEnded;   // Player
     //public event EventHandler? Moved; // Player
     //public event EventHandler? Charging; // Player, Amount

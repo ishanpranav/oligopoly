@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="MessagePack" Version="2.4.59" />
+    <PackageReference Include="Nito.Collections.Deque" Version="1.1.1" />
   </ItemGroup>
 
   <ItemGroup>

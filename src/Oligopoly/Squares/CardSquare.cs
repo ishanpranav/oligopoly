@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 using MessagePack;
 
 namespace Oligopoly.Squares;
@@ -6,18 +7,23 @@ namespace Oligopoly.Squares;
 [MessagePackObject]
 public class CardSquare : ISquare
 {
-    public CardSquare(int deck)
+    public CardSquare(int deckId)
     {
-        if (deck < 0)
+        if (deckId <= 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(deck));
+            throw new ArgumentOutOfRangeException(nameof(deckId));
         }
 
-        Deck = deck;
+        DeckId = deckId;
     }
 
+    [JsonPropertyName("deck")]
     [Key(0)]
-    public int Deck { get; }
+    public int DeckId { get; }
+
+    [IgnoreMember]
+    [JsonIgnore]
+    public Deck? Deck { get; set; }
 
     /// <inheritdoc/>
     [IgnoreMember]
@@ -25,6 +31,11 @@ public class CardSquare : ISquare
     {
         get
         {
+            if (Deck is null)
+            {
+                return DeckId.ToString();
+            }
+
             return Deck.ToString();
         }
     }

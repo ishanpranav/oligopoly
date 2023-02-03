@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Oligopoly.Squares;
-
-namespace Oligopoly.Agents;
+﻿namespace Oligopoly.Agents;
 
 public class Agent
 {
@@ -23,10 +19,7 @@ public class Agent
         }
     }
 
-    public void Start(Game game)
-    {
-
-    }
+    public void Connect(GameController controller) { }
 
     //public bool Purchase(Game game, Player player, Square property)
     //{
@@ -58,14 +51,14 @@ public class Agent
     //    return Enumerable.Empty<PropertySquare>();
     //}
 
-    public JailExitStrategy GetExitStrategy(Game game, Player player)
+    public JailExitStrategy GetExitStrategy(Game game, int player)
     {
         return JailExitStrategy.None;
     }
 
-    public DealProposal Propose()
+    public DealProposal? Propose()
     {
-        return DealProposal.Empty;
+        return null;
     }
 
     public DealResponse Respond()

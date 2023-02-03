@@ -1,4 +1,5 @@
 {
+  "initialCash": 1500,
   "squares": [
     {
       "$type": "none",
@@ -263,14 +264,24 @@
       "improvementCost": 200
     }
   ],
-  "railroadInfo": {
-    "name": "Railroads",
-    "cost": 200,
-    "rents": [ 25, 50, 100, 200 ]
-  },
-  "utilityInfo": {
-    "name": "Utilities",
-    "cost": 150,
-    "rents": [ 4, 10 ]
-  }
+  "decks": [
+    {
+      "name": "Chance",
+      "cards": [
+        {
+          "$type": "jailEscape",
+          "name": "Get Out of Jail Free"
+        }
+      ]
+    },
+    {
+      "name": "Community Chest",
+      "cards": [
+        {
+          "$type": "jailEscape",
+          "name": "Get Out of Jail Free"
+        }
+      ]
+    }
+  ]
 }
