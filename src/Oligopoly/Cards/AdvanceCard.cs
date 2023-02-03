@@ -20,9 +20,11 @@ public class AdvanceCard : ICard
         DestinationId = destinationId;
     }
 
+    /// <inheritdoc/>
     [IgnoreMember]
     public CardId Id { get; set; }
 
+    /// <inheritdoc/>
     [Key(0)]
     public string Name { get; }
 

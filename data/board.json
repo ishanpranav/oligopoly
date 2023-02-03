@@ -274,13 +274,19 @@
         },
         {
           "$type": "advance",
-          "destination": 40,
-          "name": "Advance to Mayfair"
+          "name": "Advance to Mayfair",
+          "destination": 40
         },
         {
           "$type": "advance",
-          "destination": 1,
-          "name": "Advance to GO"
+          "name": "Advance to GO",
+          "destination": 1
+        },
+        {
+          "$type": "repair",
+          "name": "You are assessed for street repairs. £40 per house. £115 per hotel.",
+          "houseCost": 40,
+          "hotelCost": 115
         }
       ]
     },

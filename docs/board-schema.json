@@ -112,12 +112,21 @@
                   "type": "string",
                   "enum": [
                     "advance",
-                    "jailEscape"
+                    "jailEscape",
+                    "repair"
                   ]
                 },
                 "destination": {
                   "type": "integer",
                   "minimum": 1
+                },
+                "houseCost": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "hotelCost": {
+                  "type": "integer",
+                  "minimum": 0
                 }
               }
             }

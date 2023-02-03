@@ -13,9 +13,11 @@ public class JailEscapeCard : ICard
         Name = name;
     }
 
+    /// <inheritdoc/>
     [IgnoreMember]
     public CardId Id { get; set; }
 
+    /// <inheritdoc/>
     [Key(0)]
     public string Name { get; }
 
