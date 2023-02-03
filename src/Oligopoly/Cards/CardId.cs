@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.Design.Serialization;
 
 namespace Oligopoly.Cards;
 
@@ -15,6 +16,9 @@ public readonly struct CardId
         {
             throw new ArgumentOutOfRangeException(nameof(deckId));
         }
+
+        Id = id;
+        DeckId = deckId;
     }
 
     public int Id { get; }

@@ -111,8 +111,9 @@
                 "$type": {
                   "type": "string",
                   "enum": [
-                    "advance",
                     "jailEscape",
+                    "police",
+                    "advance",
                     "repair"
                   ]
                 },
