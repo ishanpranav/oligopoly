@@ -267,11 +267,168 @@
   "decks": [
     {
       "name": "Chance",
-      "cards": []
+      "cards": [
+        {
+          "$type": "advance",
+          "name": "Advance to Go (Collect £200)",
+          "destination": 1
+        },
+        {
+          "$type": "advance",
+          "name": "Advance to Trafalgar Square. If you pass GO, collect £200",
+          "destination": 22
+        },
+        {
+          "$type": "advance",
+          "name": "Advance to Mayfair",
+          "destination": 40
+        },
+        {
+          "$type": "advance",
+          "destination": 12,
+          "name": "Advance to Pall Mall. If you pass GO, collect £200"
+        },
+        {
+          "$type": "railroad",
+          "name": "Advance to the nearest Station. If unowned, you may buy it from the Bank. If owned, pay owner twice the rentail to which they are otherwise entitled."
+        },
+        {
+          "$type": "railroad",
+          "name": "Advance to the nearest Station. If unowned, you may buy it from the Bank. If owned, pay owner twice the rentail to which they are otherwise entitled."
+        },
+        {
+          "$type": "utility",
+          "name": "Advance to the nearest utility. If unowned, you may buy it from the Bank. If owned, roll the dice and pay owner a total ten times amount rolled."
+        },
+        {
+          "$type": "tax",
+          "name": "Bank pays you dividend of £50",
+          "amount": -50
+        },
+        {
+          "$type": "jailbreak",
+          "name": "Get Out of Jail Free"
+        },
+        {
+          "$type": "travel",
+          "name": "Go Back 3 Spaces",
+          "distance": -3
+        },
+        {
+          "$type": "police",
+          "name": "Go to Jail. Go directly to Jail, do not pass GO, do not collect £200"
+        },
+        {
+          "$type": "repair",
+          "name": "Make general repairs on all your property. For each house pay £25. For each hotel pay £100",
+          "houseCost": 25,
+          "hotelCost": 100
+        },
+        {
+          "$type": "tax",
+          "name": "Speeding fine £15",
+          "amount": 15
+        },
+        {
+          "$type": "advance",
+          "name": "Take a trip to Kings Cross Station. If you pass GO, collect £200",
+          "destination": 6
+        },
+        {
+          "$type": "pool",
+          "name": "You have been elected Chairman of the Board. Pay each player £50",
+          "amount": -50
+        },
+        {
+          "$type": "tax",
+          "name": "Your building and loan matures. Collect £150",
+          "amount": -150
+        }
+      ]
     },
     {
       "name": "Community Chest",
-      "cards": []
+      "cards": [
+        {
+          "$type": "advance",
+          "name": "Advance to Go (Collect £200)",
+          "destination": 1
+        },
+        {
+          "$type": "tax",
+          "name": "Bank error in your favour. Collect £200",
+          "amount": -200
+        },
+        {
+          "$type": "tax",
+          "name": "Doctor’s fee. Pay £50",
+          "amount": 50
+        },
+        {
+          "$type": "tax",
+          "name": "From sale of stock you get £50",
+          "amount": -50
+        },
+        {
+          "$type": "jailbreak",
+          "name": "Get Out of Jail Free"
+        },
+        {
+          "$type": "police",
+          "name": "Go to Jail. Go directly to jail, do not pass Go, do not collect £200"
+        },
+        {
+          "$type": "tax",
+          "name": "Holiday fund matures. Receive £100",
+          "amount": -100
+        },
+        {
+          "$type": "tax",
+          "name": "Income tax refund. Collect £20",
+          "amount": -20
+        },
+        {
+          "$type": "pool",
+          "name": "It is your birthday. Collect £10 from every player",
+          "amount": 10
+        },
+        {
+          "$type": "tax",
+          "name": "Life insurance matures. Collect £100",
+          "amount": -100
+        },
+        {
+          "$type": "tax",
+          "name": "Pay hospital fees of £100",
+          "amount": 100
+        },
+        {
+          "$type": "tax",
+          "name": "Pay school fees of £50",
+          "amount": 50
+        },
+        {
+          "$type": "tax",
+          "name": "Receive £25 consultancy fee",
+          "amount": -25
+        },
+        {
+          "$type": "repair",
+          "name": "You are assessed for street repairs. £40 per house. £115 per hotel",
+          "houseCost": 40,
+          "hotelCost": 115
+        },
+        {
+          "$type": "tax",
+          "name": "You have won second prize in a beauty contest. Collect £10",
+          "amount": -10
+        },
+        {
+          "$type": "tax",
+          "name": "You inherit £100",
+          "amount": -100
+        }
+      ]
     }
   ]
 }

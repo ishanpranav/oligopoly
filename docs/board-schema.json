@@ -111,12 +111,15 @@
                 "$type": {
                   "type": "string",
                   "enum": [
-                    "jailEscape",
+                    "jailbreak",
                     "police",
+                    "railroad",
                     "advance",
                     "repair",
                     "travel",
-                    "tax"
+                    "utility",
+                    "tax",
+                    "pool"
                   ]
                 },
                 "amount": {

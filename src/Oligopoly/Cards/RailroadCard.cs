@@ -4,9 +4,9 @@ using MessagePack;
 namespace Oligopoly.Cards;
 
 [MessagePackObject]
-public class JailEscapeCard : ICard
+public class RailroadCard : ICard
 {
-    public JailEscapeCard(string name)
+    public RailroadCard(string name)
     {
         ArgumentNullException.ThrowIfNull(name);
 

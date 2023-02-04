@@ -89,7 +89,7 @@ public class Player : IAsset
     [Key(5)]
     public int JailTurns { get; set; }
 
-    public void PlayJailEscapeCard(DeckCollection decks)
+    public void PlayJailbreakCard(DeckCollection decks)
     {
         if (_queue.TryDequeue(out CardId cardId))
         {
