@@ -1,6 +1,6 @@
 ﻿namespace Oligopoly;
 
-internal readonly struct Roll
+public readonly struct Roll
 {
     public int First { get; }
     public int Second { get; }

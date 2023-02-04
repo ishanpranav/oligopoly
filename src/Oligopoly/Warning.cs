@@ -3,5 +3,13 @@
 public enum Warning
 {
     None,
-    AccessDenied
+    AccessDenied,
+    GroupAccessDenied,
+    InsufficientFunds,
+    NotImprovable,
+    MaxImprovementsExceeded,
+    UnbalancedImprovements,
+    Mortgaged,
+    GroupMortgaged,
+    Unmortgaged
 }

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using Oligopoly.Agents;
 using Oligopoly.Cards;
 using Oligopoly.EventArgs;
+using Oligopoly.Squares;
 
 namespace Oligopoly;
 
@@ -49,7 +51,7 @@ public class GameController
 
         Console.WriteLine();
         Console.WriteLine("Start of turn {0} for {1}", _game.Turn, current);
-        Console.WriteLine("Cash=${0}, Net Worth=${1}", current.Cash, current.Appraise(_board));
+        Console.WriteLine("Cash=${0}, Net Worth=${1}", current.Cash, current.Appraise(_board, _game));
 
         if (current.JailTurns > 0)
         {
@@ -60,6 +62,7 @@ public class GameController
         Propose(current);
         Jailbreak(current);
         Unmortgage(current);
+        Improve(current);
 
         _game.Turn++;
 
@@ -80,10 +83,15 @@ public class GameController
         {
             _proposing = true;
 
-            while (player.Agent.Propose() is not null)
-                ;
+            while (_proposing)
+            {
+                DealProposal? proposal = player.Agent.Propose();
 
-            _proposing = false;
+                if (proposal is null)
+                {
+                    _proposing = false;
+                }
+            }
         }
     }
 
@@ -94,7 +102,7 @@ public class GameController
             switch (player.Agent.Jailbreak(_game, player.Id))
             {
                 case JailbreakStrategy.Bail:
-                    Tax(player, amount: 50);
+                    Tax(player, _board.Bail);
 
                     player.JailTurns = 0;
 
@@ -116,6 +124,135 @@ public class GameController
         }
     }
 
+    private void Improve(Player player)
+    {
+        while (true)
+        {
+            int id = player.Agent.Unmortgage(_game, player);
+
+            if (id is 0)
+            {
+                break;
+            }
+
+            Console.WriteLine("{0} wants to build a house on {1}", player, id);
+
+            Deed deed = _game.Deeds[id - 1];
+
+            if (_board.Squares[id - 1] is not StreetSquare streetSquare)
+            {
+                Warn(player, Warning.NotImprovable);
+
+                break;
+            }
+
+            Group? group = streetSquare.Group!;
+
+            deed.Improvements++;
+
+            Tax(player, group.ImprovementCost);
+
+            if (player.Cash < 0)
+            {
+                deed.Improvements--;
+
+                Untax(player, group.ImprovementCost);
+                Warn(player, Warning.InsufficientFunds);
+
+                break;
+            }
+
+            if (deed.Improvements >= streetSquare.Rents.Count - 1)
+            {
+                Untax(player, group.ImprovementCost);
+                Warn(player, Warning.MaxImprovementsExceeded);
+
+                break;
+            }
+
+            if (deed.PlayerId != player.Id)
+            {
+                Untax(player, group.ImprovementCost);
+                Warn(player, Warning.AccessDenied);
+
+                break;
+            }
+
+            if (deed.Mortgaged)
+            {
+                Untax(player, group.ImprovementCost);
+                Warn(player, Warning.Mortgaged);
+
+                break;
+            }
+
+            int maxImprovements = deed.Improvements;
+            int minImprovements = deed.Improvements;
+
+            foreach (KeyValuePair<int, Deed> deedId in _game.Deeds)
+            {
+                if (deedId.Key == id)
+                {
+                    continue;
+                }
+
+                if (_board.Squares[deedId.Key] is not StreetSquare other)
+                {
+                    continue;
+                }
+
+                if (other.GroupId != streetSquare.GroupId)
+                {
+                    continue;
+                }
+
+                if (deedId.Value.PlayerId != player.Id)
+                {
+                    Untax(player, group.ImprovementCost);
+                    Warn(player, Warning.GroupAccessDenied);
+
+                    return;
+                }
+
+                if (deedId.Value.Mortgaged)
+                {
+                    Untax(player, group.ImprovementCost);
+                    Warn(player, Warning.GroupAccessDenied);
+
+                    return;
+                }
+
+                if (deedId.Value.Improvements > maxImprovements)
+                {
+                    maxImprovements = deedId.Value.Improvements;
+                }
+
+                if (deedId.Value.Improvements < minImprovements)
+                {
+                    minImprovements = deedId.Value.Improvements;
+                }
+            }
+
+            if (maxImprovements - minImprovements > 1)
+            {
+                Untax(player, group.ImprovementCost);
+                Warn(player, Warning.UnbalancedImprovements);
+
+                return;
+            }
+        }
+    }
+
+    private void Unimprove(Player player)
+    {
+
+    }
+
+    private void Mortgage(Player player)
+    {
+
+    }
+
     private void Unmortgage(Player player)
     {
         while (true)
@@ -127,25 +264,35 @@ public class GameController
                 break;
             }
 
-            if (player.DeedIds.Contains(deedId))
+            Deed deed = _game.Deeds[deedId - 1];
+
+            if (deed.PlayerId != player.Id)
             {
-                player.Agent.Warn(Warning.AccessDenied);
+                Warn(player, Warning.AccessDenied);
 
                 break;
             }
 
-            int amount = (int)((_board.MortgageLoanProportion + _board.MortgageInterestRate) * _board.Appraise(deedId));
+            if (!deed.Mortgaged)
+            {
+                Warn(player, Warning.Unmortgaged);
+
+                break;
+            }
+
+            int amount = (int)((_board.MortgageLoanProportion + _board.MortgageInterestRate) * deed.Appraise(_board, _game));
 
             Tax(player, amount);
 
             if (player.Cash < 0)
             {
                 Untax(player, amount);
+                Warn(player, Warning.InsufficientFunds);
+
+                break;
             }
-            else
-            {
-                _game.Mortgage(deedId);
-            }
+
+            _game.Deeds[deedId - 1].Mortgaged = true;
         }
     }
 
@@ -153,8 +300,8 @@ public class GameController
     {
         player.Agent.Tax(amount);
         Propose(player);
-        // Unimprove(player);
-        // Mortgage(player);
+        Unimprove(player);
+        Mortgage(player);
 
         player.Cash -= amount;
         player.Agent.Taxed(amount);
@@ -168,6 +315,11 @@ public class GameController
         player.Agent.Untaxed(amount);
 
         Console.WriteLine("{0} gets £{1}", player, amount);
+    }
+
+    private void Warn(Player player, Warning warning)
+    {
+        Console.WriteLine("WARNING to {0}: {1}", player, warning);
     }
 
     private Roll Roll()

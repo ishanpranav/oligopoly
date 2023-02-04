@@ -9,7 +9,7 @@ namespace Oligopoly;
 [MessagePackObject]
 public class Board
 {
-    public Board(IReadOnlyList<ISquare> squares, IReadOnlyList<Group> groups, IReadOnlyList<Deck> decks, int initialCash, double mortgageLoanProportion, double mortgageInterestRate, int railroadCost, int utilityCost)
+    public Board(IReadOnlyList<ISquare> squares, IReadOnlyList<Group> groups, IReadOnlyList<Deck> decks, int initialCash, int bail, double mortgageLoanProportion, double mortgageInterestRate, int railroadCost, int utilityCost)
     {
         ArgumentNullException.ThrowIfNull(squares);
         ArgumentNullException.ThrowIfNull(groups);
@@ -18,6 +18,11 @@ public class Board
         if (initialCash < 0)
         {
             throw new ArgumentOutOfRangeException(nameof(initialCash));
+        }
+
+        if (bail < 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(bail));
         }
 
         if (mortgageLoanProportion < 0)
@@ -89,28 +94,19 @@ public class Board
     public int InitialCash { get; }
 
     [Key(5)]
-    public double MortgageLoanProportion { get; }
+    public int Bail { get; }
 
     [Key(6)]
-    public double MortgageInterestRate { get; }
+    public double MortgageLoanProportion { get; }
 
     [Key(7)]
-    public int RailroadCost { get; }
+    public double MortgageInterestRate { get; }
 
     [Key(8)]
+    public int RailroadCost { get; }
+
+    [Key(9)]
     public int UtilityCost { get; }
-
-    public int Appraise(int deedId)
-    {
-        ISquare square = Squares[deedId - 1];
-
-        if (square is not IAsset asset)
-        {
-            throw new ArgumentOutOfRangeException(nameof(deedId));
-        }
-
-        return asset.Appraise(board: this);
-    }
 
     public Player CreatePlayer(string name)
     {

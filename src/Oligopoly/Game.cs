@@ -4,6 +4,7 @@ using System.Linq;
 using MessagePack;
 using Nito.Collections;
 using Oligopoly.Cards;
+using Oligopoly.Squares;
 
 namespace Oligopoly;
 
@@ -11,14 +12,14 @@ namespace Oligopoly;
 public class Game
 {
     private readonly Deque<int>[] _deques;
-    private readonly HashSet<int> _hashSet;
 
     private int _turn;
 
-    public Game(IReadOnlyList<Player> players, IReadOnlyList<Deck> decks)
+    public Game(IReadOnlyList<Player> players, IReadOnlyList<ISquare> squares, IReadOnlyList<Deck> decks)
     {
-        ArgumentNullException.ThrowIfNull(decks);
         ArgumentNullException.ThrowIfNull(players);
+        ArgumentNullException.ThrowIfNull(squares);
+        ArgumentNullException.ThrowIfNull(decks);
 
         for (int i = 0; i < players.Count; i++)
         {
@@ -26,8 +27,22 @@ public class Game
         }
 
         Players = players;
+
+        Dictionary<int, Deed> dictionary = new Dictionary<int, Deed>();
+
+        for (int i = 0; i < squares.Count; i++)
+        {
+            if (squares[i] is IPropertySquare)
+            {
+                dictionary[i] = new Deed()
+                {
+                    SquareId = i + 1
+                };
+            }
+        }
+
+        Deeds = dictionary;
         _deques = new Deque<int>[decks.Count];
-        _hashSet = new HashSet<int>();
 
         for (int i = 0; i < decks.Count; i++)
         {
@@ -52,9 +67,10 @@ public class Game
     }
 
     [SerializationConstructor]
-    public Game(IReadOnlyList<Player> players, IReadOnlyList<IEnumerable<int>> deckIds, IEnumerable<int> deedIds)
+    public Game(IReadOnlyList<Player> players, IReadOnlyDictionary<int, Deed> deedIds, IReadOnlyList<IEnumerable<int>> deckIds)
     {
         ArgumentNullException.ThrowIfNull(players);
+        ArgumentNullException.ThrowIfNull(deedIds);
         ArgumentNullException.ThrowIfNull(deckIds);
 
         for (int i = 0; i < players.Count; i++)
@@ -63,8 +79,14 @@ public class Game
         }
 
         Players = players;
+
+        foreach (KeyValuePair<int, Deed> deedId in deedIds)
+        {
+            deedId.Value.SquareId = deedId.Key + 1;
+        }
+
+        Deeds = deedIds;
         _deques = new Deque<int>[deckIds.Count];
-        _hashSet = new HashSet<int>(deedIds);
 
         for (int i = 0; i < deckIds.Count; i++)
         {
@@ -92,20 +114,14 @@ public class Game
     public IReadOnlyList<Player> Players { get; }
 
     [Key(1)]
+    public IReadOnlyDictionary<int, Deed> Deeds { get; }
+
+    [Key(2)]
     public IReadOnlyList<IEnumerable<int>> DeckIds
     {
         get
         {
             return _deques;
-        }
-    }
-
-    [Key(2)]
-    public IEnumerable<int> DeedIds
-    {
-        get
-        {
-            return _hashSet;
         }
     }
 
@@ -127,24 +143,9 @@ public class Game
         }
     }
 
-    public ICard Draw(Deck deck)
-    {
-        return deck.Cards[_deques[deck.Id - 1].RemoveFromFront() - 1];
-    }
-
     public void Discard(CardId card)
     {
         _deques[card.DeckId - 1].AddToBack(card.Id);
-    }
-
-    public void Mortgage(int deedId)
-    {
-        if (deedId <= 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(deedId)); 
-        }
-
-        _hashSet.Add(deedId);
     }
 
     //public event EventHandler? TurnEnded;   // Player

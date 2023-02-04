@@ -4,7 +4,7 @@ using MessagePack;
 namespace Oligopoly.Squares;
 
 [MessagePackObject]
-public class RailroadSquare : IAsset, ISquare
+public class RailroadSquare : IPropertySquare
 {
     public RailroadSquare(string name)
     {
@@ -18,9 +18,15 @@ public class RailroadSquare : IAsset, ISquare
     public string Name { get; }
 
     /// <inheritdoc/>
-    public int Appraise(Board board)
+    public int Appraise(Board board, Game game)
     {
         return board.RailroadCost;
+    }
+
+    /// <inheritdoc/>
+    public int GetRent(Board board, Roll roll)
+    {
+        return 0;
     }
 
     /// <inheritdoc/>

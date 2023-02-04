@@ -1,6 +1,6 @@
 ﻿namespace Oligopoly;
 
-internal interface IAsset
+public interface IAsset
 {
-    int Appraise(Board board);
+    int Appraise(Board board, Game game);
 }

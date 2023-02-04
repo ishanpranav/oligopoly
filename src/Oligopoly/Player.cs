@@ -12,7 +12,6 @@ public class Player : IAsset
     private Agent? _agent;
 
     private readonly Queue<CardId> _queue;
-    private readonly HashSet<int> _hashSet;
 
     public Player(string name)
     {
@@ -20,19 +19,16 @@ public class Player : IAsset
 
         Name = name;
         _queue = new Queue<CardId>();
-        _hashSet = new HashSet<int>();
     }
 
     [SerializationConstructor]
-    public Player(string name, IEnumerable<CardId> cards, IReadOnlySet<int> deeds)
+    public Player(string name, IEnumerable<CardId> cards)
     {
         ArgumentNullException.ThrowIfNull(name);
         ArgumentNullException.ThrowIfNull(cards);
-        ArgumentNullException.ThrowIfNull(deeds);
 
         Name = name;
         _queue = new Queue<CardId>(cards);
-        _hashSet = new HashSet<int>(deeds);
     }
 
     [IgnoreMember]
@@ -69,18 +65,9 @@ public class Player : IAsset
     }
 
     [Key(2)]
-    public IReadOnlySet<int> DeedIds
-    {
-        get
-        {
-            return _hashSet;
-        }
-    }
-
-    [Key(3)]
     public int Cash { get; set; }
 
-    [Key(4)]
+    [Key(3)]
     public int JailTurns { get; set; }
 
     public bool TryPlay(out CardId cardId)
@@ -89,13 +76,16 @@ public class Player : IAsset
     }
 
     /// <inheritdoc/>
-    public int Appraise(Board board)
+    public int Appraise(Board board, Game game)
     {
         int result = Cash;
 
-        foreach (int deedId in _hashSet)
+        foreach (Deed deed in game.Deeds.Values)
         {
-            result += board.Appraise(deedId);
+            if (deed.PlayerId == Id)
+            {
+                result += deed.Appraise(board, game);
+            }
         }
 
         return result;

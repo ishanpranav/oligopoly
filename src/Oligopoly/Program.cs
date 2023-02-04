@@ -61,7 +61,7 @@ internal static class Program
                 board.CreatePlayer("Mark"),
                 board.CreatePlayer("Jacob"),
                 board.CreatePlayer("Alexander")
-            }, board.Decks);
+            }, board.Squares, board.Decks);
         }
 
         foreach (Player player in game.Players)
