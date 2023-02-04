@@ -114,8 +114,13 @@
                     "jailEscape",
                     "police",
                     "advance",
+                    "bonus",
                     "repair"
                   ]
+                },
+                "amount": {
+                  "type": "integer",
+                  "minimum": 0
                 },
                 "destination": {
                   "type": "integer",
