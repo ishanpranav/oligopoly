@@ -17,9 +17,8 @@ public class PoliceSquare : ISquare
     [Key(0)]
     public string Name { get; }
 
-
     /// <inheritdoc/>
-    public void Land(Player player) { }
+    public void Land(GameController controller) { }
 
     /// <inheritdoc/>
     public override string ToString()

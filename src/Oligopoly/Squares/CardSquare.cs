@@ -41,7 +41,7 @@ public class CardSquare : ISquare
     }
 
     /// <inheritdoc/>
-    public void Land(Player player) { }
+    public void Land(GameController controller) { }
 
     /// <inheritdoc/>
     public override string ToString()

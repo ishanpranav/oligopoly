@@ -6,12 +6,10 @@ using MessagePack;
 namespace Oligopoly.Squares;
 
 [MessagePackObject]
-public class StreetSquare : IPropertySquare
+public class StreetSquare : PropertySquare
 {
-    public StreetSquare(string name, int cost, int groupId, IReadOnlyList<int> rents)
+    public StreetSquare(string name, int cost, int groupId, IReadOnlyList<int> rents) : base(name)
     {
-        ArgumentNullException.ThrowIfNull(name);
-
         if (cost <= 0)
         {
             throw new ArgumentOutOfRangeException(nameof(cost));
@@ -24,15 +22,10 @@ public class StreetSquare : IPropertySquare
 
         ArgumentNullException.ThrowIfNull(rents);
 
-        Name = name;
         Cost = cost;
         GroupId = groupId;
         Rents = rents;
     }
-
-    /// <inheritdoc/>
-    [Key(0)]
-    public string Name { get; }
 
     [Key(1)]
     public int Cost { get; }
@@ -49,18 +42,15 @@ public class StreetSquare : IPropertySquare
     public IReadOnlyList<int> Rents { get; }
 
     /// <inheritdoc/>
-    public int Appraise(Board board, Game game)
+    public override int GetRent(Board board, int roll)
     {
-        return Cost;
+        return 0;
     }
 
     /// <inheritdoc/>
-    public void Land(Player player) { }
-
-    /// <inheritdoc/>
-    public int GetRent(Board board, int roll)
+    public override int Appraise(Board board, Game game)
     {
-        return 0;
+        return Cost;
     }
 
     /// <inheritdoc/>

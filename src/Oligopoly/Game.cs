@@ -32,12 +32,14 @@ public class Game
 
         for (int i = 0; i < squares.Count; i++)
         {
-            if (squares[i] is IPropertySquare)
+            if (squares[i] is PropertySquare propertySquare)
             {
-                dictionary[i] = new Deed()
+                Deed deed = new Deed()
                 {
                     SquareId = i + 1
                 };
+
+                dictionary[i] = deed;
             }
         }
 

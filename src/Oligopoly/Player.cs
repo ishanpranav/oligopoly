@@ -68,8 +68,8 @@ public class Player : IAsset
     public int Cash { get; set; }
 
     [Key(3)]
-    public int SquareId { get; set; }
-        
+    public int SquareId { get; set; } = 1;
+
     [Key(4)]
     public int Sentence { get; set; }
 

@@ -69,6 +69,13 @@ public class Agent
         return JailbreakStrategy.None;
     }
 
+    public int Improve(Game game, Player player)
+    {
+        Console.WriteLine("AGENT: I do nto want to improve anything.");
+
+        return 0;
+    }
+
     public int Unmortgage(Game game, Player player)
     {
         Console.WriteLine("AGENT: I do not want to unmortgage anything.");

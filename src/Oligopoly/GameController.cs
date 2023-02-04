@@ -9,9 +9,6 @@ namespace Oligopoly;
 
 public class GameController
 {
-    private readonly Board _board;
-    private readonly Game _game;
-
     private bool _proposing;
 
     public GameController(Board board, Game game)
@@ -19,31 +16,35 @@ public class GameController
         ArgumentNullException.ThrowIfNull(board);
         ArgumentNullException.ThrowIfNull(game);
 
-        _board = board;
-        _game = game;
+        Board = board;
+        Game = game;
     }
 
     public event EventHandler<GameEventArgs>? Started;
     public event EventHandler<GameEventArgs>? TurnStarted;
     public event EventHandler<PlayerEventArgs>? Landed;
 
+    public Board Board { get; }
+    public Game Game { get; }
+    public int Roll { get; private set; }
+
     public void Start()
     {
         Console.WriteLine("Start of game. Players:");
 
-        foreach (Player player in _game.Players)
+        foreach (Player player in Game.Players)
         {
             player.Agent.Connect(controller: this);
 
             Console.WriteLine("\t{0}", player.Name);
         }
 
-        OnStarted(new GameEventArgs(_game));
+        OnStarted(new GameEventArgs(Game));
     }
 
     public bool MoveNext()
     {
-        Player current = _game.Current;
+        Player current = Game.Current;
 
         if (current.Cash < 0)
         {
@@ -51,15 +52,15 @@ public class GameController
         }
 
         Console.WriteLine();
-        Console.WriteLine("Start of turn {0} for {1}", _game.Turn, current);
-        Console.WriteLine("Cash=${0}, Net Worth=${1}", current.Cash, current.Appraise(_board, _game));
+        Console.WriteLine("Start of turn {0} for {1}", Game.Turn, current);
+        Console.WriteLine("Cash=${0}, Net Worth=${1}", current.Cash, current.Appraise(Board, Game));
 
         if (current.Sentence > 0)
         {
             current.Sentence--;
         }
 
-        OnTurnStarted(new GameEventArgs(_game));
+        OnTurnStarted(new GameEventArgs(Game));
         Propose(current);
         Jailbreak(current);
         Unmortgage(current);
@@ -72,8 +73,8 @@ public class GameController
         {
             int first = Random.Shared.Next(1, 7);
             int second = Random.Shared.Next(1, 7);
-            int result = first + second;
 
+            Roll = first + second;
             isDouble = first == second;
 
             Console.WriteLine("Rolled ({0}, {1})", first, second);
@@ -92,7 +93,7 @@ public class GameController
                         break;
                     }
 
-                    Tax(current, _board.Bail);
+                    Tax(current, Board.Bail);
 
                     current.Sentence = 0;
                 }
@@ -102,7 +103,7 @@ public class GameController
             {
                 count++;
 
-                if (count == _board.SpeedLimit)
+                if (count == Board.SpeedLimit)
                 {
                     Police(current);
 
@@ -110,14 +111,14 @@ public class GameController
                 }
             }
 
-            current.SquareId += result;
+            current.SquareId += Roll;
 
-            while (current.SquareId >= _board.Squares.Count)
+            while (current.SquareId > Board.Squares.Count)
             {
-                Console.WriteLine("{0} gets £{1} for passing the starting square", current, _board.Salary);
+                Console.WriteLine("{0} gets £{1} for passing the starting square", current, Board.Salary);
 
-                current.SquareId -= _board.Squares.Count;
-                current.Cash += _board.Salary;
+                current.SquareId -= Board.Squares.Count;
+                current.Cash += Board.Salary;
             }
 
             Land(current);
@@ -128,9 +129,9 @@ public class GameController
             }
         }
 
-        _game.Turn++;
+        Game.Turn++;
 
-        foreach (Player player in _game.Players)
+        foreach (Player player in Game.Players)
         {
             if (player.Cash >= 0)
             {
@@ -141,24 +142,34 @@ public class GameController
         return false;
     }
 
+    public void Offer(Player player, Deed deed)
+    {
+
+    }
+
+    public void Transfer(Player sender, Player recipient, int amount)
+    {
+
+    }
+
     private void Land(Player player)
     {
-        ISquare square = _board.Squares[player.SquareId];
+        ISquare square = Board.Squares[player.SquareId - 1];
 
         Console.WriteLine("Moved to {0}", square);
 
         OnLanded(new PlayerEventArgs(player));
 
-        square.Land(player);
+        square.Land(controller: this);
     }
 
     private void Police(Player player)
     {
-        player.Sentence = _board.Sentence;
+        player.Sentence = Board.Sentence;
 
-        for (int i = 0; i < _board.Squares.Count; i++)
+        for (int i = 0; i < Board.Squares.Count; i++)
         {
-            if (_board.Squares[i] is JailSquare)
+            if (Board.Squares[i] is JailSquare)
             {
                 player.SquareId = i + 1;
             }
@@ -189,10 +200,10 @@ public class GameController
     {
         if (player.Sentence > 0)
         {
-            switch (player.Agent.Jailbreak(_game, player.Id))
+            switch (player.Agent.Jailbreak(Game, player.Id))
             {
                 case JailbreakStrategy.Bail:
-                    Tax(player, _board.Bail);
+                    Tax(player, Board.Bail);
 
                     player.Sentence = 0;
 
@@ -203,7 +214,7 @@ public class GameController
                     {
                         player.Sentence = 0;
 
-                        _game.Discard(cardId);
+                        Game.Discard(cardId);
                     }
 
                     break;
@@ -215,7 +226,7 @@ public class GameController
     {
         while (true)
         {
-            int id = player.Agent.Unmortgage(_game, player);
+            int id = player.Agent.Improve(Game, player);
 
             if (id is 0)
             {
@@ -224,9 +235,9 @@ public class GameController
 
             Console.WriteLine("{0} wants to build a house on {1}", player, id);
 
-            Deed deed = _game.Deeds[id - 1];
+            Deed deed = Game.Deeds[id - 1];
 
-            if (_board.Squares[id - 1] is not StreetSquare streetSquare)
+            if (Board.Squares[id - 1] is not StreetSquare streetSquare)
             {
                 Warn(player, Warning.NotImprovable);
 
@@ -276,14 +287,14 @@ public class GameController
             int maxImprovements = deed.Improvements;
             int minImprovements = deed.Improvements;
 
-            foreach (KeyValuePair<int, Deed> deedId in _game.Deeds)
+            foreach (KeyValuePair<int, Deed> deedId in Game.Deeds)
             {
                 if (deedId.Key == id)
                 {
                     continue;
                 }
 
-                if (_board.Squares[deedId.Key] is not StreetSquare other)
+                if (Board.Squares[deedId.Key] is not StreetSquare other)
                 {
                     continue;
                 }
@@ -344,14 +355,14 @@ public class GameController
     {
         while (true)
         {
-            int deedId = player.Agent.Unmortgage(_game, player);
+            int deedId = player.Agent.Unmortgage(Game, player);
 
             if (deedId is 0)
             {
                 break;
             }
 
-            Deed deed = _game.Deeds[deedId - 1];
+            Deed deed = Game.Deeds[deedId - 1];
 
             if (deed.PlayerId != player.Id)
             {
@@ -367,7 +378,7 @@ public class GameController
                 break;
             }
 
-            int amount = (int)((_board.MortgageLoanProportion + _board.MortgageInterestRate) * deed.Appraise(_board, _game));
+            int amount = (int)((Board.MortgageLoanProportion + Board.MortgageInterestRate) * deed.Appraise(Board, Game));
 
             Tax(player, amount);
 
@@ -379,7 +390,7 @@ public class GameController
                 break;
             }
 
-            _game.Deeds[deedId - 1].Mortgaged = true;
+            Game.Deeds[deedId - 1].Mortgaged = true;
         }
     }
 

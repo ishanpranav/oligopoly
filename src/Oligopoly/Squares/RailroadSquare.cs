@@ -4,33 +4,20 @@ using MessagePack;
 namespace Oligopoly.Squares;
 
 [MessagePackObject]
-public class RailroadSquare : IPropertySquare
+public class RailroadSquare : PropertySquare
 {
-    public RailroadSquare(string name)
-    {
-        ArgumentNullException.ThrowIfNull(name);
-
-        Name = name;
-    }
+    public RailroadSquare(string name) : base(name) { }
 
     /// <inheritdoc/>
-    [Key(0)]
-    public string Name { get; }
-
-    /// <inheritdoc/>
-    public int Appraise(Board board, Game game)
-    {
-        return board.RailroadCost;
-    }
-
-
-    /// <inheritdoc/>
-    public void Land(Player player) { }
-
-    /// <inheritdoc/>
-    public int GetRent(Board board, int roll)
+    public override int GetRent(Board board, int roll)
     {
         return 0;
+    }
+
+    /// <inheritdoc/>
+    public override int Appraise(Board board, Game game)
+    {
+        return board.RailroadCost;
     }
 
     /// <inheritdoc/>
