@@ -3,9 +3,12 @@
   "type": "object",
   "additionalProperties": false,
   "properties": {
-    "initialCash": {
+    "savings": {
       "type": "integer",
       "minimum": 0
+    },
+    "salary": {
+      "type": "integer"
     },
     "bail": {
       "type": "integer",

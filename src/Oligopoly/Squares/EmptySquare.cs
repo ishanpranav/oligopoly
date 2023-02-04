@@ -18,6 +18,9 @@ public class EmptySquare : ISquare
     public string Name { get; }
 
     /// <inheritdoc/>
+    public void Land(Player player) { }
+
+    /// <inheritdoc/>
     public override string ToString()
     {
         return Name;

@@ -24,10 +24,13 @@ public class UtilitySquare : IPropertySquare
     }
 
     /// <inheritdoc/>
-    public int GetRent(Board board, Roll roll)
+    public int GetRent(Board board, int roll)
     {
         return 0;
     }
+
+    /// <inheritdoc/>
+    public void Land(Player player) { }
 
     /// <inheritdoc/>
     public override string ToString()

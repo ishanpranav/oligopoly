@@ -23,8 +23,12 @@ public class RailroadSquare : IPropertySquare
         return board.RailroadCost;
     }
 
+
     /// <inheritdoc/>
-    public int GetRent(Board board, Roll roll)
+    public void Land(Player player) { }
+
+    /// <inheritdoc/>
+    public int GetRent(Board board, int roll)
     {
         return 0;
     }

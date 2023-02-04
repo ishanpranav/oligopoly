@@ -27,6 +27,9 @@ public class TaxSquare : ISquare
     public int Amount { get; }
 
     /// <inheritdoc/>
+    public void Land(Player player) { }
+
+    /// <inheritdoc/>
     public override string ToString()
     {
         return Name;

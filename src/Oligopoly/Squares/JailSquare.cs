@@ -17,6 +17,10 @@ public class JailSquare : ISquare
     [Key(0)]
     public string Name { get; }
 
+
+    /// <inheritdoc/>
+    public void Land(Player player) { }
+
     /// <inheritdoc/>
     public override string ToString()
     {

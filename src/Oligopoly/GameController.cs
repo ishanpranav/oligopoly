@@ -25,6 +25,7 @@ public class GameController
 
     public event EventHandler<GameEventArgs>? Started;
     public event EventHandler<GameEventArgs>? TurnStarted;
+    public event EventHandler<PlayerEventArgs>? Landed;
 
     public void Start()
     {
@@ -108,6 +109,23 @@ public class GameController
                     break;
                 }
             }
+
+            current.SquareId += result;
+
+            while (current.SquareId >= _board.Squares.Count)
+            {
+                Console.WriteLine("{0} gets £{1} for passing the starting square", current, _board.Salary);
+
+                current.SquareId -= _board.Squares.Count;
+                current.Cash += _board.Salary;
+            }
+
+            Land(current);
+
+            if (current.Sentence > 0)
+            {
+                break;
+            }
         }
 
         _game.Turn++;
@@ -123,9 +141,15 @@ public class GameController
         return false;
     }
 
-    private void Move(Player player)
+    private void Land(Player player)
     {
+        ISquare square = _board.Squares[player.SquareId];
 
+        Console.WriteLine("Moved to {0}", square);
+
+        OnLanded(new PlayerEventArgs(player));
+
+        square.Land(player);
     }
 
     private void Police(Player player)
@@ -140,7 +164,7 @@ public class GameController
             }
         }
 
-        Move(player);
+        Land(player);
     }
 
     private void Propose(Player player)
@@ -398,6 +422,14 @@ public class GameController
         if (TurnStarted is not null)
         {
             TurnStarted(sender: this, e);
+        }
+    }
+
+    protected virtual void OnLanded(PlayerEventArgs e)
+    {
+        if (Landed is not null)
+        {
+            Landed(sender: this, e);
         }
     }
 }

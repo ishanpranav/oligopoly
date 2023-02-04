@@ -9,15 +9,15 @@ namespace Oligopoly;
 [MessagePackObject]
 public class Board
 {
-    public Board(IReadOnlyList<ISquare> squares, IReadOnlyList<Group> groups, IReadOnlyList<Deck> decks, int initialCash, int bail, double mortgageLoanProportion, double mortgageInterestRate, int railroadCost, int utilityCost, int speedLimit, int sentence)
+    public Board(IReadOnlyList<ISquare> squares, IReadOnlyList<Group> groups, IReadOnlyList<Deck> decks, int savings, int salary, int bail, double mortgageLoanProportion, double mortgageInterestRate, int railroadCost, int utilityCost, int speedLimit, int sentence)
     {
         ArgumentNullException.ThrowIfNull(squares);
         ArgumentNullException.ThrowIfNull(groups);
         ArgumentNullException.ThrowIfNull(decks);
 
-        if (initialCash < 0)
+        if (savings < 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(initialCash));
+            throw new ArgumentOutOfRangeException(nameof(savings));
         }
 
         if (bail < 0)
@@ -84,7 +84,8 @@ public class Board
         Squares = squares;
         Groups = groups;
         Decks = decks;
-        InitialCash = initialCash;
+        Savings = savings;
+        Salary = salary;
         MortgageLoanProportion = mortgageLoanProportion;
         MortgageInterestRate = mortgageInterestRate;
         RailroadCost = railroadCost;
@@ -103,34 +104,37 @@ public class Board
     public IReadOnlyList<Deck> Decks { get; }
 
     [Key(4)]
-    public int InitialCash { get; }
+    public int Savings { get; }
 
     [Key(5)]
-    public int Bail { get; }
+    public int Salary { get; }
 
     [Key(6)]
-    public double MortgageLoanProportion { get; }
+    public int Bail { get; }
 
     [Key(7)]
-    public double MortgageInterestRate { get; }
+    public double MortgageLoanProportion { get; }
 
     [Key(8)]
-    public int RailroadCost { get; }
+    public double MortgageInterestRate { get; }
 
     [Key(9)]
-    public int UtilityCost { get; }
+    public int RailroadCost { get; }
 
     [Key(10)]
-    public int SpeedLimit { get; }
+    public int UtilityCost { get; }
 
     [Key(11)]
+    public int SpeedLimit { get; }
+
+    [Key(12)]
     public int Sentence { get; }
 
     public Player CreatePlayer(string name)
     {
         return new Player(name)
         {
-            Cash = InitialCash
+            Cash = Savings
         };
     }
 }
