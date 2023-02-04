@@ -17,14 +17,14 @@ public class Deck
         Cards = cards;
     }
 
+    [IgnoreMember]
+    public int Id { get; set; }
+
     [Key(0)]
     public string Name { get; }
 
     [Key(1)]
     public IReadOnlyList<ICard> Cards { get; }
-
-    [IgnoreMember]
-    public int Id { get; set; }
 
     /// <inheritdoc/>
     public override string ToString()

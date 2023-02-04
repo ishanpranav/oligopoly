@@ -1,10 +1,12 @@
 ﻿using System;
-using System.ComponentModel.Design.Serialization;
+using MessagePack;
 
 namespace Oligopoly.Cards;
 
+[MessagePackObject]
 public readonly struct CardId
 {
+    [SerializationConstructor]
     public CardId(int id, int deckId)
     {
         if (id <= 0)
@@ -21,7 +23,10 @@ public readonly struct CardId
         DeckId = deckId;
     }
 
+    [Key(0)]
     public int Id { get; }
+
+    [Key(1)]
     public int DeckId { get; }
 
     /// <inheritdoc/>

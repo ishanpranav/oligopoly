@@ -53,37 +53,34 @@ internal static class Program
             using Stream input = File.OpenRead(gamePath);
 
             game = MessagePackSerializer.Deserialize<Game>(input, msgpackOptions);
-
-            foreach (Player player in game.Players)
-            {
-                player.Agent = agent;
-            }
         }
         else
         {
-            DeckCollection decks = new DeckCollection(board.Decks);
-
-            decks.Shuffle();
-
             game = new Game(new Player[]
             {
-                new Player(1, "Mark") { Agent = agent, Cash = board.InitialCash  },
-                new Player(2, "Jacob") { Agent = agent, Cash = board.InitialCash },
-                new Player(3, "Alexander") { Agent = agent, Cash = board.InitialCash }
-            }, decks);
+                board.CreatePlayer("Mark"),
+                board.CreatePlayer("Jacob"),
+                board.CreatePlayer("Alexander")
+            }, board.Decks);
         }
 
-        GameController controller = new GameController(game);
+        foreach (Player player in game.Players)
+        {
+            player.Agent = agent;
+        }
+
+        GameController controller = new GameController(board, game);
 
         controller.Start();
 
         while (controller.MoveNext())
         {
+            using (Stream gameOutput = File.Create(gamePath))
+            {
+                MessagePackSerializer.Serialize(gameOutput, game, msgpackOptions);
+            }
+
             Console.ReadLine();
         }
-
-        using Stream gameOutput = File.Create(gamePath);
-
-        MessagePackSerializer.Serialize(gameOutput, game, msgpackOptions);
     }
 }

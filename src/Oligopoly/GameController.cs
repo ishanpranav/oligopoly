@@ -7,10 +7,17 @@ namespace Oligopoly;
 
 public class GameController
 {
+    private readonly Board _board;
     private readonly Game _game;
 
-    public GameController(Game game)
+    private bool _proposing;
+
+    public GameController(Board board, Game game)
     {
+        ArgumentNullException.ThrowIfNull(board);
+        ArgumentNullException.ThrowIfNull(game);
+
+        _board = board;
         _game = game;
     }
 
@@ -41,8 +48,8 @@ public class GameController
         }
 
         Console.WriteLine();
-        Console.WriteLine("Start of turn for {0}", current);
-        Console.WriteLine("Cash=${0}, Net Worth=${1}", current.Cash, current.Appraise());
+        Console.WriteLine("Start of turn {0} for {1}", _game.Turn, current);
+        Console.WriteLine("Cash=${0}, Net Worth=${1}", current.Cash, current.Appraise(_board));
 
         if (current.JailTurns > 0)
         {
@@ -51,11 +58,8 @@ public class GameController
 
         OnTurnStarted(new GameEventArgs(_game));
         Propose(current);
-
-        if (current.JailTurns > 0)
-        {
-            GetExitStrategy(current);
-        }
+        Jailbreak(current);
+        Unmortgage(current);
 
         _game.Turn++;
 
@@ -72,33 +76,98 @@ public class GameController
 
     private void Propose(Player player)
     {
-        while (player.Agent.Propose() is not null)
-            ;
-    }
-
-    private void GetExitStrategy(Player player)
-    {
-        switch (player.Agent.GetExitStrategy(_game, player.Id))
+        if (!_proposing)
         {
-            case JailExitStrategy.Bail:
-                Charge(player, amount: 50);
+            _proposing = true;
 
-                player.JailTurns = 0;
+            while (player.Agent.Propose() is not null)
+                ;
 
-                break;
-
-            case JailExitStrategy.Jailbreak:
-                player.PlayJailbreakCard(_game.Decks);
-                break;
-
-            default:
-                break;
+            _proposing = false;
         }
     }
 
-    private void Charge(Player player, int amount)
+    private void Jailbreak(Player player)
     {
+        if (player.JailTurns > 0)
+        {
+            switch (player.Agent.Jailbreak(_game, player.Id))
+            {
+                case JailbreakStrategy.Bail:
+                    Tax(player, amount: 50);
 
+                    player.JailTurns = 0;
+
+                    break;
+
+                case JailbreakStrategy.Card:
+                    if (player.TryPlay(out CardId cardId))
+                    {
+                        player.JailTurns = 0;
+
+                        _game.Discard(cardId);
+                    }
+                    break;
+
+                default:
+
+                    break;
+            }
+        }
+    }
+
+    private void Unmortgage(Player player)
+    {
+        while (true)
+        {
+            int deedId = player.Agent.Unmortgage(_game, player);
+
+            if (deedId is 0)
+            {
+                break;
+            }
+
+            if (player.DeedIds.Contains(deedId))
+            {
+                player.Agent.Warn(Warning.AccessDenied);
+
+                break;
+            }
+
+            int amount = (int)((_board.MortgageLoanProportion + _board.MortgageInterestRate) * _board.Appraise(deedId));
+
+            Tax(player, amount);
+
+            if (player.Cash < 0)
+            {
+                Untax(player, amount);
+            }
+            else
+            {
+                _game.Mortgage(deedId);
+            }
+        }
+    }
+
+    private void Tax(Player player, int amount)
+    {
+        player.Agent.Tax(amount);
+        Propose(player);
+        // Unimprove(player);
+        // Mortgage(player);
+
+        player.Cash -= amount;
+        player.Agent.Taxed(amount);
+
+        Console.WriteLine("{0} pays £{1}", player, amount);
+    }
+
+    private void Untax(Player player, int amount)
+    {
+        player.Cash += amount;
+        player.Agent.Untaxed(amount);
+
+        Console.WriteLine("{0} gets £{1}", player, amount);
     }
 
     private Roll Roll()

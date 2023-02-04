@@ -1,21 +1,75 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using MessagePack;
+using Nito.Collections;
+using Oligopoly.Cards;
 
 namespace Oligopoly;
 
 [MessagePackObject]
-public partial class Game
+public class Game
 {
+    private readonly Deque<int>[] _deques;
+    private readonly HashSet<int> _hashSet;
+
     private int _turn;
-    
-    public Game(IReadOnlyList<Player> players, DeckCollection decks)
+
+    public Game(IReadOnlyList<Player> players, IReadOnlyList<Deck> decks)
     {
-        ArgumentNullException.ThrowIfNull(players);
         ArgumentNullException.ThrowIfNull(decks);
+        ArgumentNullException.ThrowIfNull(players);
+
+        for (int i = 0; i < players.Count; i++)
+        {
+            players[i].Id = i + 1;
+        }
 
         Players = players;
-        Decks = decks;
+        _deques = new Deque<int>[decks.Count];
+        _hashSet = new HashSet<int>();
+
+        for (int i = 0; i < decks.Count; i++)
+        {
+            _deques[i] = new Deque<int>(decks[i].Cards.Select(x => x.Id.Id));
+        }
+
+        foreach (Deque<int> deque in _deques)
+        {
+            int n = deque.Count;
+
+            while (n > 1)
+            {
+                n--;
+
+                int k = Random.Shared.Next(n + 1);
+                int id = deque[k];
+
+                deque[k] = deque[n];
+                deque[n] = id;
+            }
+        }
+    }
+
+    [SerializationConstructor]
+    public Game(IReadOnlyList<Player> players, IReadOnlyList<IEnumerable<int>> deckIds, IEnumerable<int> deedIds)
+    {
+        ArgumentNullException.ThrowIfNull(players);
+        ArgumentNullException.ThrowIfNull(deckIds);
+
+        for (int i = 0; i < players.Count; i++)
+        {
+            players[i].Id = i + 1;
+        }
+
+        Players = players;
+        _deques = new Deque<int>[deckIds.Count];
+        _hashSet = new HashSet<int>(deedIds);
+
+        for (int i = 0; i < deckIds.Count; i++)
+        {
+            _deques[i] = new Deque<int>(deckIds[i]);
+        }
     }
 
     [IgnoreMember]
@@ -23,14 +77,14 @@ public partial class Game
     {
         get
         {
-            int id = Turn % Players.Count;
+            int i = Turn % Players.Count;
 
-            if (id >= Players.Count)
+            if (i >= Players.Count)
             {
                 throw new InvalidOperationException();
             }
 
-            return Players[id];
+            return Players[i];
         }
     }
 
@@ -38,9 +92,24 @@ public partial class Game
     public IReadOnlyList<Player> Players { get; }
 
     [Key(1)]
-    public DeckCollection Decks { get; }
+    public IReadOnlyList<IEnumerable<int>> DeckIds
+    {
+        get
+        {
+            return _deques;
+        }
+    }
 
     [Key(2)]
+    public IEnumerable<int> DeedIds
+    {
+        get
+        {
+            return _hashSet;
+        }
+    }
+
+    [Key(3)]
     public int Turn
     {
         get
@@ -58,11 +127,28 @@ public partial class Game
         }
     }
 
+    public ICard Draw(Deck deck)
+    {
+        return deck.Cards[_deques[deck.Id - 1].RemoveFromFront() - 1];
+    }
+
+    public void Discard(CardId card)
+    {
+        _deques[card.DeckId - 1].AddToBack(card.Id);
+    }
+
+    public void Mortgage(int deedId)
+    {
+        if (deedId <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(deedId)); 
+        }
+
+        _hashSet.Add(deedId);
+    }
+
     //public event EventHandler? TurnEnded;   // Player
     //public event EventHandler? Moved; // Player
-    //public event EventHandler? Charging; // Player, Amount
-    //public event EventHandler? Charged;  // Player, Amount
-    //public event EventHandler? Paid; // Player, Amount
     //public event EventHandler? JailEscapeAcquired;
     //public event EventHandler? AuctionSucceded; // Property, Player (winner), Amount (bid)
     //public event EventHandler? AuctionFailed; // Property

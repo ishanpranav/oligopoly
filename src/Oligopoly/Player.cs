@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Numerics;
 using MessagePack;
 using Oligopoly.Agents;
-using Oligopoly.Assets;
 using Oligopoly.Cards;
 
 namespace Oligopoly;
@@ -14,56 +12,31 @@ public class Player : IAsset
     private Agent? _agent;
 
     private readonly Queue<CardId> _queue;
+    private readonly HashSet<int> _hashSet;
 
-    public Player(int id, string name)
+    public Player(string name)
     {
-        if (id < 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(id));
-        }
-
         ArgumentNullException.ThrowIfNull(name);
 
-        Id = id;
         Name = name;
-        Deeds = Array.Empty<Deed>();
         _queue = new Queue<CardId>();
+        _hashSet = new HashSet<int>();
     }
 
     [SerializationConstructor]
-    public Player(int id, string name, IEnumerable<CardId> cards)
+    public Player(string name, IEnumerable<CardId> cards, IReadOnlySet<int> deeds)
     {
-        if (id < 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(id));
-        }
-
         ArgumentNullException.ThrowIfNull(name);
         ArgumentNullException.ThrowIfNull(cards);
+        ArgumentNullException.ThrowIfNull(deeds);
 
-        Id = id;
         Name = name;
-        Deeds = Array.Empty<Deed>();
         _queue = new Queue<CardId>(cards);
+        _hashSet = new HashSet<int>(deeds);
     }
 
-    [Key(0)]
-    public int Id { get; }
-
-    [Key(1)]
-    public string Name { get; }
-
-    [Key(2)]
-    public int Cash { get; set; }
-
-    [Key(3)]
-    public IEnumerable<CardId> CardIds
-    {
-        get
-        {
-            return _queue;
-        }
-    }
+    [IgnoreMember]
+    public int Id { get; set; }
 
     [IgnoreMember]
     public Agent Agent
@@ -83,30 +56,46 @@ public class Player : IAsset
         }
     }
 
-    [Key(4)]
-    public IReadOnlyCollection<Deed> Deeds { get; }
+    [Key(0)]
+    public string Name { get; }
 
-    [Key(5)]
-    public int JailTurns { get; set; }
-
-    public void PlayJailbreakCard(DeckCollection decks)
+    [Key(1)]
+    public IEnumerable<CardId> CardIds
     {
-        if (_queue.TryDequeue(out CardId cardId))
+        get
         {
-            JailTurns = 0;
-
-            decks.Discard(cardId);
+            return _queue;
         }
     }
 
+    [Key(2)]
+    public IReadOnlySet<int> DeedIds
+    {
+        get
+        {
+            return _hashSet;
+        }
+    }
+
+    [Key(3)]
+    public int Cash { get; set; }
+
+    [Key(4)]
+    public int JailTurns { get; set; }
+
+    public bool TryPlay(out CardId cardId)
+    {
+        return _queue.TryDequeue(out cardId);
+    }
+
     /// <inheritdoc/>
-    public int Appraise()
+    public int Appraise(Board board)
     {
         int result = Cash;
 
-        foreach (Deed deed in Deeds)
+        foreach (int deedId in _hashSet)
         {
-            result += deed.Appraise();
+            result += board.Appraise(deedId);
         }
 
         return result;

@@ -6,7 +6,7 @@ using MessagePack;
 namespace Oligopoly.Squares;
 
 [MessagePackObject]
-public class StreetSquare : ISquare
+public class StreetSquare : IAsset, ISquare
 {
     public StreetSquare(string name, int cost, int groupId, IReadOnlyList<int> rents)
     {
@@ -47,6 +47,12 @@ public class StreetSquare : ISquare
 
     [Key(3)]
     public IReadOnlyList<int> Rents { get; }
+
+    /// <inheritdoc/>
+    public int Appraise(Board board)
+    {
+        return Cost;
+    }
 
     /// <inheritdoc/>
     public override string ToString()

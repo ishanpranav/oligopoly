@@ -1,5 +1,9 @@
 {
   "initialCash": 1500,
+  "mortgageLoanProportion": 0.5,
+  "mortgageInterestRate": 0.1,
+  "railroadCost": 200,
+  "utilityCost": 150,
   "squares": [
     {
       "$type": "none",

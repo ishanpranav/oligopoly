@@ -1,8 +1,8 @@
 ﻿namespace Oligopoly.Agents;
 
-public enum JailExitStrategy
+public enum JailbreakStrategy
 {
     None,
     Bail,
-    Jailbreak
+    Card
 }
