@@ -68,7 +68,10 @@ public class Player : IAsset
     public int Cash { get; set; }
 
     [Key(3)]
-    public int JailTurns { get; set; }
+    public int SquareId { get; set; }
+        
+    [Key(4)]
+    public int Sentence { get; set; }
 
     public bool TryPlay(out CardId cardId)
     {

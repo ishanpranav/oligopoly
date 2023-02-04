@@ -5,6 +5,8 @@
   "mortgageInterestRate": 0.1,
   "railroadCost": 200,
   "utilityCost": 150,
+  "speedLimit": 3,
+  "sentence": 3,
   "squares": [
     {
       "$type": "none",

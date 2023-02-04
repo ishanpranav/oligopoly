@@ -22,8 +22,16 @@
     "railroadCost": {
       "type": "integer",
       "minimum": 1
-    }
+    },
     "utilityCost": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "speedLimit": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "sentence": {
       "type": "integer",
       "minimum": 1
     },

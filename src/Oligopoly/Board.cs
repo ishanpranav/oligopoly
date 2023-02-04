@@ -9,7 +9,7 @@ namespace Oligopoly;
 [MessagePackObject]
 public class Board
 {
-    public Board(IReadOnlyList<ISquare> squares, IReadOnlyList<Group> groups, IReadOnlyList<Deck> decks, int initialCash, int bail, double mortgageLoanProportion, double mortgageInterestRate, int railroadCost, int utilityCost)
+    public Board(IReadOnlyList<ISquare> squares, IReadOnlyList<Group> groups, IReadOnlyList<Deck> decks, int initialCash, int bail, double mortgageLoanProportion, double mortgageInterestRate, int railroadCost, int utilityCost, int speedLimit, int sentence)
     {
         ArgumentNullException.ThrowIfNull(squares);
         ArgumentNullException.ThrowIfNull(groups);
@@ -43,6 +43,16 @@ public class Board
         if (utilityCost <= 0)
         {
             throw new ArgumentOutOfRangeException(nameof(utilityCost));
+        }
+
+        if (speedLimit <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(speedLimit));
+        }
+
+        if (sentence <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(sentence));
         }
 
         foreach (ISquare square in squares)
@@ -79,6 +89,8 @@ public class Board
         MortgageInterestRate = mortgageInterestRate;
         RailroadCost = railroadCost;
         UtilityCost = utilityCost;
+        SpeedLimit = speedLimit;
+        Sentence = sentence;
     }
 
     [Key(0)]
@@ -107,6 +119,12 @@ public class Board
 
     [Key(9)]
     public int UtilityCost { get; }
+
+    [Key(10)]
+    public int SpeedLimit { get; }
+
+    [Key(11)]
+    public int Sentence { get; }
 
     public Player CreatePlayer(string name)
     {

@@ -53,9 +53,9 @@ public class GameController
         Console.WriteLine("Start of turn {0} for {1}", _game.Turn, current);
         Console.WriteLine("Cash=${0}, Net Worth=${1}", current.Cash, current.Appraise(_board, _game));
 
-        if (current.JailTurns > 0)
+        if (current.Sentence > 0)
         {
-            current.JailTurns++;
+            current.Sentence--;
         }
 
         OnTurnStarted(new GameEventArgs(_game));
@@ -63,6 +63,52 @@ public class GameController
         Jailbreak(current);
         Unmortgage(current);
         Improve(current);
+
+        int count = 0;
+        bool isDouble = true;
+
+        while (isDouble)
+        {
+            int first = Random.Shared.Next(1, 7);
+            int second = Random.Shared.Next(1, 7);
+            int result = first + second;
+
+            isDouble = first == second;
+
+            Console.WriteLine("Rolled ({0}, {1})", first, second);
+
+            if (current.Sentence != 0)
+            {
+                if (isDouble)
+                {
+                    isDouble = false;
+                    current.Sentence = 0;
+                }
+                else
+                {
+                    if (current.Sentence > 0)
+                    {
+                        break;
+                    }
+
+                    Tax(current, _board.Bail);
+
+                    current.Sentence = 0;
+                }
+            }
+
+            if (isDouble)
+            {
+                count++;
+
+                if (count == _board.SpeedLimit)
+                {
+                    Police(current);
+
+                    break;
+                }
+            }
+        }
 
         _game.Turn++;
 
@@ -75,6 +121,26 @@ public class GameController
         }
 
         return false;
+    }
+
+    private void Move(Player player)
+    {
+
+    }
+
+    private void Police(Player player)
+    {
+        player.Sentence = _board.Sentence;
+
+        for (int i = 0; i < _board.Squares.Count; i++)
+        {
+            if (_board.Squares[i] is JailSquare)
+            {
+                player.SquareId = i + 1;
+            }
+        }
+
+        Move(player);
     }
 
     private void Propose(Player player)
@@ -97,27 +163,24 @@ public class GameController
 
     private void Jailbreak(Player player)
     {
-        if (player.JailTurns > 0)
+        if (player.Sentence > 0)
         {
             switch (player.Agent.Jailbreak(_game, player.Id))
             {
                 case JailbreakStrategy.Bail:
                     Tax(player, _board.Bail);
 
-                    player.JailTurns = 0;
+                    player.Sentence = 0;
 
                     break;
 
                 case JailbreakStrategy.Card:
                     if (player.TryPlay(out CardId cardId))
                     {
-                        player.JailTurns = 0;
+                        player.Sentence = 0;
 
                         _game.Discard(cardId);
                     }
-                    break;
-
-                default:
 
                     break;
             }
@@ -320,11 +383,6 @@ public class GameController
     private void Warn(Player player, Warning warning)
     {
         Console.WriteLine("WARNING to {0}: {1}", player, warning);
-    }
-
-    private Roll Roll()
-    {
-        return new Roll(Random.Shared.Next(1, 7), Random.Shared.Next(1, 7));
     }
 
     protected virtual void OnStarted(GameEventArgs e)
