@@ -267,46 +267,11 @@
   "decks": [
     {
       "name": "Chance",
-      "cards": [
-        {
-          "$type": "jailEscape",
-          "name": "Get Out of Jail Free"
-        },
-        {
-          "$type": "advance",
-          "name": "Advance to Mayfair",
-          "destination": 40
-        },
-        {
-          "$type": "advance",
-          "name": "Advance to GO",
-          "destination": 1
-        },
-        {
-          "$type": "repair",
-          "name": "You are assessed for street repairs. £40 per house. £115 per hotel",
-          "houseCost": 40,
-          "hotelCost": 115
-        },
-        {
-          "$type": "police",
-          "name": "Go to Jail. Go directly to jail, do not pass Go, do not collect £200"
-        },
-        {
-          "$type": "bonus",
-          "name": "Bank pays you dividend of £50",
-          "amount": 50
-        }
-      ]
+      "cards": []
     },
     {
       "name": "Community Chest",
-      "cards": [
-        {
-          "$type": "jailEscape",
-          "name": "Get Out of Jail Free"
-        }
-      ]
+      "cards": []
     }
   ]
 }

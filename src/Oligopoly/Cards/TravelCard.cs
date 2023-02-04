@@ -4,19 +4,14 @@ using MessagePack;
 namespace Oligopoly.Cards;
 
 [MessagePackObject]
-public class BonusCard : ICard
+public class TravelCard : ICard
 {
-    public BonusCard(string name, int amount)
+    public TravelCard(string name, int distance)
     {
         ArgumentNullException.ThrowIfNull(name);
 
-        if (amount < 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(amount));
-        }
-
         Name = name;
-        Amount = amount;
+        Distance = distance;
     }
 
     /// <inheritdoc/>
@@ -28,7 +23,7 @@ public class BonusCard : ICard
     public string Name { get; }
 
     [Key(1)]
-    public int Amount { get; }
+    public int Distance { get; }
 
     /// <inheritdoc/>
     public override string ToString()

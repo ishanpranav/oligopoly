@@ -114,17 +114,20 @@
                     "jailEscape",
                     "police",
                     "advance",
-                    "bonus",
-                    "repair"
+                    "repair",
+                    "travel",
+                    "tax"
                   ]
                 },
                 "amount": {
-                  "type": "integer",
-                  "minimum": 0
+                  "type": "integer"
                 },
                 "destination": {
                   "type": "integer",
                   "minimum": 1
+                },
+                "distance": {
+                  "type": "integer"
                 },
                 "houseCost": {
                   "type": "integer",
