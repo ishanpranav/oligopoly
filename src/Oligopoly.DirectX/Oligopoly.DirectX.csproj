@@ -26,4 +26,8 @@
     <Folder Include="images\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Oligopoly\Oligopoly.csproj" />
+  </ItemGroup>
+
 </Project>

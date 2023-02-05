@@ -12,7 +12,6 @@ namespace Oligopoly;
 
 public class GameController
 {
-    private int _speed;
     private bool _proposing;
 
     public GameController(Board board, Game game)
@@ -32,6 +31,7 @@ public class GameController
     public Board Board { get; }
     public Game Game { get; }
     public int Dice { get; private set; }
+    public bool Flying { get; private set; }
     public IAuction Auction { get; set; } = new EnglishAuction();
 
     public void Start()
@@ -72,8 +72,19 @@ public class GameController
             Unmortgage(player);
             Improve(player);
 
+            int speed = 0;
+
             while (Roll(player))
-                ;
+            {
+                speed++;
+
+                if (speed == Board.SpeedLimit)
+                {
+                    Police(player);
+
+                    break;
+                }
+            }
 
             Console.WriteLine("{0}: Cash=${1}, Net Worth=${2}, Sentence={3}", player, player.Cash, player.Appraise(Board, Game), player.Sentence);
 
@@ -113,7 +124,7 @@ public class GameController
             {
                 player.Sentence = 0;
 
-                Travel(player, Dice);
+                Jump(player, Dice);
 
                 return false;
             }
@@ -131,7 +142,7 @@ public class GameController
         }
         else
         {
-            Travel(player, Dice);
+            Jump(player, Dice);
 
             return first == second;
         }
@@ -169,21 +180,17 @@ public class GameController
 
     public void Police(Player player)
     {
-        int squareId = 0;
-
         player.Sentence = Board.Sentence;
 
-        for (int i = 0; i < Board.Squares.Count; i++)
+        for (int squareId = 1; squareId <= Board.Squares.Count; squareId++)
         {
-            if (Board.Squares[i] is JailSquare)
+            if (Board.Squares[squareId - 1] is JailSquare)
             {
-                squareId = i + 1;
+                Advance(player, squareId);
 
                 break;
             }
         }
-
-        Advance(player, squareId);
     }
 
     public void Advance(Player player, int squareId)
@@ -192,14 +199,23 @@ public class GameController
 
         ISquare square = Board.Squares[squareId - 1];
 
-        Console.WriteLine("Moved to {0}", square);
+        Console.WriteLine("Advanced to {0}", square);
 
         OnAdvanced(new PlayerEventArgs(player));
 
         square.Advance(player, controller: this);
     }
 
-    public void Travel(Player player, int distance)
+    public void Fly(Player player, int squareId)
+    {
+        Flying = true;
+
+        Advance(player, squareId);
+
+        Flying = false;
+    }
+
+    public void Jump(Player player, int distance)
     {
         if (distance is 0)
         {
@@ -219,8 +235,6 @@ public class GameController
         {
             while (squareId > Board.Squares.Count)
             {
-                Console.WriteLine("{0} gets £{1} for passing the starting square", player, Board.Salary);
-
                 squareId -= Board.Squares.Count;
                 player.Cash += Board.Salary;
             }
@@ -445,14 +459,14 @@ public class GameController
             int maxImprovements = deed.Improvements;
             int minImprovements = deed.Improvements;
 
-            foreach (KeyValuePair<int, Deed> deedId in Game.Deeds)
+            foreach (KeyValuePair<int, Deed> indexedDeed in Game.Deeds)
             {
-                if (deedId.Key == id)
+                if (indexedDeed.Key == id - 1)
                 {
                     continue;
                 }
 
-                if (Board.Squares[deedId.Key] is not StreetSquare other)
+                if (Board.Squares[indexedDeed.Key] is not StreetSquare other)
                 {
                     continue;
                 }
@@ -462,7 +476,7 @@ public class GameController
                     continue;
                 }
 
-                if (deedId.Value.PlayerId != player.Id)
+                if (indexedDeed.Value.PlayerId != player.Id)
                 {
                     Untax(player, group.ImprovementCost);
                     Warn(player, Warning.GroupAccessDenied);
@@ -470,22 +484,22 @@ public class GameController
                     return;
                 }
 
-                if (deedId.Value.Mortgaged)
+                if (indexedDeed.Value.Mortgaged)
                 {
                     Untax(player, group.ImprovementCost);
-                    Warn(player, Warning.GroupAccessDenied);
+                    Warn(player, Warning.GroupMortgaged);
 
                     return;
                 }
 
-                if (deedId.Value.Improvements > maxImprovements)
+                if (indexedDeed.Value.Improvements > maxImprovements)
                 {
-                    maxImprovements = deedId.Value.Improvements;
+                    maxImprovements = indexedDeed.Value.Improvements;
                 }
 
-                if (deedId.Value.Improvements < minImprovements)
+                if (indexedDeed.Value.Improvements < minImprovements)
                 {
-                    minImprovements = deedId.Value.Improvements;
+                    minImprovements = indexedDeed.Value.Improvements;
                 }
             }
 
@@ -529,14 +543,14 @@ public class GameController
             int maxImprovements = deed.Improvements - 1;
             int minImprovements = deed.Improvements - 1;
 
-            foreach (KeyValuePair<int, Deed> deedId in Game.Deeds)
+            foreach (KeyValuePair<int, Deed> indexedDeed in Game.Deeds)
             {
-                if (deedId.Key == id)
+                if (indexedDeed.Key == id - 1)
                 {
                     continue;
                 }
 
-                if (Board.Squares[deedId.Key] is not StreetSquare other)
+                if (Board.Squares[indexedDeed.Key] is not StreetSquare other)
                 {
                     continue;
                 }
@@ -546,14 +560,14 @@ public class GameController
                     continue;
                 }
 
-                if (deedId.Value.Improvements > maxImprovements)
+                if (indexedDeed.Value.Improvements > maxImprovements)
                 {
-                    maxImprovements = deedId.Value.Improvements;
+                    maxImprovements = indexedDeed.Value.Improvements;
                 }
 
-                if (deedId.Value.Improvements < minImprovements)
+                if (indexedDeed.Value.Improvements < minImprovements)
                 {
-                    minImprovements = deedId.Value.Improvements;
+                    minImprovements = indexedDeed.Value.Improvements;
                 }
             }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 using MessagePack;
 
 namespace Oligopoly.Cards;
@@ -14,6 +15,7 @@ public class UngiftCard : ICard
 
     /// <inheritdoc/>
     [IgnoreMember]
+    [JsonIgnore]
     public CardId Id { get; set; }
 
     /// <inheritdoc/>

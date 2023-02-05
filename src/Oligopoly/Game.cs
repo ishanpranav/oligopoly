@@ -63,9 +63,9 @@ public class Game
     {
         Players = players;
 
-        foreach (KeyValuePair<int, Deed> deedId in deeds)
+        foreach (KeyValuePair<int, Deed> indexedDeed in deeds)
         {
-            deedId.Value.SquareId = deedId.Key + 1;
+            indexedDeed.Value.SquareId = indexedDeed.Key + 1;
         }
 
         Deeds = deeds;

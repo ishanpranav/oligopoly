@@ -41,6 +41,22 @@
       "type": "integer",
       "minimum": 1
     },
+    "groupRentMultiplier": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "railroadFares": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      }
+    },
+    "utilityBillMultipliers": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      }
+    },
     "squares": {
       "type": "array",
       "additionalItems": false,
@@ -150,7 +166,7 @@
                     "railroad",
                     "advance",
                     "repair",
-                    "travel",
+                    "jump",
                     "utility",
                     "tax",
                     "untax",

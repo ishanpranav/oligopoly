@@ -1,4 +1,5 @@
-﻿using MessagePack;
+﻿using System.Text.Json.Serialization;
+using MessagePack;
 
 namespace Oligopoly.Cards;
 
@@ -12,6 +13,7 @@ public class JailbreakCard : ICard
 
     /// <inheritdoc/>
     [IgnoreMember]
+    [JsonIgnore]
     public CardId Id { get; set; }
 
     /// <inheritdoc/>

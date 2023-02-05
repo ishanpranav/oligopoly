@@ -14,7 +14,7 @@ public abstract class PropertySquare : IAsset, ISquare
     [Key(0)]
     public string Name { get; }
 
-    public abstract int GetRent(Board board, int dice);
+    public abstract int GetRent(int squareId, Player owner, GameController controller);
 
     /// <inheritdoc/>
     public abstract int Appraise(Board board, Game game);
@@ -44,14 +44,14 @@ public abstract class PropertySquare : IAsset, ISquare
         }
         else
         {
-            int rent = GetRent(controller.Board, controller.Dice);
-            
-            foreach (Player other in controller.Game.Players)
+            foreach (Player owner in controller.Game.Players)
             {
-                if (deed.PlayerId == other.Id)
+                if (deed.PlayerId == owner.Id)
                 {
-                    Console.WriteLine("{0} must pay rent of £{1} to {2}", player, rent, other);
-                    controller.Demand(player, other, rent);
+                    int rent = GetRent(player.SquareId, owner, controller);
+
+                    Console.WriteLine("{0} must pay rent of £{1} to {2}", player, rent, owner);
+                    controller.Demand(player, owner, rent);
 
                     break;
                 }

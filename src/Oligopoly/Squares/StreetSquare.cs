@@ -29,9 +29,52 @@ public class StreetSquare : PropertySquare
     public IReadOnlyList<int> Rents { get; }
 
     /// <inheritdoc/>
-    public override int GetRent(Board board, int dice)
+    public override int GetRent(int squareId, Player owner, GameController controller)
     {
-        return 0;
+        /*if self.number_of_houses == 0:
+            rent = self.rents[0]
+            owner = self.owner
+            if self.property_set in owner.state.owned_unmortgaged_sets:
+                # The player owns the whole set, so the rent is doubled...
+                rent *= 2
+        else:
+            # The street has houses, so we find the rent for the number
+            # of houses there are...
+            rent = self.rents[self.number_of_houses]
+
+        return */
+
+        Deed deed = controller.Game.Deeds[squareId - 1];
+
+        if (deed.Improvements is 0)
+        {
+            foreach (KeyValuePair<int, Deed> indexedDeed in controller.Game.Deeds)
+            {
+                if (indexedDeed.Key == squareId - 1)
+                {
+                    continue;
+                }
+
+                if (controller.Board.Squares[indexedDeed.Key] is not StreetSquare other)
+                {
+                    continue;
+                }
+
+                if (other.GroupId != GroupId)
+                {
+                    continue;
+                }
+
+                if (indexedDeed.Value.PlayerId != owner.Id)
+                {
+                    return Rents[0];
+                }
+            }
+
+            return Rents[0] * controller.Board.GroupRentMultiplier;
+        }
+
+        return Rents[deed.Improvements];
     }
 
     /// <inheritdoc/>

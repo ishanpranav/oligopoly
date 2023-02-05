@@ -1,32 +1,16 @@
 ﻿using MessagePack;
+using Oligopoly.Squares;
 
 namespace Oligopoly.Cards;
 
 [MessagePackObject]
-public class UtilityCard : ICard
+public class UtilityCard : FlyCard
 {
-    public UtilityCard(string name)
+    public UtilityCard(string name) : base(name) { }
+
+    /// <inheritdoc/>
+    protected override bool CanLand(ISquare square)
     {
-        Name = name;
-    }
-
-    /// <inheritdoc/>
-    [IgnoreMember]
-    public CardId Id { get; set; }
-
-    /// <inheritdoc/>
-    [Key(0)]
-    public string Name { get; }
-
-    /// <inheritdoc/>
-    public void Draw(Player player, GameController controller)
-    {
-        controller.Game.Discard(Id);
-    }
-
-    /// <inheritdoc/>
-    public override string ToString()
-    {
-        return Name;
+        return square is UtilitySquare;
     }
 }

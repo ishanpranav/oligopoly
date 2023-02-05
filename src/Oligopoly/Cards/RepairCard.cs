@@ -1,4 +1,5 @@
-﻿using MessagePack;
+﻿using System.Text.Json.Serialization;
+using MessagePack;
 using Oligopoly.Squares;
 
 namespace Oligopoly.Cards;
@@ -15,6 +16,7 @@ public class RepairCard : ICard
 
     /// <inheritdoc/>
     [IgnoreMember]
+    [JsonIgnore]
     public CardId Id { get; set; }
 
     /// <inheritdoc/>

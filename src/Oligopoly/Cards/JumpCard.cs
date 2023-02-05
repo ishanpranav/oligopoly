@@ -1,11 +1,12 @@
-﻿using MessagePack;
+﻿using System.Text.Json.Serialization;
+using MessagePack;
 
 namespace Oligopoly.Cards;
 
 [MessagePackObject]
-public class TravelCard : ICard
+public class JumpCard : ICard
 {
-    public TravelCard(string name, int distance)
+    public JumpCard(string name, int distance)
     {
         Name = name;
         Distance = distance;
@@ -13,6 +14,7 @@ public class TravelCard : ICard
 
     /// <inheritdoc/>
     [IgnoreMember]
+    [JsonIgnore]
     public CardId Id { get; set; }
 
     /// <inheritdoc/>
@@ -25,7 +27,7 @@ public class TravelCard : ICard
     /// <inheritdoc/>
     public void Draw(Player player, GameController controller)
     {
-        controller.Travel(player, Distance);
+        controller.Jump(player, Distance);
         controller.Game.Discard(Id);
     }
 

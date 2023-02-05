@@ -14,6 +14,7 @@ public class AdvanceCard : ICard
 
     /// <inheritdoc/>
     [IgnoreMember]
+    [JsonIgnore]
     public CardId Id { get; set; }
 
     /// <inheritdoc/>
