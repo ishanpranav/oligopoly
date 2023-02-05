@@ -4,6 +4,7 @@
   "bail": 50,
   "mortgageLoanProportion": 0.5,
   "mortgageInterestRate": 0.1,
+  "appreciationRate": -0.5,
   "railroadCost": 200,
   "utilityCost": 150,
   "speedLimit": 3,

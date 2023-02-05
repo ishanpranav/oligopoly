@@ -8,7 +8,7 @@ namespace Oligopoly;
 [MessagePackObject]
 public class Board
 {
-    public Board(IReadOnlyList<ISquare> squares, IReadOnlyList<Group> groups, IReadOnlyList<Deck> decks, int savings, int salary, int bail, double mortgageLoanProportion, double mortgageInterestRate, int railroadCost, int utilityCost, int speedLimit, int sentence)
+    public Board(IReadOnlyList<ISquare> squares, IReadOnlyList<Group> groups, IReadOnlyList<Deck> decks, int savings, int salary, int bail, double mortgageLoanProportion, double mortgageInterestRate, double appreciationRate, int railroadCost, int utilityCost, int speedLimit, int sentence)
     {
         foreach (ISquare square in squares)
         {
@@ -41,8 +41,10 @@ public class Board
         Decks = decks;
         Savings = savings;
         Salary = salary;
+        Bail = bail;
         MortgageLoanProportion = mortgageLoanProportion;
         MortgageInterestRate = mortgageInterestRate;
+        AppreciationRate = appreciationRate;
         RailroadCost = railroadCost;
         UtilityCost = utilityCost;
         SpeedLimit = speedLimit;
@@ -74,15 +76,18 @@ public class Board
     public double MortgageInterestRate { get; }
 
     [Key(9)]
-    public int RailroadCost { get; }
+    public double AppreciationRate { get; }
 
     [Key(10)]
-    public int UtilityCost { get; }
+    public int RailroadCost { get; }
 
     [Key(11)]
-    public int SpeedLimit { get; }
+    public int UtilityCost { get; }
 
     [Key(12)]
+    public int SpeedLimit { get; }
+
+    [Key(13)]
     public int Sentence { get; }
 
     public Player CreatePlayer(string name)

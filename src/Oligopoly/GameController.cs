@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Numerics;
 using Oligopoly.Agents;
 using Oligopoly.Auctions;
@@ -300,14 +301,14 @@ public class GameController
     {
         while (true)
         {
-            int deedId = player.Agent.Mortgage(Game, player);
+            int id = player.Agent.Mortgage(Game, player);
 
-            if (deedId is 0)
+            if (id is 0)
             {
                 break;
             }
 
-            Deed deed = Game.Deeds[deedId - 1];
+            Deed deed = Game.Deeds[id - 1];
 
             if (deed.PlayerId != player.Id)
             {
@@ -340,14 +341,14 @@ public class GameController
     {
         while (true)
         {
-            int deedId = player.Agent.Unmortgage(Game, player);
+            int id = player.Agent.Unmortgage(Game, player);
 
-            if (deedId is 0)
+            if (id is 0)
             {
                 break;
             }
 
-            Deed deed = Game.Deeds[deedId - 1];
+            Deed deed = Game.Deeds[id - 1];
 
             if (deed.PlayerId != player.Id)
             {
@@ -401,9 +402,9 @@ public class GameController
                 break;
             }
 
-            Group? group = streetSquare.Group!;
-
             deed.Improvements++;
+
+            Group? group = streetSquare.Group!;
 
             Tax(player, group.ImprovementCost);
 
@@ -500,7 +501,73 @@ public class GameController
 
     private void Unimprove(Player player)
     {
+        while (true)
+        {
+            int id = player.Agent.Unimprove(Game, player);
 
+            if (id is 0)
+            {
+                break;
+            }
+
+            Deed deed = Game.Deeds[id - 1];
+
+            if (deed.Improvements <= 0)
+            {
+                Warn(player, Warning.Unimproved);
+
+                break;
+            }
+
+            if (Board.Squares[id - 1] is not StreetSquare streetSquare)
+            {
+                Warn(player, Warning.NotImprovable);
+
+                break;
+            }
+
+            int maxImprovements = deed.Improvements - 1;
+            int minImprovements = deed.Improvements - 1;
+
+            foreach (KeyValuePair<int, Deed> deedId in Game.Deeds)
+            {
+                if (deedId.Key == id)
+                {
+                    continue;
+                }
+
+                if (Board.Squares[deedId.Key] is not StreetSquare other)
+                {
+                    continue;
+                }
+
+                if (other.GroupId != streetSquare.GroupId)
+                {
+                    continue;
+                }
+
+                if (deedId.Value.Improvements > maxImprovements)
+                {
+                    maxImprovements = deedId.Value.Improvements;
+                }
+
+                if (deedId.Value.Improvements < minImprovements)
+                {
+                    minImprovements = deedId.Value.Improvements;
+                }
+            }
+
+            if (maxImprovements - minImprovements > 1)
+            {
+                Warn(player, Warning.UnbalancedImprovements);
+
+                return;
+            }
+
+            deed.Improvements--;
+
+            Untax(player, (int)(streetSquare.Group!.ImprovementCost * (1 + Board.AppreciationRate)));
+        }
     }
 
     public void Offer(Player player, Deed deed)

@@ -22,6 +22,9 @@
       "type": "number",
       "minimum": 0
     },
+    "appreciationRate": {
+      "type": "number"
+    },
     "railroadCost": {
       "type": "integer",
       "minimum": 1
