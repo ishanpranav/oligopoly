@@ -2,7 +2,6 @@
 using System.IO;
 using System.Text.Json;
 using MessagePack;
-using Oligopoly.Agents;
 
 namespace Oligopoly;
 

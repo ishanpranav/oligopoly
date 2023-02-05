@@ -5,7 +5,7 @@ public class DealResponse
     private static DealResponse? s_rejectResponse;
 
     private readonly bool _accepted;
-    
+
     public DealResponse(bool accepted)
     {
         _accepted = accepted;

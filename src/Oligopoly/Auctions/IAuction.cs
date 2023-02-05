@@ -1,6 +1,4 @@
-﻿using Oligopoly.Squares;
-
-namespace Oligopoly.Auctions;
+﻿namespace Oligopoly.Auctions;
 
 public interface IAuction
 {

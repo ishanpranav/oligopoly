@@ -1,5 +1,4 @@
-﻿using System;
-using MessagePack;
+﻿using MessagePack;
 using Oligopoly.Squares;
 
 namespace Oligopoly.Cards;
