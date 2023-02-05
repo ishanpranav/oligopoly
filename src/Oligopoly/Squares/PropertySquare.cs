@@ -22,13 +22,13 @@ public abstract class PropertySquare : IAsset, ISquare
     public abstract int Appraise(Board board, Game game);
 
     /// <inheritdoc/>
-    public void Land(GameController controller)
+    public void Land(Player player, GameController controller)
     {
-        Deed deed = controller.Game.Deeds[controller.Game.Current.SquareId - 1];
+        Deed deed = controller.Game.Deeds[player.SquareId - 1];
 
-        if (deed.PlayerId == controller.Game.Current.Id)
+        if (deed.PlayerId == player.Id)
         {
-            Console.WriteLine("{0} already owns this property", controller.Game.Current);
+            Console.WriteLine("{0} already owns this property", player);
 
             return;
         }
@@ -42,15 +42,15 @@ public abstract class PropertySquare : IAsset, ISquare
 
         if (deed.PlayerId is 0)
         {
-            controller.Offer(controller.Game.Current, deed);
+            controller.Offer(player, deed);
         }
         else
         {
             int rent = GetRent(controller.Board, controller.Roll);
             Player owner = controller.Game.Players[deed.PlayerId - 1];
 
-            Console.WriteLine("{0} must pay rent of £{1} to {2}", controller.Game.Current, rent, owner);
-            controller.Transfer(controller.Game.Current, owner, rent);
+            Console.WriteLine("{0} must pay rent of £{1} to {2}", player, rent, owner);
+            controller.Transfer(player, owner, rent);
         }
     }
 }

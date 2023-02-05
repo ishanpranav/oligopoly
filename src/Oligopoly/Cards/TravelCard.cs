@@ -26,7 +26,7 @@ public class TravelCard : ICard
     public int Distance { get; }
 
     /// <inheritdoc/>
-    public void Draw(GameController controller)
+    public void Draw(Player player, GameController controller)
     {
 
     }

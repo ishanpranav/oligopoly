@@ -22,9 +22,9 @@ public class PoliceCard : ICard
     public string Name { get; }
 
     /// <inheritdoc/>
-    public void Draw(GameController controller)
+    public void Draw(Player player, GameController controller)
     {
-        controller.Police(controller.Game.Current);
+        controller.Police(player);
     }
 
     /// <inheritdoc/>

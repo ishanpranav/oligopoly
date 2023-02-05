@@ -6,6 +6,7 @@ public enum Warning
     AccessDenied,
     GroupAccessDenied,
     InsufficientFunds,
+    InsufficientCards,
     NotImprovable,
     MaxImprovementsExceeded,
     UnbalancedImprovements,

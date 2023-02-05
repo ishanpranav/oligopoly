@@ -59,7 +59,7 @@ public class Game
             {
                 n--;
 
-                int k = Random.Shared.Next(n + 1);
+                int k = Random.Next(n + 1);
                 int id = deque[k];
 
                 deque[k] = deque[n];
@@ -97,20 +97,7 @@ public class Game
     }
 
     [IgnoreMember]
-    public Player Current
-    {
-        get
-        {
-            int i = Turn % Players.Count;
-
-            if (i >= Players.Count)
-            {
-                throw new InvalidOperationException();
-            }
-
-            return Players[i];
-        }
-    }
+    public Random Random { get; } = new Random(0);
 
     [Key(0)]
     public IReadOnlyList<Player> Players { get; }

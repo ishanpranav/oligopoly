@@ -44,58 +44,59 @@ public class GameController
 
     public bool MoveNext()
     {
-        Player current = Game.Current;
+        int i = Game.Turn % Game.Players.Count;
+        Player player = Game.Players[i];
 
-        if (current.Cash < 0)
+        if (player.Cash < 0)
         {
             return true;
         }
 
         Console.WriteLine();
-        Console.WriteLine("Start of turn {0} for {1}", Game.Turn, current);
-        Console.WriteLine("Cash=${0}, Net Worth=${1}", current.Cash, current.Appraise(Board, Game));
+        Console.WriteLine("Start of turn {0} for {1}", Game.Turn, player);
+        Console.WriteLine("Cash=${0}, Net Worth=${1}", player.Cash, player.Appraise(Board, Game));
 
-        if (current.Sentence > 0)
+        if (player.Sentence > 0)
         {
-            current.Sentence--;
+            player.Sentence--;
         }
 
         OnTurnStarted(new GameEventArgs(Game));
-        Propose(current);
-        Jailbreak(current);
-        Unmortgage(current);
-        Improve(current);
+        Propose(player);
+        Jailbreak(player);
+        Unmortgage(player);
+        Improve(player);
 
         int count = 0;
         bool isDouble = true;
 
         while (isDouble)
         {
-            int first = Random.Shared.Next(1, 7);
-            int second = Random.Shared.Next(1, 7);
+            int first = Game.Random.Next(1, 7);
+            int second = Game.Random.Next(1, 7);
 
             Roll = first + second;
             isDouble = first == second;
 
             Console.WriteLine("Rolled ({0}, {1})", first, second);
 
-            if (current.Sentence != 0)
+            if (player.Sentence != 0)
             {
                 if (isDouble)
                 {
                     isDouble = false;
-                    current.Sentence = 0;
+                    player.Sentence = 0;
                 }
                 else
                 {
-                    if (current.Sentence > 0)
+                    if (player.Sentence > 0)
                     {
                         break;
                     }
 
-                    Tax(current, Board.Bail);
+                    Tax(player, Board.Bail);
 
-                    current.Sentence = 0;
+                    player.Sentence = 0;
                 }
             }
 
@@ -105,35 +106,38 @@ public class GameController
 
                 if (count == Board.SpeedLimit)
                 {
-                    Police(current);
+                    Police(player);
 
                     break;
                 }
             }
 
-            int squareId = current.SquareId + Roll;
+            int squareId = player.SquareId + Roll;
 
             while (squareId > Board.Squares.Count)
             {
-                Console.WriteLine("{0} gets £{1} for passing the starting square", current, Board.Salary);
+                Console.WriteLine("{0} gets £{1} for passing the starting square", player, Board.Salary);
 
                 squareId -= Board.Squares.Count;
-                current.Cash += Board.Salary;
+                player.Cash += Board.Salary;
             }
 
-            Land(current, squareId);
+            Land(player, squareId);
 
-            if (current.Sentence > 0)
+            if (player.Sentence > 0)
             {
                 break;
             }
         }
 
+        Console.WriteLine("End of turn {0} for {1}", Game.Turn, player);
+        Console.WriteLine("Cash=${0}, Net Worth=${1}", player.Cash, player.Appraise(Board, Game));
+
         Game.Turn++;
 
-        foreach (Player player in Game.Players)
+        foreach (Player other in Game.Players)
         {
-            if (player.Cash >= 0)
+            if (other.Cash >= 0)
             {
                 return true;
             }
@@ -169,7 +173,7 @@ public class GameController
 
         OnLanded(new PlayerEventArgs(player));
 
-        square.Land(controller: this);
+        square.Land(player, controller: this);
     }
 
     public void Police(Player player)
@@ -225,11 +229,15 @@ public class GameController
                     break;
 
                 case JailbreakStrategy.Card:
-                    if (player.TryPlay(out CardId cardId))
+                    if (player.CardIds.TryDequeue(out CardId cardId))
                     {
                         player.Sentence = 0;
 
                         Game.Discard(cardId);
+                    }
+                    else
+                    {
+                        Warn(player, Warning.InsufficientCards);
                     }
 
                     break;
@@ -413,7 +421,7 @@ public class GameController
     {
         ArgumentNullException.ThrowIfNull(player);
 
-        if (amount < 0)
+        if (amount <= 0)
         {
             throw new ArgumentOutOfRangeException(nameof(amount));
         }

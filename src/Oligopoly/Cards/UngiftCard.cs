@@ -4,9 +4,9 @@ using MessagePack;
 namespace Oligopoly.Cards;
 
 [MessagePackObject]
-public class ChairmanCard : ICard
+public class UngiftCard : ICard
 {
-    public ChairmanCard(string name, int amount)
+    public UngiftCard(string name, int amount)
     {
         ArgumentNullException.ThrowIfNull(name);
 
@@ -31,25 +31,18 @@ public class ChairmanCard : ICard
     public int Amount { get; }
 
     /// <inheritdoc/>
-    public void Draw(GameController controller)
+    public void Draw(Player player, GameController controller)
     {
-        int amount = controller.Game.Players.Count * Amount;
+        Console.WriteLine("It is {0}'s birthday", player);
 
-        controller.Tax(controller.Game.Current, amount);
-
-        if (controller.Game.Current.Cash < 0)
+        foreach (Player other in controller.Game.Players)
         {
-            return;
-        }
-
-        foreach (Player player in controller.Game.Players)
-        {
-            if (player.Id == controller.Game.Current.Id)
+            if (other.Id == player.Id)
             {
                 continue;
             }
 
-            controller.Untax(player, amount);
+            controller.Transfer(other, player, Amount);
         }
     }
 

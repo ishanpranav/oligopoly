@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text.Json.Serialization;
 using MessagePack;
+using Oligopoly.Cards;
 
 namespace Oligopoly.Squares;
 
@@ -41,9 +42,13 @@ public class CardSquare : ISquare
     }
 
     /// <inheritdoc/>
-    public void Land(GameController controller)
+    public void Land(Player player, GameController controller)
     {
-        controller.Game.Draw(controller.Board.Decks[DeckId - 1]).Draw(controller);
+        ICard card = controller.Game.Draw(controller.Board.Decks[DeckId - 1]);
+
+        Console.WriteLine("Drew {0}", card);
+
+        card.Draw(player, controller);
     }
 
     /// <inheritdoc/>

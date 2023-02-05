@@ -11,8 +11,9 @@ namespace Oligopoly.Cards;
 [JsonDerivedType(typeof(RepairCard), "repair")]
 [JsonDerivedType(typeof(UtilityCard), "utility")]
 [JsonDerivedType(typeof(TaxCard), "tax")]
-[JsonDerivedType(typeof(ChairmanCard), "chairman")]
+[JsonDerivedType(typeof(UntaxCard), "untax")]
 [JsonDerivedType(typeof(GiftCard), "gift")]
+[JsonDerivedType(typeof(UngiftCard), "ungift")]
 [Union(0, typeof(JailbreakCard))]
 [Union(1, typeof(PoliceCard))]
 [Union(2, typeof(RailroadCard))]
@@ -21,12 +22,13 @@ namespace Oligopoly.Cards;
 [Union(5, typeof(RepairCard))]
 [Union(6, typeof(UtilityCard))]
 [Union(7, typeof(TaxCard))]
-[Union(8, typeof(ChairmanCard))]
+[Union(8, typeof(UntaxCard))]
 [Union(9, typeof(GiftCard))]
+[Union(10, typeof(UngiftCard))]
 public interface ICard
 {
     CardId Id { get; set; }
     string Name { get; }
 
-    void Draw(GameController controller);
+    void Draw(Player player, GameController controller);
 }

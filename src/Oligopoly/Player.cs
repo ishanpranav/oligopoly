@@ -11,24 +11,22 @@ public class Player : IAsset
 {
     private Agent? _agent;
 
-    private readonly Queue<CardId> _queue;
-
     public Player(string name)
     {
         ArgumentNullException.ThrowIfNull(name);
 
         Name = name;
-        _queue = new Queue<CardId>();
+        CardIds = new Queue<CardId>();
     }
 
     [SerializationConstructor]
-    public Player(string name, IEnumerable<CardId> cards)
+    public Player(string name, Queue<CardId> cardIds)
     {
         ArgumentNullException.ThrowIfNull(name);
-        ArgumentNullException.ThrowIfNull(cards);
+        ArgumentNullException.ThrowIfNull(cardIds);
 
         Name = name;
-        _queue = new Queue<CardId>(cards);
+        CardIds = cardIds;
     }
 
     [IgnoreMember]
@@ -56,13 +54,7 @@ public class Player : IAsset
     public string Name { get; }
 
     [Key(1)]
-    public IEnumerable<CardId> CardIds
-    {
-        get
-        {
-            return _queue;
-        }
-    }
+    public Queue<CardId> CardIds { get; }
 
     [Key(2)]
     public int Cash { get; set; }
@@ -72,11 +64,6 @@ public class Player : IAsset
 
     [Key(4)]
     public int Sentence { get; set; }
-
-    public bool TryPlay(out CardId cardId)
-    {
-        return _queue.TryDequeue(out cardId);
-    }
 
     /// <inheritdoc/>
     public int Appraise(Board board, Game game)

@@ -10,6 +10,11 @@ public class TaxCard : ICard
     {
         ArgumentNullException.ThrowIfNull(name);
 
+        if (amount <= 0)
+        {
+            throw new ArgumentNullException(nameof(amount));
+        }
+
         Name = name;
         Amount = amount;
     }
@@ -26,9 +31,9 @@ public class TaxCard : ICard
     public int Amount { get; }
 
     /// <inheritdoc/>
-    public void Draw(GameController controller)
+    public void Draw(Player player, GameController controller)
     {
-
+        controller.Tax(player, Amount);
     }
 
     /// <inheritdoc/>

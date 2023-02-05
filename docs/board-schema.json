@@ -150,8 +150,9 @@
                     "travel",
                     "utility",
                     "tax",
-                    "chairman",
-                    "gift"
+                    "untax",
+                    "gift",
+                    "ungift"
                   ]
                 },
                 "amount": {

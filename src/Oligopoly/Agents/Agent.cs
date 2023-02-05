@@ -95,7 +95,7 @@ public class Agent
 
     public void Untaxed(int amount)
     {
-        Console.WriteLine("AGENT: I earn {0} units of currency.", -amount);
+        Console.WriteLine("AGENT: I earn {0} units of currency.", amount);
     }
 
     public void Warn(Warning warning)

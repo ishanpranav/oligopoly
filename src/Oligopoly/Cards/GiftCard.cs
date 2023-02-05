@@ -3,6 +3,7 @@ using MessagePack;
 
 namespace Oligopoly.Cards;
 
+[MessagePackObject]
 public class GiftCard : ICard
 {
     public GiftCard(string name, int amount)
@@ -30,18 +31,25 @@ public class GiftCard : ICard
     public int Amount { get; }
 
     /// <inheritdoc/>
-    public void Draw(GameController controller)
+    public void Draw(Player player, GameController controller)
     {
-        Console.WriteLine("It is {0}'s birthday", controller.Game.Current);
+        int amount = controller.Game.Players.Count * Amount;
 
-        foreach (Player player in controller.Game.Players)
+        controller.Tax(player, amount);
+
+        if (player.Cash < 0)
         {
-            if (player.Id == controller.Game.Current.Id)
+            return;
+        }
+
+        foreach (Player other in controller.Game.Players)
+        {
+            if (other.Id == player.Id)
             {
                 continue;
             }
 
-            controller.Transfer(player, controller.Game.Current, Amount);
+            controller.Untax(other, amount);
         }
     }
 

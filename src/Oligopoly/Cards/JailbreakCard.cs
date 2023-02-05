@@ -22,7 +22,10 @@ public class JailbreakCard : ICard
     public string Name { get; }
 
     /// <inheritdoc/>
-    public void Draw(GameController controller) { }
+    public void Draw(Player player, GameController controller)
+    {
+        player.CardIds.Enqueue(Id);
+    }
 
     /// <inheritdoc/>
     public override string ToString()

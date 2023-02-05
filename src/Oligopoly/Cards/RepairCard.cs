@@ -1,5 +1,6 @@
 ﻿using System;
 using MessagePack;
+using Oligopoly.Squares;
 
 namespace Oligopoly.Cards;
 
@@ -40,9 +41,36 @@ public class RepairCard : ICard
     public int HotelCost { get; }
 
     /// <inheritdoc/>
-    public void Draw(GameController controller)
+    public void Draw(Player player, GameController controller)
     {
+        int amount = 0;
 
+        foreach (Deed deed in controller.Game.Deeds.Values)
+        {
+            if (deed.PlayerId != player.Id)
+            {
+                continue;
+            }
+
+            if (deed.Improvements is 0)
+            {
+                continue;
+            }
+
+            if (controller.Board.Squares[deed.SquareId - 1] is not StreetSquare streetSquare)
+            {
+                continue;
+            }
+
+            if (deed.Improvements == streetSquare.Rents.Count - 1)
+            {
+                amount += HotelCost;
+            }
+            else
+            {
+                amount += HouseCost;
+            }
+        }
     }
 
     /// <inheritdoc/>

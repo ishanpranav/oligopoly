@@ -33,15 +33,15 @@ public class AdvanceCard : ICard
     public int DestinationId { get; }
 
     /// <inheritdoc/>
-    public void Draw(GameController controller)
+    public void Draw(Player player, GameController controller)
     {
-        if (controller.Game.Current.SquareId > DestinationId)
+        if (player.SquareId > DestinationId)
         {
-            Console.WriteLine("{0} gets £{1} for passing Go", controller.Game.Current, controller.Board.Salary);
-            controller.Untax(controller.Game.Current, controller.Board.Salary);
+            Console.WriteLine("{0} gets £{1} for passing the start square", player, controller.Board.Salary);
+            controller.Untax(player, controller.Board.Salary);
         }
 
-        controller.Land(controller.Game.Current, DestinationId);
+        controller.Land(player, DestinationId);
     }
 
     /// <inheritdoc/>
