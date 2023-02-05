@@ -195,6 +195,8 @@ public class GameController
         }
         else
         {
+            deed.PlayerId = player.Id;
+
             OnAuctionSucceeded(new AuctionEventArgs(propertySquare, bid));
         }
     }
