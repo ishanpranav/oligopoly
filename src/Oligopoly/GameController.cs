@@ -111,17 +111,17 @@ public class GameController
                 }
             }
 
-            current.SquareId += Roll;
+            int squareId = current.SquareId + Roll;
 
-            while (current.SquareId > Board.Squares.Count)
+            while (squareId > Board.Squares.Count)
             {
                 Console.WriteLine("{0} gets £{1} for passing the starting square", current, Board.Salary);
 
-                current.SquareId -= Board.Squares.Count;
+                squareId -= Board.Squares.Count;
                 current.Cash += Board.Salary;
             }
 
-            Land(current);
+            Land(current, squareId);
 
             if (current.Sentence > 0)
             {
@@ -152,9 +152,18 @@ public class GameController
 
     }
 
-    private void Land(Player player)
+    public void Land(Player player, int squareId)
     {
-        ISquare square = Board.Squares[player.SquareId - 1];
+        ArgumentNullException.ThrowIfNull(player);
+
+        if (squareId <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(squareId));
+        }
+
+        player.SquareId = squareId;
+
+        ISquare square = Board.Squares[squareId - 1];
 
         Console.WriteLine("Moved to {0}", square);
 
@@ -165,17 +174,21 @@ public class GameController
 
     private void Police(Player player)
     {
+        int squareId = 0;
+
         player.Sentence = Board.Sentence;
 
         for (int i = 0; i < Board.Squares.Count; i++)
         {
             if (Board.Squares[i] is JailSquare)
             {
-                player.SquareId = i + 1;
+                squareId = i + 1;
+
+                break;
             }
         }
 
-        Land(player);
+        Land(player, squareId);
     }
 
     private void Propose(Player player)
@@ -407,8 +420,15 @@ public class GameController
         Console.WriteLine("{0} pays £{1}", player, amount);
     }
 
-    private void Untax(Player player, int amount)
+    public void Untax(Player player, int amount)
     {
+        ArgumentNullException.ThrowIfNull(player);
+
+        if (amount <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(amount));
+        }
+
         player.Cash += amount;
         player.Agent.Untaxed(amount);
 

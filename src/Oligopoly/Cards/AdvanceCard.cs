@@ -35,7 +35,13 @@ public class AdvanceCard : ICard
     /// <inheritdoc/>
     public void Draw(GameController controller)
     {
+        if (controller.Game.Current.SquareId > DestinationId)
+        {
+            Console.WriteLine("{0} gets £{1} for passing Go", controller.Game.Current, controller.Board.Salary);
+            controller.Untax(controller.Game.Current, controller.Board.Salary);
+        }
 
+        controller.Land(controller.Game.Current, DestinationId);
     }
 
     /// <inheritdoc/>
