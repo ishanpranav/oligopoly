@@ -2,5 +2,5 @@
 
 public interface IAuction
 {
-    void Auction(GameController controller, IAsset asset);
+    Bid Perform(GameController controller, IAsset asset);
 }

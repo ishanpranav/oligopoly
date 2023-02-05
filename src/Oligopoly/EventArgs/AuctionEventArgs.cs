@@ -1,4 +1,5 @@
 ﻿using MessagePack;
+using Oligopoly.Auctions;
 
 namespace Oligopoly.EventArgs;
 
@@ -10,19 +11,15 @@ public class AuctionEventArgs
         Asset = asset;
     }
 
-    public AuctionEventArgs(IAsset asset, Player player, int amount)
+    public AuctionEventArgs(IAsset asset, Bid bid)
     {
         Asset = asset;
-        Player = player;
-        Amount = amount;
+        Bid = bid;
     }
 
     [Key(0)]
     public IAsset Asset { get; }
 
     [Key(1)]
-    public Player? Player { get; }
-
-    [Key(2)]
-    public int Amount { get; }
+    public Bid Bid { get; }
 }

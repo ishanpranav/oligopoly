@@ -1,4 +1,5 @@
 ﻿using System;
+using Oligopoly.EventArgs;
 
 namespace Oligopoly.Agents;
 
@@ -8,6 +9,37 @@ internal sealed class Agent : IAgent
     public void Connect(GameController controller)
     {
         Console.WriteLine(">> Connect");
+
+        controller.Advanced += OnControllerAdvanced;
+        controller.AuctionFailed += OnControllerAuctionFailed;
+        controller.AuctionSucceeded += OnControllerAuctionSucceeded;
+        controller.Started += OnControllerStarted;
+        controller.TurnStarted += OnControllerTurnStarted;
+    }
+
+    private void OnControllerAuctionFailed(object? sender, AuctionEventArgs e)
+    {
+        Console.WriteLine("== Auction Failed {0}", e.Asset);
+    }
+
+    private void OnControllerAuctionSucceeded(object? sender, AuctionEventArgs e)
+    {
+        Console.WriteLine("== Auction Succeeded {0}, {1}", e.Asset, e.Bid);
+    }
+
+    private void OnControllerAdvanced(object? sender, PlayerEventArgs e)
+    {
+        Console.WriteLine("== Advanced {0}", e.Player);
+    }
+
+    private void OnControllerStarted(object? sender, GameEventArgs e)
+    {
+        Console.WriteLine("== Started");
+    }
+
+    private void OnControllerTurnStarted(object? sender, GameEventArgs e)
+    {
+        Console.WriteLine("== Turn Started");
     }
 
     /// <inheritdoc/>

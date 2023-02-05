@@ -22,6 +22,8 @@ public class GameController
     public event EventHandler<GameEventArgs>? Started;
     public event EventHandler<GameEventArgs>? TurnStarted;
     public event EventHandler<PlayerEventArgs>? Advanced;
+    public event EventHandler<AuctionEventArgs>? AuctionSucceeded;
+    public event EventHandler<AuctionEventArgs>? AuctionFailed;
 
     public Board Board { get; }
     public Game Game { get; }
@@ -185,7 +187,16 @@ public class GameController
             }
         }
 
-        Auction.Auction(controller: this, propertySquare);
+        Bid bid = Auction.Perform(controller: this, propertySquare);
+
+        if (bid.IsEmpty)
+        {
+            OnAuctionFailed(new AuctionEventArgs(propertySquare));
+        }
+        else
+        {
+            OnAuctionSucceeded(new AuctionEventArgs(propertySquare, bid));
+        }
     }
 
     public bool Request(Player sender, Player recipient, int amount)
@@ -539,6 +550,19 @@ public class GameController
         }
     }
 
-    //        deed.PlayerId = bidder.Id;
+    protected virtual void OnAuctionSucceeded(AuctionEventArgs e)
+    {
+        if (AuctionSucceeded is not null)
+        {
+            AuctionSucceeded(sender: this, e);
+        }
+    }
 
+    protected virtual void OnAuctionFailed(AuctionEventArgs e)
+    {
+        if (AuctionFailed is not null)
+        {
+            AuctionFailed(sender: this, e);
+        }
+    }
 }

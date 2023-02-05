@@ -116,15 +116,4 @@ public class Game
     {
         _deques[card.DeckId - 1].AddToBack(card.Id);
     }
-
-    //public event EventHandler? TurnEnded;   // Player
-    //public event EventHandler? Moved; // Player
-    //public event EventHandler? JailEscapeAcquired;
-    //public event EventHandler? AuctionSucceded; // Property, Player (winner), Amount (bid)
-    //public event EventHandler? AuctionFailed; // Property
-    //public event EventHandler? DealResponded; // Outcome
-    //public event EventHandler? DealClosed; // Deal
-    //public event EventHandler? Bankrupted; // Player
-    //public event EventHandler? Ended; // Player (winner), Amount (rounds)
-    //public event EventHandler? Error; // Message
 }
