@@ -112,17 +112,7 @@ public class GameController
                 }
             }
 
-            int squareId = player.SquareId + Roll;
-
-            while (squareId > Board.Squares.Count)
-            {
-                Console.WriteLine("{0} gets £{1} for passing the starting square", player, Board.Salary);
-
-                squareId -= Board.Squares.Count;
-                player.Cash += Board.Salary;
-            }
-
-            Land(player, squareId);
+            Travel(player, Roll);
 
             if (player.Sentence > 0)
             {
@@ -146,6 +136,38 @@ public class GameController
         return false;
     }
 
+    public void Travel(Player player, int distance)
+    {
+        ArgumentNullException.ThrowIfNull(player);
+
+        if (distance is 0)
+        {
+            return;
+        }
+
+        int squareId = player.SquareId + distance;
+        
+        if (distance < 0)
+        {
+            while (squareId < 1)
+            {
+                squareId += Board.Squares.Count;
+            }
+        }
+        else
+        {
+            while (squareId > Board.Squares.Count)
+            {
+                Console.WriteLine("{0} gets £{1} for passing the starting square", player, Board.Salary);
+
+                squareId -= Board.Squares.Count;
+                player.Cash += Board.Salary;
+            }
+        }
+
+        Advance(player, squareId);
+    }
+
     public void Offer(Player player, Deed deed)
     {
 
@@ -156,7 +178,7 @@ public class GameController
 
     }
 
-    public void Land(Player player, int squareId)
+    public void Advance(Player player, int squareId)
     {
         ArgumentNullException.ThrowIfNull(player);
 
@@ -173,7 +195,7 @@ public class GameController
 
         OnLanded(new PlayerEventArgs(player));
 
-        square.Land(player, controller: this);
+        square.Advance(player, controller: this);
     }
 
     public void Police(Player player)
@@ -194,7 +216,7 @@ public class GameController
             }
         }
 
-        Land(player, squareId);
+        Advance(player, squareId);
     }
 
     private void Propose(Player player)

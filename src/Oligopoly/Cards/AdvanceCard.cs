@@ -17,7 +17,7 @@ public class AdvanceCard : ICard
         }
 
         Name = name;
-        DestinationId = destinationId;
+        SquareId = destinationId;
     }
 
     /// <inheritdoc/>
@@ -28,19 +28,19 @@ public class AdvanceCard : ICard
     [Key(0)]
     public string Name { get; }
 
-    [JsonPropertyName("destination")]
+    [JsonPropertyName("square")]
     [Key(1)]
-    public int DestinationId { get; }
+    public int SquareId { get; }
 
     /// <inheritdoc/>
     public void Draw(Player player, GameController controller)
     {
-        if (player.SquareId > DestinationId)
+        if (player.SquareId > SquareId)
         {
             controller.Untax(player, controller.Board.Salary);
         }
 
-        controller.Land(player, DestinationId);
+        controller.Advance(player, SquareId);
     }
 
     /// <inheritdoc/>

@@ -158,7 +158,7 @@
                 "amount": {
                   "type": "integer"
                 },
-                "destination": {
+                "square": {
                   "type": "integer",
                   "minimum": 1
                 },

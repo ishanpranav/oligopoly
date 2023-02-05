@@ -28,7 +28,7 @@ public class TravelCard : ICard
     /// <inheritdoc/>
     public void Draw(Player player, GameController controller)
     {
-
+        controller.Travel(player, Distance);
     }
 
     /// <inheritdoc/>

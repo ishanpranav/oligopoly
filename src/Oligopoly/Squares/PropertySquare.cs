@@ -22,7 +22,7 @@ public abstract class PropertySquare : IAsset, ISquare
     public abstract int Appraise(Board board, Game game);
 
     /// <inheritdoc/>
-    public void Land(Player player, GameController controller)
+    public void Advance(Player player, GameController controller)
     {
         Deed deed = controller.Game.Deeds[player.SquareId - 1];
 

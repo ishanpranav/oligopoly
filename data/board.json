@@ -279,21 +279,21 @@
         {
           "$type": "advance",
           "name": "Advance to GO (Collect £200)",
-          "destination": 1
+          "square": 1
         },
         {
           "$type": "advance",
           "name": "Advance to Trafalgar Square. If you pass GO, collect £200",
-          "destination": 22
+          "square": 22
         },
         {
           "$type": "advance",
           "name": "Advance to Mayfair",
-          "destination": 40
+          "square": 40
         },
         {
           "$type": "advance",
-          "destination": 12,
+          "square": 12,
           "name": "Advance to Pall Mall. If you pass GO, collect £200"
         },
         {
@@ -340,7 +340,7 @@
         {
           "$type": "advance",
           "name": "Take a trip to Kings Cross Station. If you pass GO, collect £200",
-          "destination": 6
+          "square": 6
         },
         {
           "$type": "ungift",
@@ -360,7 +360,7 @@
         {
           "$type": "advance",
           "name": "Advance to GO (Collect £200)",
-          "destination": 1
+          "square": 1
         },
         {
           "$type": "untax",

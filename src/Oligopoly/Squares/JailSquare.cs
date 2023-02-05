@@ -18,7 +18,7 @@ public class JailSquare : ISquare
     public string Name { get; }
 
     /// <inheritdoc/>
-    public void Land(Player player, GameController controller) { }
+    public void Advance(Player player, GameController controller) { }
 
     /// <inheritdoc/>
     public override string ToString()
