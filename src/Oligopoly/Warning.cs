@@ -7,10 +7,11 @@ public enum Warning
     GroupAccessDenied,
     InsufficientFunds,
     InsufficientCards,
-    NotImprovable,
-    MaxImprovementsExceeded,
-    UnbalancedImprovements,
     Mortgaged,
     GroupMortgaged,
-    Unmortgaged
+    Unmortgaged,
+    Improved,
+    Unimproved,
+    NotImprovable,
+    UnbalancedImprovements
 }

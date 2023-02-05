@@ -298,7 +298,42 @@ public class GameController
 
     private void Mortgage(Player player)
     {
+        while (true)
+        {
+            int deedId = player.Agent.Mortgage(Game, player);
 
+            if (deedId is 0)
+            {
+                break;
+            }
+
+            Deed deed = Game.Deeds[deedId - 1];
+
+            if (deed.PlayerId != player.Id)
+            {
+                Warn(player, Warning.AccessDenied);
+
+                break;
+            }
+
+            if (deed.Mortgaged)
+            {
+                Warn(player, Warning.Mortgaged);
+
+                break;
+            }
+
+            if (deed.Improvements > 0)
+            {
+                Warn(player, Warning.Improved);
+
+                break;
+            }
+
+            Untax(player, (int)(deed.Appraise(Board, Game) * Board.MortgageLoanProportion));
+
+            deed.Mortgaged = true;
+        }
     }
 
     private void Unmortgage(Player player)
@@ -340,7 +375,7 @@ public class GameController
                 break;
             }
 
-            Game.Deeds[deedId - 1].Mortgaged = true;
+            deed.Mortgaged = true;
         }
     }
 
@@ -385,7 +420,7 @@ public class GameController
             if (deed.Improvements >= streetSquare.Rents.Count - 1)
             {
                 Untax(player, group.ImprovementCost);
-                Warn(player, Warning.MaxImprovementsExceeded);
+                Warn(player, Warning.Improved);
 
                 break;
             }
