@@ -9,7 +9,7 @@ public class RailroadSquare : PropertySquare
     public RailroadSquare(string name) : base(name) { }
 
     /// <inheritdoc/>
-    public override int GetRent(Board board, int roll)
+    public override int GetRent(Board board, int dice)
     {
         return 0;
     }

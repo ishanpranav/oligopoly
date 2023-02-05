@@ -9,6 +9,7 @@ namespace Oligopoly;
 
 public class GameController
 {
+    private int _speed;
     private bool _proposing;
 
     public GameController(Board board, Game game)
@@ -26,7 +27,7 @@ public class GameController
 
     public Board Board { get; }
     public Game Game { get; }
-    public int Roll { get; private set; }
+    public int Dice { get; private set; }
 
     public void Start()
     {
@@ -67,58 +68,8 @@ public class GameController
         Unmortgage(player);
         Improve(player);
 
-        int count = 0;
-        bool isDouble = true;
-
-        while (isDouble)
-        {
-            int first = Game.Random.Next(1, 7);
-            int second = Game.Random.Next(1, 7);
-
-            Roll = first + second;
-            isDouble = first == second;
-
-            Console.WriteLine("Rolled ({0}, {1})", first, second);
-
-            if (player.Sentence != 0)
-            {
-                if (isDouble)
-                {
-                    isDouble = false;
-                    player.Sentence = 0;
-                }
-                else
-                {
-                    if (player.Sentence > 0)
-                    {
-                        break;
-                    }
-
-                    Tax(player, Board.Bail);
-
-                    player.Sentence = 0;
-                }
-            }
-
-            if (isDouble)
-            {
-                count++;
-
-                if (count == Board.SpeedLimit)
-                {
-                    Police(player);
-
-                    break;
-                }
-            }
-
-            Travel(player, Roll);
-
-            if (player.Sentence > 0)
-            {
-                break;
-            }
-        }
+        while (Roll(player))
+            ;
 
         Console.WriteLine("End of turn {0} for {1}", Game.Turn, player);
         Console.WriteLine("Cash=${0}, Net Worth=${1}", player.Cash, player.Appraise(Board, Game));
@@ -136,6 +87,53 @@ public class GameController
         return false;
     }
 
+    private bool Roll(Player player)
+    {
+        int first = Game.Random.Next(1, 7);
+        int second = Game.Random.Next(1, 7);
+        bool result = first == second;
+
+        Dice = first + second;
+
+        Console.WriteLine("Rolled ({0}, {1})", first, second);
+
+        if (player.Sentence is not 0)
+        {
+            if (result)
+            {
+                result = false;
+                player.Sentence = 0;
+            }
+            else
+            {
+                if (player.Sentence > 0)
+                {
+                    return false;
+                }
+
+                Tax(player, Board.Bail);
+
+                player.Sentence = 0;
+            }
+        }
+
+        if (result)
+        {
+            _speed++;
+
+            if (_speed == Board.SpeedLimit)
+            {
+                Police(player);
+
+                return false;
+            }
+        }
+
+        Travel(player, Dice);
+
+        return result && player.Sentence is 0;
+    }
+
     public void Travel(Player player, int distance)
     {
         ArgumentNullException.ThrowIfNull(player);
@@ -146,7 +144,7 @@ public class GameController
         }
 
         int squareId = player.SquareId + distance;
-        
+
         if (distance < 0)
         {
             while (squareId < 1)
@@ -173,9 +171,44 @@ public class GameController
 
     }
 
-    public void Transfer(Player sender, Player recipient, int amount)
+    public bool Request(Player sender, Player recipient, int amount)
     {
+        ArgumentNullException.ThrowIfNull(recipient);
 
+        Tax(sender, amount);
+
+        if (sender.Cash < 0)
+        {
+            Untax(sender, amount);
+
+            return false;
+        }
+        else
+        {
+            Untax(recipient, amount);
+
+            return true;
+        }
+    }
+
+    public bool Demand(Player sender, Player recipient, int amount)
+    {
+        ArgumentNullException.ThrowIfNull(recipient);
+        
+        int actualAmount = Tax(sender, amount);
+
+        if (sender.Cash < 0)
+        {
+            Untax(recipient, actualAmount);
+
+            return false;
+        }
+        else
+        {
+            Untax(recipient, amount);
+
+            return true;
+        }
     }
 
     public void Advance(Player player, int squareId)
@@ -439,7 +472,7 @@ public class GameController
         }
     }
 
-    public void Tax(Player player, int amount)
+    public int Tax(Player player, int amount)
     {
         ArgumentNullException.ThrowIfNull(player);
 
@@ -453,10 +486,21 @@ public class GameController
         Unimprove(player);
         Mortgage(player);
 
+        int cash = player.Cash;
+
         player.Cash -= amount;
         player.Agent.Taxed(amount);
 
         Console.WriteLine("{0} pays £{1}", player, amount);
+
+        if (player.Cash >= 0)
+        {
+            return amount;
+        }
+        else
+        {
+            return cash;
+        }
     }
 
     public void Untax(Player player, int amount)

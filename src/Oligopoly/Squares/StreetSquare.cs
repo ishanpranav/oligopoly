@@ -42,7 +42,7 @@ public class StreetSquare : PropertySquare
     public IReadOnlyList<int> Rents { get; }
 
     /// <inheritdoc/>
-    public override int GetRent(Board board, int roll)
+    public override int GetRent(Board board, int dice)
     {
         return 0;
     }

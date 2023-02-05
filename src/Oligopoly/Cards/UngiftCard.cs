@@ -42,7 +42,7 @@ public class UngiftCard : ICard
                 continue;
             }
 
-            controller.Transfer(other, player, Amount);
+            controller.Demand(other, player, Amount);
         }
     }
 
