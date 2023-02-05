@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using MessagePack;
 using Nito.Collections;
 using Oligopoly.Cards;
@@ -13,13 +14,8 @@ public class Game
 {
     private readonly Deque<int>[] _deques;
 
-    public Game(IReadOnlyList<Player> players, IReadOnlyList<ISquare> squares, IReadOnlyList<Deck> decks)
+    public Game(ICollection<Player> players, IReadOnlyList<ISquare> squares, IReadOnlyList<Deck> decks)
     {
-        for (int i = 0; i < players.Count; i++)
-        {
-            players[i].Id = i + 1;
-        }
-
         Players = players;
 
         Dictionary<int, Deed> dictionary = new Dictionary<int, Deed>();
@@ -63,21 +59,16 @@ public class Game
     }
 
     [SerializationConstructor]
-    public Game(IReadOnlyList<Player> players, IReadOnlyDictionary<int, Deed> deedIds, IReadOnlyList<IEnumerable<int>> deckIds)
+    public Game(ICollection<Player> players, IReadOnlyDictionary<int, Deed> deeds, IReadOnlyList<IEnumerable<int>> deckIds)
     {
-        for (int i = 0; i < players.Count; i++)
-        {
-            players[i].Id = i + 1;
-        }
-
         Players = players;
 
-        foreach (KeyValuePair<int, Deed> deedId in deedIds)
+        foreach (KeyValuePair<int, Deed> deedId in deeds)
         {
             deedId.Value.SquareId = deedId.Key + 1;
         }
 
-        Deeds = deedIds;
+        Deeds = deeds;
         _deques = new Deque<int>[deckIds.Count];
 
         for (int i = 0; i < deckIds.Count; i++)
@@ -87,10 +78,11 @@ public class Game
     }
 
     [IgnoreMember]
+    [JsonIgnore]
     public Random Random { get; } = new Random(0);
 
     [Key(0)]
-    public IReadOnlyList<Player> Players { get; }
+    public ICollection<Player> Players { get; }
 
     [Key(1)]
     public IReadOnlyDictionary<int, Deed> Deeds { get; }
@@ -103,9 +95,6 @@ public class Game
             return _deques;
         }
     }
-
-    [Key(3)]
-    public int Turn { get; set; }
 
     public ICard Draw(Deck deck)
     {

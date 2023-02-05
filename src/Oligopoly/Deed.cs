@@ -1,4 +1,5 @@
-﻿using MessagePack;
+﻿using System.Text.Json.Serialization;
+using MessagePack;
 
 namespace Oligopoly;
 
@@ -6,6 +7,7 @@ namespace Oligopoly;
 public class Deed : IAsset
 {
     [IgnoreMember]
+    [JsonIgnore]
     public int SquareId { get; set; }
 
     [Key(0)]

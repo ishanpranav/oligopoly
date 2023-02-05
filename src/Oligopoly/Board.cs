@@ -8,7 +8,7 @@ namespace Oligopoly;
 [MessagePackObject]
 public class Board
 {
-    public Board(IReadOnlyList<ISquare> squares, IReadOnlyList<Group> groups, IReadOnlyList<Deck> decks, int savings, int salary, int bail, double mortgageLoanProportion, double mortgageInterestRate, double appreciationRate, int railroadCost, int utilityCost, int speedLimit, int sentence)
+    public Board(IReadOnlyList<ISquare> squares, IReadOnlyList<Group> groups, IReadOnlyList<Deck> decks, int savings, int salary, int bail, double mortgageLoanProportion, double mortgageInterestRate, double unimprovementRate, int railroadCost, int utilityCost, int speedLimit, int sentence)
     {
         foreach (ISquare square in squares)
         {
@@ -32,7 +32,7 @@ public class Board
             {
                 ICard card = deck.Cards[j];
 
-                card.Id = new CardId(deck.Id, j + 1);
+                card.Id = new CardId(j + 1, deck.Id);
             }
         }
 
@@ -44,7 +44,7 @@ public class Board
         Bail = bail;
         MortgageLoanProportion = mortgageLoanProportion;
         MortgageInterestRate = mortgageInterestRate;
-        AppreciationRate = appreciationRate;
+        UnimprovementRate = unimprovementRate;
         RailroadCost = railroadCost;
         UtilityCost = utilityCost;
         SpeedLimit = speedLimit;
@@ -76,7 +76,7 @@ public class Board
     public double MortgageInterestRate { get; }
 
     [Key(9)]
-    public double AppreciationRate { get; }
+    public double UnimprovementRate { get; }
 
     [Key(10)]
     public int RailroadCost { get; }
@@ -89,12 +89,4 @@ public class Board
 
     [Key(13)]
     public int Sentence { get; }
-
-    public Player CreatePlayer(string name)
-    {
-        return new Player(name)
-        {
-            Cash = Savings
-        };
-    }
 }

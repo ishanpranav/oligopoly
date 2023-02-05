@@ -22,7 +22,7 @@
       "type": "number",
       "minimum": 0
     },
-    "appreciationRate": {
+    "unimprovementRate": {
       "type": "number"
     },
     "railroadCost": {

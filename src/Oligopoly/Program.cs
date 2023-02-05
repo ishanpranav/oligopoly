@@ -1,78 +1,97 @@
 ﻿using System;
 using System.IO;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using MessagePack;
 
 namespace Oligopoly;
 
 internal static class Program
 {
+    private static int s_id;
+    private static Board? s_board;
+
     private static void Main()
     {
-        const string jsonPath = "../../../../../data/board.json";
-        const string msgpackPath = "../../../../../data/board.msgpack";
-        const string gamePath = "../../../../../data/game.msgpack";
+        const string boardSourcePath = "../../../../../data/board.json";
+        const string boardPath = "../../../../../data/board.bin";
+        const string gamePath = "../../../../../data/game.bin";
+        const string gameSourcePath = "../../../../../data/game.json";
 
         Game game;
-        Board board;
-        MessagePackSerializerOptions msgpackOptions = MessagePackSerializerOptions.Standard
+        MessagePackSerializerOptions messagePackOptions = MessagePackSerializerOptions.Standard
             .WithCompression(MessagePackCompression.Lz4Block)
             .WithSecurity(MessagePackSecurity.UntrustedData);
-
-        if (File.Exists(msgpackPath))
+        JsonSerializerOptions jsonOptions = new JsonSerializerOptions()
         {
-            using Stream input = File.OpenRead(msgpackPath);
+            AllowTrailingCommas = true,
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault,
+            PropertyNameCaseInsensitive = true,
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            ReadCommentHandling = JsonCommentHandling.Skip,
+            WriteIndented = false
+        };
 
-            board = MessagePackSerializer.Deserialize<Board>(input, msgpackOptions);
+        if (File.Exists(boardPath))
+        {
+            using Stream input = File.OpenRead(boardPath);
+
+            s_board = MessagePackSerializer.Deserialize<Board>(input, messagePackOptions);
         }
         else
         {
-            JsonSerializerOptions options = new JsonSerializerOptions()
-            {
-                AllowTrailingCommas = true,
-                PropertyNameCaseInsensitive = true,
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                ReadCommentHandling = JsonCommentHandling.Skip,
-                WriteIndented = true
-            };
+            using Stream input = File.OpenRead(boardSourcePath);
 
-            using Stream input = File.OpenRead(jsonPath);
+            s_board = JsonSerializer.Deserialize<Board>(input, jsonOptions)!;
 
-            board = JsonSerializer.Deserialize<Board>(input, options)!;
+            using Stream output = File.Create(boardPath);
 
-            using Stream output = File.Create(msgpackPath);
-
-            MessagePackSerializer.Serialize(output, board, msgpackOptions);
+            MessagePackSerializer.Serialize(output, s_board, messagePackOptions);
         }
 
         if (File.Exists(gamePath))
         {
             using Stream input = File.OpenRead(gamePath);
 
-            game = MessagePackSerializer.Deserialize<Game>(input, msgpackOptions);
+            game = MessagePackSerializer.Deserialize<Game>(input, messagePackOptions);
         }
         else
         {
             game = new Game(new Player[]
             {
-                board.CreatePlayer("Mark"),
-                board.CreatePlayer("Jacob"),
-                board.CreatePlayer("Alexander")
-            }, board.Squares, board.Decks);
+                CreatePlayer("Mark"),
+                CreatePlayer("Jacob"),
+                CreatePlayer("Alexander")
+            }, s_board.Squares, s_board.Decks);
         }
 
-        GameController controller = new GameController(board, game);
+        GameController controller = new GameController(s_board, game);
 
         controller.Start();
 
         while (controller.MoveNext())
         {
-            using (Stream gameOutput = File.Create(gamePath))
+            using (Stream output = File.Create(gamePath))
             {
-                MessagePackSerializer.Serialize(gameOutput, game, msgpackOptions);
+                MessagePackSerializer.Serialize(output, game, messagePackOptions);
+            }
+
+            using (Stream output = File.Create(gameSourcePath))
+            {
+                JsonSerializer.Serialize(output, game, jsonOptions);
             }
 
             Console.ReadLine();
         }
+    }
+
+    private static Player CreatePlayer(string name)
+    {
+        s_id++;
+
+        return new Player(s_id, name)
+        {
+            Cash = s_board!.Savings
+        };
     }
 }

@@ -22,7 +22,9 @@ public class GameController
     }
 
     public event EventHandler<GameEventArgs>? Started;
+    public event EventHandler<GameEventArgs>? Ended;
     public event EventHandler<GameEventArgs>? TurnStarted;
+    public event EventHandler<GameEventArgs>? TurnEnded;
     public event EventHandler<PlayerEventArgs>? Advanced;
     public event EventHandler<AuctionEventArgs>? AuctionSucceeded;
     public event EventHandler<AuctionEventArgs>? AuctionFailed;
@@ -48,93 +50,91 @@ public class GameController
 
     public bool MoveNext()
     {
-        int i = Game.Turn % Game.Players.Count;
-        Player player = Game.Players[i];
+        Player[] players = new Player[Game.Players.Count];
 
-        if (player.Cash < 0)
+        Game.Players.CopyTo(players, arrayIndex: 0);
+
+        foreach (Player player in players)
         {
-            return true;
-        }
-
-        Console.WriteLine();
-        Console.WriteLine("Start of turn {0} for {1}", Game.Turn, player);
-        Console.WriteLine("Cash=${0}, Net Worth=${1}", player.Cash, player.Appraise(Board, Game));
-
-        if (player.Sentence > 0)
-        {
-            player.Sentence--;
-        }
-
-        OnTurnStarted(new GameEventArgs(Game));
-        Propose(player);
-        Jailbreak(player);
-        Unmortgage(player);
-        Improve(player);
-
-        while (Roll(player))
-            ;
-
-        Console.WriteLine("End of turn {0} for {1}", Game.Turn, player);
-        Console.WriteLine("Cash=${0}, Net Worth=${1}", player.Cash, player.Appraise(Board, Game));
-
-        Game.Turn++;
-
-        foreach (Player other in Game.Players)
-        {
-            if (other.Cash >= 0)
+            if (player.Cash < 0)
             {
-                return true;
+                continue;
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("{0}: Cash=${1}, Net Worth=${2}, Sentence={3}", player, player.Cash, player.Appraise(Board, Game), player.Sentence);
+
+            GameEventArgs e = new GameEventArgs(Game);
+
+            OnTurnStarted(e);
+            Propose(player);
+            Jailbreak(player);
+            Unmortgage(player);
+            Improve(player);
+
+            while (Roll(player))
+                ;
+
+            Console.WriteLine("{0}: Cash=${1}, Net Worth=${2}, Sentence={3}", player, player.Cash, player.Appraise(Board, Game), player.Sentence);
+
+            OnTurnEnded(e);
+
+            foreach (Player other in players)
+            {
+                if (other.Cash < 0)
+                {
+                    Game.Players.Remove(other);
+                }
+            }
+
+            if (Game.Players.Count < 2)
+            {
+                OnEnded(e);
+
+                return false;
             }
         }
 
-        return false;
+        return true;
     }
 
     private bool Roll(Player player)
     {
         int first = Game.Random.Next(1, 7);
         int second = Game.Random.Next(1, 7);
-        bool result = first == second;
 
         Dice = first + second;
 
         Console.WriteLine("Rolled ({0}, {1})", first, second);
 
-        if (player.Sentence is not 0)
+        if (player.Sentence > 0)
         {
-            if (result)
+            if (first == second)
             {
-                result = false;
                 player.Sentence = 0;
+
+                Travel(player, Dice);
+
+                return false;
             }
             else
             {
-                if (player.Sentence > 0)
+                player.Sentence--;
+
+                if (player.Sentence is 0)
                 {
-                    return false;
+                    Tax(player, Board.Bail);
                 }
-
-                Tax(player, Board.Bail);
-
-                player.Sentence = 0;
-            }
-        }
-
-        if (result)
-        {
-            _speed++;
-
-            if (_speed == Board.SpeedLimit)
-            {
-                Police(player);
 
                 return false;
             }
         }
+        else
+        {
+            Travel(player, Dice);
 
-        Travel(player, Dice);
-
-        return result && player.Sentence is 0;
+            return first == second;
+        }
     }
 
     private void Jailbreak(Player player)
@@ -566,7 +566,7 @@ public class GameController
 
             deed.Improvements--;
 
-            Untax(player, (int)(streetSquare.Group!.ImprovementCost * (1 + Board.AppreciationRate)));
+            Untax(player, (int)(streetSquare.Group!.ImprovementCost * (1 - Board.UnimprovementRate)));
         }
     }
 
@@ -646,11 +646,27 @@ public class GameController
         }
     }
 
+    protected virtual void OnEnded(GameEventArgs e)
+    {
+        if (Ended is not null)
+        {
+            Ended(sender: this, e);
+        }
+    }
+
     protected virtual void OnTurnStarted(GameEventArgs e)
     {
         if (TurnStarted is not null)
         {
             TurnStarted(sender: this, e);
+        }
+    }
+
+    protected virtual void OnTurnEnded(GameEventArgs e)
+    {
+        if (TurnEnded is not null)
+        {
+            TurnEnded(sender: this, e);
         }
     }
 

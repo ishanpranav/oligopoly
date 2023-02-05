@@ -45,10 +45,17 @@ public abstract class PropertySquare : IAsset, ISquare
         else
         {
             int rent = GetRent(controller.Board, controller.Dice);
-            Player owner = controller.Game.Players[deed.PlayerId - 1];
+            
+            foreach (Player other in controller.Game.Players)
+            {
+                if (deed.PlayerId == other.Id)
+                {
+                    Console.WriteLine("{0} must pay rent of £{1} to {2}", player, rent, other);
+                    controller.Demand(player, other, rent);
 
-            Console.WriteLine("{0} must pay rent of £{1} to {2}", player, rent, owner);
-            controller.Demand(player, owner, rent);
+                    break;
+                }
+            }
         }
     }
 }

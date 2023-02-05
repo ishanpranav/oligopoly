@@ -21,7 +21,7 @@ public class RailroadCard : ICard
     /// <inheritdoc/>
     public void Draw(Player player, GameController controller)
     {
-
+        controller.Game.Discard(Id);
     }
 
     /// <inheritdoc/>

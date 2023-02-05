@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using MessagePack;
 using Oligopoly.Agents;
 using Oligopoly.Cards;
@@ -8,38 +9,36 @@ namespace Oligopoly;
 [MessagePackObject]
 public class Player : IAsset
 {
-    public Player(string name)
-    {
-        Name = name;
-        CardIds = new Queue<CardId>();
-    }
+    public Player(int id, string name) : this(id, name, new Queue<CardId>()) { }
 
     [SerializationConstructor]
-    public Player(string name, Queue<CardId> cardIds)
+    public Player(int id, string name, Queue<CardId> cardIds)
     {
+        Id = id;
         Name = name;
         CardIds = cardIds;
     }
 
     [IgnoreMember]
-    public int Id { get; set; }
-
-    [IgnoreMember]
+    [JsonIgnore]
     public IAgent Agent { get; set; } = new Agent();
 
     [Key(0)]
-    public string Name { get; }
+    public int Id { get; }
 
     [Key(1)]
-    public Queue<CardId> CardIds { get; }
+    public string Name { get; }
 
     [Key(2)]
-    public int Cash { get; set; }
+    public Queue<CardId> CardIds { get; }
 
     [Key(3)]
-    public int SquareId { get; set; } = 1;
+    public int Cash { get; set; }
 
     [Key(4)]
+    public int SquareId { get; set; } = 1;
+
+    [Key(5)]
     public int Sentence { get; set; }
 
     /// <inheritdoc/>

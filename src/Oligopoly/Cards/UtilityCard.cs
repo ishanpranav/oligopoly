@@ -21,7 +21,7 @@ public class UtilityCard : ICard
     /// <inheritdoc/>
     public void Draw(Player player, GameController controller)
     {
-
+        controller.Game.Discard(Id);
     }
 
     /// <inheritdoc/>

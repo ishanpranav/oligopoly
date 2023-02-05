@@ -26,6 +26,7 @@ public class TaxCard : ICard
     public void Draw(Player player, GameController controller)
     {
         controller.Tax(player, Amount);
+        controller.Game.Discard(Id);
     }
 
     /// <inheritdoc/>

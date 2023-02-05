@@ -43,6 +43,8 @@ public class GiftCard : ICard
 
             controller.Untax(other, amount);
         }
+
+        controller.Game.Discard(Id);
     }
 
     /// <inheritdoc/>

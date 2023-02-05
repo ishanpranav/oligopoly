@@ -22,6 +22,7 @@ public class PoliceCard : ICard
     public void Draw(Player player, GameController controller)
     {
         controller.Police(player);
+        controller.Game.Discard(Id);
     }
 
     /// <inheritdoc/>

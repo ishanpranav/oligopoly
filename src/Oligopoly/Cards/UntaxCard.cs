@@ -26,6 +26,7 @@ public class UntaxCard : ICard
     public void Draw(Player player, GameController controller)
     {
         controller.Untax(player, Amount);
+        controller.Game.Discard(Id);
     }
 
     /// <inheritdoc/>

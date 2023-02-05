@@ -26,6 +26,7 @@ public class TravelCard : ICard
     public void Draw(Player player, GameController controller)
     {
         controller.Travel(player, Distance);
+        controller.Game.Discard(Id);
     }
 
     /// <inheritdoc/>

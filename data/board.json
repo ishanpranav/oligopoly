@@ -4,7 +4,7 @@
   "bail": 50,
   "mortgageLoanProportion": 0.5,
   "mortgageInterestRate": 0.1,
-  "appreciationRate": -0.5,
+  "unimprovementRate": 0.5,
   "railroadCost": 200,
   "utilityCost": 150,
   "speedLimit": 3,
@@ -285,7 +285,7 @@
         {
           "$type": "advance",
           "name": "Advance to Trafalgar Square. If you pass GO, collect £200",
-          "square": 22
+          "square": 21
         },
         {
           "$type": "advance",
@@ -344,7 +344,7 @@
           "square": 6
         },
         {
-          "$type": "ungift",
+          "$type": "gift",
           "name": "You have been elected Chairman of the Board. Pay each player £50",
           "amount": 50
         },
@@ -397,7 +397,7 @@
           "amount": 20
         },
         {
-          "$type": "gift",
+          "$type": "ungift",
           "name": "It is your birthday. Collect £10 from every player",
           "amount": 10
         },

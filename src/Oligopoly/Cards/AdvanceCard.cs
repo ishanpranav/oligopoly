@@ -6,10 +6,10 @@ namespace Oligopoly.Cards;
 [MessagePackObject]
 public class AdvanceCard : ICard
 {
-    public AdvanceCard(string name, int destinationId)
+    public AdvanceCard(string name, int squareId)
     {
         Name = name;
-        SquareId = destinationId;
+        SquareId = squareId;
     }
 
     /// <inheritdoc/>
@@ -33,6 +33,7 @@ public class AdvanceCard : ICard
         }
 
         controller.Advance(player, SquareId);
+        controller.Game.Discard(Id);
     }
 
     /// <inheritdoc/>

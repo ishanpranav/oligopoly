@@ -60,6 +60,7 @@ public class RepairCard : ICard
         }
 
         controller.Tax(player, cost);
+        controller.Game.Discard(Id);
     }
 
     /// <inheritdoc/>
