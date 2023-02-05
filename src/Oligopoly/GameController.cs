@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using Oligopoly.Agents;
 using Oligopoly.Auctions;
 using Oligopoly.Cards;
@@ -135,139 +136,6 @@ public class GameController
         return result && player.Sentence is 0;
     }
 
-    public void Travel(Player player, int distance)
-    {
-        if (distance is 0)
-        {
-            return;
-        }
-
-        int squareId = player.SquareId + distance;
-
-        if (distance < 0)
-        {
-            while (squareId < 1)
-            {
-                squareId += Board.Squares.Count;
-            }
-        }
-        else
-        {
-            while (squareId > Board.Squares.Count)
-            {
-                Console.WriteLine("{0} gets £{1} for passing the starting square", player, Board.Salary);
-
-                squareId -= Board.Squares.Count;
-                player.Cash += Board.Salary;
-            }
-        }
-
-        Advance(player, squareId);
-    }
-
-    public void Offer(Player player, Deed deed)
-    {
-        PropertySquare propertySquare = (PropertySquare)Board.Squares[deed.SquareId - 1];
-
-        if (player.Agent.Offer(Game, player, propertySquare))
-        {
-            int cost = propertySquare.Appraise(Board, Game);
-
-            Tax(player, cost);
-
-            if (player.Cash < 0)
-            {
-                Untax(player, cost);
-            }
-            else
-            {
-                deed.PlayerId = player.Id;
-
-                return;
-            }
-        }
-
-        Bid bid = Auction.Perform(controller: this, propertySquare);
-
-        if (bid.IsEmpty)
-        {
-            OnAuctionFailed(new AuctionEventArgs(propertySquare));
-        }
-        else
-        {
-            deed.PlayerId = player.Id;
-
-            OnAuctionSucceeded(new AuctionEventArgs(propertySquare, bid));
-        }
-    }
-
-    public bool Request(Player sender, Player recipient, int amount)
-    {
-        Tax(sender, amount);
-
-        if (sender.Cash < 0)
-        {
-            Untax(sender, amount);
-
-            return false;
-        }
-        else
-        {
-            Untax(recipient, amount);
-
-            return true;
-        }
-    }
-
-    public bool Demand(Player sender, Player recipient, int amount)
-    {
-        int actualAmount = Tax(sender, amount);
-
-        if (sender.Cash < 0)
-        {
-            Untax(recipient, actualAmount);
-
-            return false;
-        }
-        else
-        {
-            Untax(recipient, amount);
-
-            return true;
-        }
-    }
-
-    public void Advance(Player player, int squareId)
-    {
-        player.SquareId = squareId;
-
-        ISquare square = Board.Squares[squareId - 1];
-
-        Console.WriteLine("Moved to {0}", square);
-
-        OnAdvanced(new PlayerEventArgs(player));
-
-        square.Advance(player, controller: this);
-    }
-
-    private void Propose(Player player)
-    {
-        if (!_proposing)
-        {
-            _proposing = true;
-
-            while (_proposing)
-            {
-                DealProposal? proposal = player.Agent.Propose(Game, player);
-
-                if (proposal is null)
-                {
-                    _proposing = false;
-                }
-            }
-        }
-    }
-
     private void Jailbreak(Player player)
     {
         if (player.Sentence > 0)
@@ -315,6 +183,165 @@ public class GameController
         }
 
         Advance(player, squareId);
+    }
+
+    public void Advance(Player player, int squareId)
+    {
+        player.SquareId = squareId;
+
+        ISquare square = Board.Squares[squareId - 1];
+
+        Console.WriteLine("Moved to {0}", square);
+
+        OnAdvanced(new PlayerEventArgs(player));
+
+        square.Advance(player, controller: this);
+    }
+
+    public void Travel(Player player, int distance)
+    {
+        if (distance is 0)
+        {
+            return;
+        }
+
+        int squareId = player.SquareId + distance;
+
+        if (distance < 0)
+        {
+            while (squareId < 1)
+            {
+                squareId += Board.Squares.Count;
+            }
+        }
+        else
+        {
+            while (squareId > Board.Squares.Count)
+            {
+                Console.WriteLine("{0} gets £{1} for passing the starting square", player, Board.Salary);
+
+                squareId -= Board.Squares.Count;
+                player.Cash += Board.Salary;
+            }
+        }
+
+        Advance(player, squareId);
+    }
+
+    public bool Request(Player sender, Player recipient, int amount)
+    {
+        Tax(sender, amount);
+
+        if (sender.Cash < 0)
+        {
+            Untax(sender, amount);
+
+            return false;
+        }
+        else
+        {
+            Untax(recipient, amount);
+
+            return true;
+        }
+    }
+
+    public bool Demand(Player sender, Player recipient, int amount)
+    {
+        int actualAmount = Tax(sender, amount);
+
+        if (sender.Cash < 0)
+        {
+            Untax(recipient, actualAmount);
+
+            return false;
+        }
+        else
+        {
+            Untax(recipient, amount);
+
+            return true;
+        }
+    }
+
+    public int Tax(Player player, int amount)
+    {
+        player.Agent.Tax(Game, player, amount);
+        Propose(player);
+        Unimprove(player);
+        Mortgage(player);
+
+        int cash = player.Cash;
+
+        player.Cash -= amount;
+        player.Agent.Taxed(Game, player, amount);
+
+        Console.WriteLine("{0} pays £{1}", player, amount);
+
+        if (player.Cash >= 0)
+        {
+            return amount;
+        }
+        else
+        {
+            return cash;
+        }
+    }
+
+    public void Untax(Player player, int amount)
+    {
+        player.Cash += amount;
+        player.Agent.Untaxed(Game, player, amount);
+
+        Console.WriteLine("{0} gets £{1}", player, amount);
+    }
+
+    private void Mortgage(Player player)
+    {
+
+    }
+
+    private void Unmortgage(Player player)
+    {
+        while (true)
+        {
+            int deedId = player.Agent.Unmortgage(Game, player);
+
+            if (deedId is 0)
+            {
+                break;
+            }
+
+            Deed deed = Game.Deeds[deedId - 1];
+
+            if (deed.PlayerId != player.Id)
+            {
+                Warn(player, Warning.AccessDenied);
+
+                break;
+            }
+
+            if (!deed.Mortgaged)
+            {
+                Warn(player, Warning.Unmortgaged);
+
+                break;
+            }
+
+            int amount = (int)((Board.MortgageLoanProportion + Board.MortgageInterestRate) * deed.Appraise(Board, Game));
+
+            Tax(player, amount);
+
+            if (player.Cash < 0)
+            {
+                Untax(player, amount);
+                Warn(player, Warning.InsufficientFunds);
+
+                break;
+            }
+
+            Game.Deeds[deedId - 1].Mortgaged = true;
+        }
     }
 
     private void Improve(Player player)
@@ -441,84 +468,65 @@ public class GameController
 
     }
 
-    private void Mortgage(Player player)
+    public void Offer(Player player, Deed deed)
     {
+        PropertySquare propertySquare = (PropertySquare)Board.Squares[deed.SquareId - 1];
 
-    }
-
-    private void Unmortgage(Player player)
-    {
-        while (true)
+        if (player.Agent.Offer(Game, player, propertySquare))
         {
-            int deedId = player.Agent.Unmortgage(Game, player);
+            int cost = propertySquare.Appraise(Board, Game);
 
-            if (deedId is 0)
-            {
-                break;
-            }
-
-            Deed deed = Game.Deeds[deedId - 1];
-
-            if (deed.PlayerId != player.Id)
-            {
-                Warn(player, Warning.AccessDenied);
-
-                break;
-            }
-
-            if (!deed.Mortgaged)
-            {
-                Warn(player, Warning.Unmortgaged);
-
-                break;
-            }
-
-            int amount = (int)((Board.MortgageLoanProportion + Board.MortgageInterestRate) * deed.Appraise(Board, Game));
-
-            Tax(player, amount);
+            Tax(player, cost);
 
             if (player.Cash < 0)
             {
-                Untax(player, amount);
-                Warn(player, Warning.InsufficientFunds);
-
-                break;
+                Untax(player, cost);
             }
+            else
+            {
+                deed.PlayerId = player.Id;
 
-            Game.Deeds[deedId - 1].Mortgaged = true;
+                return;
+            }
         }
+
+        Bid(deed, propertySquare);
     }
 
-    public int Tax(Player player, int amount)
+    public void Bid(Deed deed, IAsset asset)
     {
-        player.Agent.Tax(Game, player, amount);
-        Propose(player);
-        Unimprove(player);
-        Mortgage(player);
+        Bid bid = Auction.Perform(controller: this, asset);
 
-        int cash = player.Cash;
-
-        player.Cash -= amount;
-        player.Agent.Taxed(Game, player, amount);
-
-        Console.WriteLine("{0} pays £{1}", player, amount);
-
-        if (player.Cash >= 0)
+        if (bid.IsEmpty)
         {
-            return amount;
+            OnAuctionFailed(new AuctionEventArgs(asset));
         }
         else
         {
-            return cash;
+            Tax(bid.Bidder, bid.Amount);
+
+            deed.PlayerId = bid.Bidder.Id;
+
+            OnAuctionSucceeded(new AuctionEventArgs(asset, bid));
         }
     }
 
-    public void Untax(Player player, int amount)
+    private void Propose(Player player)
     {
-        player.Cash += amount;
-        player.Agent.Untaxed(Game, player, amount);
+        if (!_proposing)
+        {
+            _proposing = true;
 
-        Console.WriteLine("{0} gets £{1}", player, amount);
+            while (_proposing)
+            {
+                DealProposal? proposal = player.Agent.Propose(Game, player);
+
+                if (proposal is null)
+                {
+                    _proposing = false;
+                }
+            }
+        }
     }
 
     private void Warn(Player player, Warning warning)

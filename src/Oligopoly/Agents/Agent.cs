@@ -10,11 +10,21 @@ internal sealed class Agent : IAgent
     {
         Console.WriteLine(">> Connect");
 
+        controller.Started += OnControllerStarted;
+        controller.TurnStarted += OnControllerTurnStarted;
         controller.Advanced += OnControllerAdvanced;
         controller.AuctionFailed += OnControllerAuctionFailed;
         controller.AuctionSucceeded += OnControllerAuctionSucceeded;
-        controller.Started += OnControllerStarted;
-        controller.TurnStarted += OnControllerTurnStarted;
+    }
+
+    private void OnControllerStarted(object? sender, GameEventArgs e)
+    {
+        Console.WriteLine("== Started");
+    }
+
+    private void OnControllerTurnStarted(object? sender, GameEventArgs e)
+    {
+        Console.WriteLine("== Turn Started");
     }
 
     private void OnControllerAuctionFailed(object? sender, AuctionEventArgs e)
@@ -30,16 +40,6 @@ internal sealed class Agent : IAgent
     private void OnControllerAdvanced(object? sender, PlayerEventArgs e)
     {
         Console.WriteLine("== Advanced {0}", e.Player);
-    }
-
-    private void OnControllerStarted(object? sender, GameEventArgs e)
-    {
-        Console.WriteLine("== Started");
-    }
-
-    private void OnControllerTurnStarted(object? sender, GameEventArgs e)
-    {
-        Console.WriteLine("== Turn Started");
     }
 
     /// <inheritdoc/>
@@ -101,9 +101,9 @@ internal sealed class Agent : IAgent
     }
 
     /// <inheritdoc/>
-    public int Bid(Game game, Player player, IAsset asset)
+    public int Bid(Game game, Player player, IAsset asset, int bid)
     {
-        Console.WriteLine("<< Bid [0] for {0}", asset);
+        Console.WriteLine("<< Bid [0] against {1} for {0}", asset, bid);
 
         return 0;
     }

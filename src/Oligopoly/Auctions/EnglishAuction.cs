@@ -10,36 +10,29 @@ public class EnglishAuction : IAuction
     {
         Console.WriteLine("{0} offered for auction", asset);
 
-        int bid = 0;
+        int previousBid = 1;
         Queue<Player> bidders = new Queue<Player>(controller.Game.Players);
 
         while (bidders.Count > 0)
         {
             Player bidder = bidders.Dequeue();
-            bid = bidder.Agent.Bid(controller.Game, bidder, asset);
+            int bid = bidder.Agent.Bid(controller.Game, bidder, asset, previousBid);
 
             Console.WriteLine("{0} bids {1}", bidder, bid);
 
-            if (bid <= 0)
+            if (bid < previousBid || bid > bidder.Cash)
             {
                 continue;
             }
 
-            controller.Tax(bidder, bid);
+            previousBid = bid;
 
-            if (bidder.Cash < 0)
-            {
-                controller.Untax(bidder, bid);
+            bidders.Enqueue(bidder);
 
-                continue;
-            }
-            
-            if (bidders.Count is 0)
+            if (bidders.Count is 1)
             {
                 return new Bid(bidders.Dequeue(), bid);
             }
-
-            bidders.Enqueue(bidder);
         }
 
         return Bid.Empty;
