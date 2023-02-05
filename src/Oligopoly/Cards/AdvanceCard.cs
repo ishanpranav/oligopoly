@@ -37,7 +37,6 @@ public class AdvanceCard : ICard
     {
         if (player.SquareId > DestinationId)
         {
-            Console.WriteLine("{0} gets £{1} for passing the start square", player, controller.Board.Salary);
             controller.Untax(player, controller.Board.Salary);
         }
 

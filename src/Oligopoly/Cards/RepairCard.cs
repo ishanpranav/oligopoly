@@ -43,7 +43,7 @@ public class RepairCard : ICard
     /// <inheritdoc/>
     public void Draw(Player player, GameController controller)
     {
-        int amount = 0;
+        int cost = 0;
 
         foreach (Deed deed in controller.Game.Deeds.Values)
         {
@@ -64,13 +64,15 @@ public class RepairCard : ICard
 
             if (deed.Improvements == streetSquare.Rents.Count - 1)
             {
-                amount += HotelCost;
+                cost += HotelCost;
             }
             else
             {
-                amount += HouseCost;
+                cost += HouseCost;
             }
         }
+
+        controller.Tax(player, cost);
     }
 
     /// <inheritdoc/>
