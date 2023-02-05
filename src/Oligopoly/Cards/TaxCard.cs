@@ -8,13 +8,6 @@ public class TaxCard : ICard
 {
     public TaxCard(string name, int amount)
     {
-        ArgumentNullException.ThrowIfNull(name);
-
-        if (amount <= 0)
-        {
-            throw new ArgumentNullException(nameof(amount));
-        }
-
         Name = name;
         Amount = amount;
     }

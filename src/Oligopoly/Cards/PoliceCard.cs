@@ -8,8 +8,6 @@ public class PoliceCard : ICard
 {
     public PoliceCard(string name)
     {
-        ArgumentNullException.ThrowIfNull(name);
-
         Name = name;
     }
 

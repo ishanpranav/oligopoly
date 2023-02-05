@@ -11,50 +11,6 @@ public class Board
 {
     public Board(IReadOnlyList<ISquare> squares, IReadOnlyList<Group> groups, IReadOnlyList<Deck> decks, int savings, int salary, int bail, double mortgageLoanProportion, double mortgageInterestRate, int railroadCost, int utilityCost, int speedLimit, int sentence)
     {
-        ArgumentNullException.ThrowIfNull(squares);
-        ArgumentNullException.ThrowIfNull(groups);
-        ArgumentNullException.ThrowIfNull(decks);
-
-        if (savings < 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(savings));
-        }
-
-        if (bail < 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(bail));
-        }
-
-        if (mortgageLoanProportion < 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(mortgageLoanProportion));
-        }
-
-        if (mortgageInterestRate < 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(mortgageInterestRate));
-        }
-
-        if (railroadCost <= 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(railroadCost));
-        }
-
-        if (utilityCost <= 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(utilityCost));
-        }
-
-        if (speedLimit <= 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(speedLimit));
-        }
-
-        if (sentence <= 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(sentence));
-        }
-
         foreach (ISquare square in squares)
         {
             if (square is CardSquare cardSquare)

@@ -9,12 +9,8 @@ namespace Oligopoly;
 [MessagePackObject]
 public class Player : IAsset
 {
-    private Agent? _agent;
-
     public Player(string name)
     {
-        ArgumentNullException.ThrowIfNull(name);
-
         Name = name;
         CardIds = new Queue<CardId>();
     }
@@ -22,9 +18,6 @@ public class Player : IAsset
     [SerializationConstructor]
     public Player(string name, Queue<CardId> cardIds)
     {
-        ArgumentNullException.ThrowIfNull(name);
-        ArgumentNullException.ThrowIfNull(cardIds);
-
         Name = name;
         CardIds = cardIds;
     }
@@ -33,22 +26,7 @@ public class Player : IAsset
     public int Id { get; set; }
 
     [IgnoreMember]
-    public Agent Agent
-    {
-        get
-        {
-            if (_agent is null)
-            {
-                return Agent.Default;
-            }
-
-            return _agent;
-        }
-        set
-        {
-            _agent = value;
-        }
-    }
+    public IAgent Agent { get; set; } = new Agent();
 
     [Key(0)]
     public string Name { get; }

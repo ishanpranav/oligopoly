@@ -9,13 +9,6 @@ public class AdvanceCard : ICard
 {
     public AdvanceCard(string name, int destinationId)
     {
-        ArgumentNullException.ThrowIfNull(name);
-
-        if (destinationId <= 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(destinationId));
-        }
-
         Name = name;
         SquareId = destinationId;
     }

@@ -10,11 +10,6 @@ public class CardSquare : ISquare
 {
     public CardSquare(int deckId)
     {
-        if (deckId <= 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(deckId));
-        }
-
         DeckId = deckId;
     }
 

@@ -8,8 +8,6 @@ public class UtilityCard : ICard
 {
     public UtilityCard(string name)
     {
-        ArgumentNullException.ThrowIfNull(name);
-
         Name = name;
     }
 

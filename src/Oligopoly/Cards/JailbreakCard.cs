@@ -8,8 +8,6 @@ public class JailbreakCard : ICard
 {
     public JailbreakCard(string name)
     {
-        ArgumentNullException.ThrowIfNull(name);
-
         Name = name;
     }
 

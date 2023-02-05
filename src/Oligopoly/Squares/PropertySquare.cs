@@ -7,8 +7,6 @@ public abstract class PropertySquare : IAsset, ISquare
 {
     protected PropertySquare(string name)
     {
-        ArgumentNullException.ThrowIfNull(name);
-
         Name = name;
     }
 

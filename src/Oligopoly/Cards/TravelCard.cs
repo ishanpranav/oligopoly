@@ -8,8 +8,6 @@ public class TravelCard : ICard
 {
     public TravelCard(string name, int distance)
     {
-        ArgumentNullException.ThrowIfNull(name);
-
         Name = name;
         Distance = distance;
     }

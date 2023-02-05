@@ -9,18 +9,6 @@ public class RepairCard : ICard
 {
     public RepairCard(string name, int houseCost, int hotelCost)
     {
-        ArgumentNullException.ThrowIfNull(name);
-
-        if (houseCost < 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(houseCost));
-        }
-
-        if (hotelCost < 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(hotelCost));
-        }
-
         Name = name;
         HouseCost = houseCost;
         HotelCost = hotelCost;

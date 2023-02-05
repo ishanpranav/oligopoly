@@ -8,13 +8,6 @@ public class Group
 {
     public Group(string name, int improvementCost)
     {
-        ArgumentNullException.ThrowIfNull(name);
-
-        if (improvementCost <= 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(improvementCost));
-        }
-
         Name = name;
         ImprovementCost = improvementCost;
     }

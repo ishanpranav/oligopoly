@@ -46,8 +46,6 @@ internal static class Program
             MessagePackSerializer.Serialize(output, board, msgpackOptions);
         }
 
-        Agent agent = Agent.Default;
-
         if (File.Exists(gamePath))
         {
             using Stream input = File.OpenRead(gamePath);
@@ -62,11 +60,6 @@ internal static class Program
                 board.CreatePlayer("Jacob"),
                 board.CreatePlayer("Alexander")
             }, board.Squares, board.Decks);
-        }
-
-        foreach (Player player in game.Players)
-        {
-            player.Agent = agent;
         }
 
         GameController controller = new GameController(board, game);

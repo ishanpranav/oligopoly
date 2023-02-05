@@ -8,8 +8,6 @@ public class PoliceSquare : ISquare
 {
     public PoliceSquare(string name)
     {
-        ArgumentNullException.ThrowIfNull(name);
-
         Name = name;
     }
 
@@ -18,7 +16,10 @@ public class PoliceSquare : ISquare
     public string Name { get; }
 
     /// <inheritdoc/>
-    public void Advance(Player player, GameController controller) { }
+    public void Advance(Player player, GameController controller)
+    {
+        controller.Police(player);
+    }
 
     /// <inheritdoc/>
     public override string ToString()

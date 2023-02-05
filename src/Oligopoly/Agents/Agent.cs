@@ -2,103 +2,98 @@
 
 namespace Oligopoly.Agents;
 
-public class Agent
+internal sealed class Agent : IAgent
 {
-    private static Agent? s_instance;
-
-    private Agent() { }
-
-    public static Agent Default
+    /// <inheritdoc/>
+    public void Connect(GameController controller)
     {
-        get
-        {
-            if (s_instance is null)
-            {
-                s_instance = new Agent();
-            }
-
-            return s_instance;
-        }
+        Console.WriteLine(">> Connect");
     }
 
-    public void Connect(GameController controller) { }
-
-    //public bool Purchase(Game game, Player player, Square property)
-    //{
-    //    return false;
-    //}
-
-    //public int Bid(Game game, Player player, PropertySquare property)
-    //{
-    //    return 0;
-    //}
-
-    //public IEnumerable<PropertySquare> Improve(Game game, Player player)
-    //{
-    //    return Enumerable.Empty<PropertySquare>();
-    //}
-
-    //public IEnumerable<PropertySquare> Unimprove(Game game, Player player)
-    //{
-    //    return Enumerable.Empty<PropertySquare>();
-    //}
-
-    //public IEnumerable<PropertySquare> Mortgage(Game game, Player player)
-    //{
-    //    return Enumerable.Empty<PropertySquare>();
-    //}
-
-    public DealProposal? Propose()
+    /// <inheritdoc/>
+    public void Tax(Game game, Player player, int amount)
     {
-        Console.WriteLine("AGENT: I do not have any deals to propose.");
+        Console.WriteLine(">> Tax {0}", amount);
+    }
+
+    /// <inheritdoc/>
+    public void Taxed(Game game, Player player, int amount)
+    {
+        Console.WriteLine(">> Taxed {0}", amount);
+    }
+
+    /// <inheritdoc/>
+    public void Untaxed(Game game, Player player, int amount)
+    {
+        Console.WriteLine(">> Untaxed {0}", amount);
+    }
+
+    /// <inheritdoc/>
+    public int Mortgage(Game game, Player player)
+    {
+        Console.WriteLine("<< Mortgage [0]");
+
+        return 0;
+    }
+
+    /// <inheritdoc/>
+    public int Unmortgage(Game game, Player player)
+    {
+        Console.WriteLine("<< Unmortgage [0]");
+
+        return 0;
+    }
+
+    /// <inheritdoc/>
+    public int Improve(Game game, Player player)
+    {
+        Console.WriteLine("<< Improve [0]");
+
+        return 0;
+    }
+
+    /// <inheritdoc/>
+    public int Unimprove(Game game, Player player)
+    {
+        Console.WriteLine("<< Unimprove [0]");
+
+        return 0;
+    }
+
+    /// <inheritdoc/>
+    public bool Offer(Game game, Player player, IAsset asset)
+    {
+        Console.WriteLine("<< Offer [FALSE] for {0}", asset);
+
+        return false;
+    }
+
+    /// <inheritdoc/>
+    public int Bid(Game game, Player player, IAsset asset)
+    {
+        Console.WriteLine("<< Bid [0] for {0}", asset);
+
+        return 0;
+    }
+
+    /// <inheritdoc/>
+    public DealProposal? Propose(Game game, Player player)
+    {
+        Console.WriteLine("<< Propose [0]");
 
         return null;
     }
 
-    public DealResponse Respond()
+    /// <inheritdoc/>
+    public JailbreakStrategy Jailbreak(Game game, Player player)
     {
-        Console.WriteLine("AGENT: I reject that offer.");
-
-        return DealResponse.Reject;
-    }
-
-    public JailbreakStrategy Jailbreak(Game game, int player)
-    {
-        Console.WriteLine("AGENT: I would like to stay in jail.");
+        Console.WriteLine("<< Jailbreak [NONE]");
 
         return JailbreakStrategy.None;
     }
 
-    public int Improve(Game game, Player player)
-    {
-        Console.WriteLine("AGENT: I do not want to improve anything.");
-
-        return 0;
-    }
-
-    public int Unmortgage(Game game, Player player)
-    {
-        Console.WriteLine("AGENT: I do not want to unmortgage anything.");
-
-        return 0;
-    }
-
-    public void Tax(int amount)
-    {
-        Console.WriteLine("AGENT: I recognize that I must pay {0} units of currency.", amount);
-    }
-
-    public void Taxed(int amount)
-    {
-        Console.WriteLine("AGENT: I pay {0} units of currency.", amount);
-    }
-
-    public void Untaxed(int amount)
-    {
-        Console.WriteLine("AGENT: I earn {0} units of currency.", amount);
-    }
-
-    public void Warn(Warning warning)
+    /// <inheritdoc/>
+    public void Warn(Game game, Player player, Warning warning)
     {
         throw new InvalidOperationException(warning.ToString());
     }

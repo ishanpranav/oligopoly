@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using MessagePack;
 using Oligopoly.Agents;
+using Oligopoly.Auctions;
 using Oligopoly.Cards;
 using Oligopoly.EventArgs;
 using Oligopoly.Squares;
@@ -14,20 +16,18 @@ public class GameController
 
     public GameController(Board board, Game game)
     {
-        ArgumentNullException.ThrowIfNull(board);
-        ArgumentNullException.ThrowIfNull(game);
-
         Board = board;
         Game = game;
     }
 
     public event EventHandler<GameEventArgs>? Started;
     public event EventHandler<GameEventArgs>? TurnStarted;
-    public event EventHandler<PlayerEventArgs>? Landed;
+    public event EventHandler<PlayerEventArgs>? Advanced;
 
     public Board Board { get; }
     public Game Game { get; }
     public int Dice { get; private set; }
+    public IAuction Auction { get; set; } = new EnglishAuction();
 
     public void Start()
     {
@@ -136,8 +136,6 @@ public class GameController
 
     public void Travel(Player player, int distance)
     {
-        ArgumentNullException.ThrowIfNull(player);
-
         if (distance is 0)
         {
             return;
@@ -168,13 +166,31 @@ public class GameController
 
     public void Offer(Player player, Deed deed)
     {
+        PropertySquare propertySquare = (PropertySquare)Board.Squares[deed.SquareId - 1];
 
+        if (player.Agent.Offer(Game, player, propertySquare))
+        {
+            int cost = propertySquare.Appraise(Board, Game);
+
+            Tax(player, cost);
+
+            if (player.Cash < 0)
+            {
+                Untax(player, cost);
+            }
+            else
+            {
+                deed.PlayerId = player.Id;
+
+                return;
+            }
+        }
+
+        Auction.Auction(controller: this, propertySquare);
     }
 
     public bool Request(Player sender, Player recipient, int amount)
     {
-        ArgumentNullException.ThrowIfNull(recipient);
-
         Tax(sender, amount);
 
         if (sender.Cash < 0)
@@ -193,8 +209,6 @@ public class GameController
 
     public bool Demand(Player sender, Player recipient, int amount)
     {
-        ArgumentNullException.ThrowIfNull(recipient);
-        
         int actualAmount = Tax(sender, amount);
 
         if (sender.Cash < 0)
@@ -213,43 +227,15 @@ public class GameController
 
     public void Advance(Player player, int squareId)
     {
-        ArgumentNullException.ThrowIfNull(player);
-
-        if (squareId <= 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(squareId));
-        }
-
         player.SquareId = squareId;
 
         ISquare square = Board.Squares[squareId - 1];
 
         Console.WriteLine("Moved to {0}", square);
 
-        OnLanded(new PlayerEventArgs(player));
+        OnAdvanced(new PlayerEventArgs(player));
 
         square.Advance(player, controller: this);
-    }
-
-    public void Police(Player player)
-    {
-        ArgumentNullException.ThrowIfNull(player);
-
-        int squareId = 0;
-
-        player.Sentence = Board.Sentence;
-
-        for (int i = 0; i < Board.Squares.Count; i++)
-        {
-            if (Board.Squares[i] is JailSquare)
-            {
-                squareId = i + 1;
-
-                break;
-            }
-        }
-
-        Advance(player, squareId);
     }
 
     private void Propose(Player player)
@@ -260,7 +246,7 @@ public class GameController
 
             while (_proposing)
             {
-                DealProposal? proposal = player.Agent.Propose();
+                DealProposal? proposal = player.Agent.Propose(Game, player);
 
                 if (proposal is null)
                 {
@@ -274,7 +260,7 @@ public class GameController
     {
         if (player.Sentence > 0)
         {
-            switch (player.Agent.Jailbreak(Game, player.Id))
+            switch (player.Agent.Jailbreak(Game, player))
             {
                 case JailbreakStrategy.Bail:
                     Tax(player, Board.Bail);
@@ -298,6 +284,25 @@ public class GameController
                     break;
             }
         }
+    }
+
+    public void Police(Player player)
+    {
+        int squareId = 0;
+
+        player.Sentence = Board.Sentence;
+
+        for (int i = 0; i < Board.Squares.Count; i++)
+        {
+            if (Board.Squares[i] is JailSquare)
+            {
+                squareId = i + 1;
+
+                break;
+            }
+        }
+
+        Advance(player, squareId);
     }
 
     private void Improve(Player player)
@@ -474,14 +479,7 @@ public class GameController
 
     public int Tax(Player player, int amount)
     {
-        ArgumentNullException.ThrowIfNull(player);
-
-        if (amount <= 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(amount));
-        }
-
-        player.Agent.Tax(amount);
+        player.Agent.Tax(Game, player, amount);
         Propose(player);
         Unimprove(player);
         Mortgage(player);
@@ -489,7 +487,7 @@ public class GameController
         int cash = player.Cash;
 
         player.Cash -= amount;
-        player.Agent.Taxed(amount);
+        player.Agent.Taxed(Game, player, amount);
 
         Console.WriteLine("{0} pays £{1}", player, amount);
 
@@ -505,21 +503,16 @@ public class GameController
 
     public void Untax(Player player, int amount)
     {
-        ArgumentNullException.ThrowIfNull(player);
-
-        if (amount <= 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(amount));
-        }
-
         player.Cash += amount;
-        player.Agent.Untaxed(amount);
+        player.Agent.Untaxed(Game, player, amount);
 
         Console.WriteLine("{0} gets £{1}", player, amount);
     }
 
     private void Warn(Player player, Warning warning)
     {
+        player.Agent.Warn(Game, player, warning);
+
         Console.WriteLine("WARNING to {0}: {1}", player, warning);
     }
 
@@ -539,11 +532,14 @@ public class GameController
         }
     }
 
-    protected virtual void OnLanded(PlayerEventArgs e)
+    protected virtual void OnAdvanced(PlayerEventArgs e)
     {
-        if (Landed is not null)
+        if (Advanced is not null)
         {
-            Landed(sender: this, e);
+            Advanced(sender: this, e);
         }
     }
+
+    //        deed.PlayerId = bidder.Id;
+
 }

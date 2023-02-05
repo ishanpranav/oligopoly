@@ -10,18 +10,6 @@ public class StreetSquare : PropertySquare
 {
     public StreetSquare(string name, int cost, int groupId, IReadOnlyList<int> rents) : base(name)
     {
-        if (cost <= 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(cost));
-        }
-
-        if (groupId <= 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(groupId));
-        }
-
-        ArgumentNullException.ThrowIfNull(rents);
-
         Cost = cost;
         GroupId = groupId;
         Rents = rents;

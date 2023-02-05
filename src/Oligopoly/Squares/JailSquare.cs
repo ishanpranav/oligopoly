@@ -8,8 +8,6 @@ public class JailSquare : ISquare
 {
     public JailSquare(string name)
     {
-        ArgumentNullException.ThrowIfNull(name);
-
         Name = name;
     }
 

@@ -8,13 +8,6 @@ public class UngiftCard : ICard
 {
     public UngiftCard(string name, int amount)
     {
-        ArgumentNullException.ThrowIfNull(name);
-
-        if (amount <= 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(amount));
-        }
-
         Name = name;
         Amount = amount;
     }

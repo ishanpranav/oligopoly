@@ -8,8 +8,6 @@ public class RailroadCard : ICard
 {
     public RailroadCard(string name)
     {
-        ArgumentNullException.ThrowIfNull(name);
-
         Name = name;
     }
 

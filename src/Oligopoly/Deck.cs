@@ -10,9 +10,6 @@ public class Deck
 {
     public Deck(string name, IReadOnlyList<ICard> cards)
     {
-        ArgumentNullException.ThrowIfNull(name);
-        ArgumentNullException.ThrowIfNull(cards);
-
         Name = name;
         Cards = cards;
     }

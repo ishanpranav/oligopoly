@@ -8,8 +8,6 @@ public class GameEventArgs : System.EventArgs
 {
     public GameEventArgs(Game game)
     {
-        ArgumentNullException.ThrowIfNull(game);
-
         Game = game;
     }
 

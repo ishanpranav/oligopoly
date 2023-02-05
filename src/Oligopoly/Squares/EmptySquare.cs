@@ -8,8 +8,6 @@ public class EmptySquare : ISquare
 {
     public EmptySquare(string name)
     {
-        ArgumentNullException.ThrowIfNull(name);
-
         Name = name;
     }
 

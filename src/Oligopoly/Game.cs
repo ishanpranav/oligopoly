@@ -13,14 +13,8 @@ public class Game
 {
     private readonly Deque<int>[] _deques;
 
-    private int _turn;
-
     public Game(IReadOnlyList<Player> players, IReadOnlyList<ISquare> squares, IReadOnlyList<Deck> decks)
     {
-        ArgumentNullException.ThrowIfNull(players);
-        ArgumentNullException.ThrowIfNull(squares);
-        ArgumentNullException.ThrowIfNull(decks);
-
         for (int i = 0; i < players.Count; i++)
         {
             players[i].Id = i + 1;
@@ -71,10 +65,6 @@ public class Game
     [SerializationConstructor]
     public Game(IReadOnlyList<Player> players, IReadOnlyDictionary<int, Deed> deedIds, IReadOnlyList<IEnumerable<int>> deckIds)
     {
-        ArgumentNullException.ThrowIfNull(players);
-        ArgumentNullException.ThrowIfNull(deedIds);
-        ArgumentNullException.ThrowIfNull(deckIds);
-
         for (int i = 0; i < players.Count; i++)
         {
             players[i].Id = i + 1;
@@ -115,22 +105,7 @@ public class Game
     }
 
     [Key(3)]
-    public int Turn
-    {
-        get
-        {
-            return _turn;
-        }
-        set
-        {
-            if (value < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(value));
-            }
-
-            _turn = value;
-        }
-    }
+    public int Turn { get; set; }
 
     public ICard Draw(Deck deck)
     {
