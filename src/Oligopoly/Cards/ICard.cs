@@ -25,4 +25,6 @@ public interface ICard
 {
     CardId Id { get; set; }
     string Name { get; }
+
+    void Draw(GameController controller);
 }

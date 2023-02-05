@@ -41,7 +41,10 @@ public class CardSquare : ISquare
     }
 
     /// <inheritdoc/>
-    public void Land(GameController controller) { }
+    public void Land(GameController controller)
+    {
+        controller.Game.Draw(controller.Board.Decks[DeckId - 1]).Draw(controller);
+    }
 
     /// <inheritdoc/>
     public override string ToString()

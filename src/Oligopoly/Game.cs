@@ -145,6 +145,11 @@ public class Game
         }
     }
 
+    public ICard Draw(Deck deck)
+    {
+        return deck.Cards[_deques[deck.Id - 1].RemoveFromFront() - 1];
+    }
+
     public void Discard(CardId card)
     {
         _deques[card.DeckId - 1].AddToBack(card.Id);

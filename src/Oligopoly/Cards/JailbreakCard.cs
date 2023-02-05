@@ -22,6 +22,12 @@ public class JailbreakCard : ICard
     public string Name { get; }
 
     /// <inheritdoc/>
+    public void Draw(GameController controller)
+    {
+
+    }
+
+    /// <inheritdoc/>
     public override string ToString()
     {
         return Name;

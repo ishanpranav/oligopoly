@@ -26,6 +26,12 @@ public class TravelCard : ICard
     public int Distance { get; }
 
     /// <inheritdoc/>
+    public void Draw(GameController controller)
+    {
+
+    }
+
+    /// <inheritdoc/>
     public override string ToString()
     {
         return Name;

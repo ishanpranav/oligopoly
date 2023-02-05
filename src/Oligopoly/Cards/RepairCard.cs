@@ -40,6 +40,12 @@ public class RepairCard : ICard
     public int HotelCost { get; }
 
     /// <inheritdoc/>
+    public void Draw(GameController controller)
+    {
+
+    }
+
+    /// <inheritdoc/>
     public override string ToString()
     {
         return Name;
