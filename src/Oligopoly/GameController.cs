@@ -172,8 +172,10 @@ public class GameController
         square.Land(controller: this);
     }
 
-    private void Police(Player player)
+    public void Police(Player player)
     {
+        ArgumentNullException.ThrowIfNull(player);
+
         int squareId = 0;
 
         player.Sentence = Board.Sentence;
@@ -407,8 +409,15 @@ public class GameController
         }
     }
 
-    private void Tax(Player player, int amount)
+    public void Tax(Player player, int amount)
     {
+        ArgumentNullException.ThrowIfNull(player);
+
+        if (amount < 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(amount));
+        }
+
         player.Agent.Tax(amount);
         Propose(player);
         Unimprove(player);

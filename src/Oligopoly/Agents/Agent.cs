@@ -71,7 +71,7 @@ public class Agent
 
     public int Improve(Game game, Player player)
     {
-        Console.WriteLine("AGENT: I do nto want to improve anything.");
+        Console.WriteLine("AGENT: I do not want to improve anything.");
 
         return 0;
     }

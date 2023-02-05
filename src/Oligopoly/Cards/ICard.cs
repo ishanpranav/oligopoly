@@ -11,7 +11,8 @@ namespace Oligopoly.Cards;
 [JsonDerivedType(typeof(RepairCard), "repair")]
 [JsonDerivedType(typeof(UtilityCard), "utility")]
 [JsonDerivedType(typeof(TaxCard), "tax")]
-[JsonDerivedType(typeof(PoolCard), "pool")]
+[JsonDerivedType(typeof(ChairmanCard), "chairman")]
+[JsonDerivedType(typeof(GiftCard), "gift")]
 [Union(0, typeof(JailbreakCard))]
 [Union(1, typeof(PoliceCard))]
 [Union(2, typeof(RailroadCard))]
@@ -20,7 +21,8 @@ namespace Oligopoly.Cards;
 [Union(5, typeof(RepairCard))]
 [Union(6, typeof(UtilityCard))]
 [Union(7, typeof(TaxCard))]
-[Union(8, typeof(PoolCard))]
+[Union(8, typeof(ChairmanCard))]
+[Union(9, typeof(GiftCard))]
 public interface ICard
 {
     CardId Id { get; set; }

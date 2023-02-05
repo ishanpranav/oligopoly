@@ -13,7 +13,7 @@
     "bail": {
       "type": "integer",
       "minimum": 0
-    }
+    },
     "mortgageLoanProportion": {
       "type": "number",
       "minimum": 0
@@ -150,7 +150,8 @@
                     "travel",
                     "utility",
                     "tax",
-                    "pool"
+                    "chairman",
+                    "gift"
                   ]
                 },
                 "amount": {
