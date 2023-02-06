@@ -10,8 +10,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 		docs\board-schema.json = docs\board-schema.json
 		data\board.json = data\board.json
+		tools\licenses.json = tools\licenses.json
 		tools\New-BinarySpecification.ps1 = tools\New-BinarySpecification.ps1
 		tools\New-BinaryStorage.ps1 = tools\New-BinaryStorage.ps1
+		tools\New-ThirdPartyNotices.ps1 = tools\New-ThirdPartyNotices.ps1
 	EndProjectSection
 	ProjectSection(FolderGlobals) = preProject
 		C_5_4Users_4ishan_4source_4repos_4oligopoly_4data_4board_1json__JsonSchema = ../docs/board-schema.json
