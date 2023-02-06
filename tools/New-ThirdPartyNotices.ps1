@@ -14,12 +14,10 @@ Oligopoly by Ishan Pranav
 
 Copyright (c) 2023 Ishan Pranav
 
-This software was created for research purposes. It is inspired by the classic
-MONOPOLY board game and takes heavy inspiration from open-source MONOPOLY
-implementations. It is not intended for commercial use. This is free software.
-For more details, please see the LICENSE.txt document.
-
-THIRD PARTY NOTICES FILE
+Oligopoly was created for research purposes and is inspired by the classic
+MONOPOLY board game. It takes heavy inspiration from open-source MONOPOLY
+implementations and is not intended for commercial use. This is free software.
+For more details, please see the [license](LICENSE.txt).
 
 This software uses third-party libraries or other resources that may be
 distributed under licenses different than the software.
@@ -56,6 +54,3 @@ foreach ($key in $json.licenses.Keys | Sort-Object) {
     Out-ThirdPartyNotices $json.licenses[$key].text
     Out-ThirdPartyNotices "``````"
 }
-
-Out-ThirdPartyNotices ""
-Out-ThirdPartyNotices "________________________________________________________________________________"
