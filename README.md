@@ -1,5 +1,8 @@
-# .NET Repository Template
-This is a template repository for C#/.NET projects. This repository is configured to host a ClickOnce installer on GitHub.
+# Oligopoly
+Oligopoly was created for research purposes and is inspired by the classic
+MONOPOLY board game. It takes heavy inspiration from open-source MONOPOLY
+implementations and is not intended for commercial use. This is free software.
+For more details, please see the [license](LICENSE.txt).
 ## License
 This repository is licensed with the [MIT](LICENSE.txt) license.
 ## Attribution
