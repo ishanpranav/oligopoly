@@ -16,14 +16,14 @@ The attached notices are provided for informational purposes only.
 
 ________________________________________________________________________________
 
+**VisualStudio.gitignore**
+- Source: https://github.com/github/gitignore/
+- License: [Creative Commons Zero v1.0 Universal](#cc0-1.0)
+
 **Monopyly**
 - Source: https://github.com/richard-shepherd/monopyly
 - Author: Richard Shepherd
 - License: [MIT](#mit-richard-shepherd-2013)
-
-**VisualStudio.gitignore**
-- Source: https://github.com/github/gitignore/VisualStudio.gitignore
-- License: [Creative Commons Zero v1.0 Universal](#cc0-1.0)
 
 ________________________________________________________________________________
 

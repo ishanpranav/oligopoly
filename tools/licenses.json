@@ -12,9 +12,9 @@
   "dependencies": [
     {
       "title": "VisualStudio.gitignore",
-      "repositoryUrl": "https://github.com/github/gitignore/VisualStudio.gitignore",
+      "repositoryUrl": "https://github.com/github/gitignore/",
       "license": "cc0-1.0",
-      "index": "VisualStudio.gitignore"
+      "index": "github"
     },
     {
       "title": "Monopyly",
