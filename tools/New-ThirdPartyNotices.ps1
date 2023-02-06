@@ -1,6 +1,10 @@
 $path = "../THIRD-PARTY-NOTICES.md"
 
-Remove-Item -Path $path
+try {
+    Remove-Item -Path $path
+}
+catch {
+}
 
 function Out-ThirdPartyNotices {
     param ($value)
@@ -30,16 +34,20 @@ $json = Get-Content licenses.json -Raw | ConvertFrom-Json -AsHashtable
 
 foreach ($dependency in $json.dependencies | Sort-Object -Property "index") {
     Out-ThirdPartyNotices ""
-    Out-ThirdPartyNotices ("**" + $dependency.title + "**")
+    Out-ThirdPartyNotices ("**" + $dependency.title + "** _" + $dependency.format + "_")
     Out-ThirdPartyNotices ("- Source: " + $dependency.repositoryUrl)
 
     if ($null -ne $dependency.author) {
         Out-ThirdPartyNotices ("- Author: " + $dependency.author)
     }
 
+    if ($null -ne $dependency.designer) {
+        Out-ThirdPartyNotices ("- Designer: " + $dependency.designer)
+    }
+
     $license = $json.licenses[$dependency.license]
 
-    Out-ThirdPartyNotices ("- License: [" + $license.title + "](#" + $dependency.license + ")")
+    Out-ThirdPartyNotices ("- License: [" + $license.title + "](#" + $dependency.license + ')')
 }
 
 foreach ($key in $json.licenses.Keys | Sort-Object) {
@@ -48,7 +56,7 @@ foreach ($key in $json.licenses.Keys | Sort-Object) {
     Out-ThirdPartyNotices ""
     Out-ThirdPartyNotices "________________________________________________________________________________"
     Out-ThirdPartyNotices ""
-    Out-ThirdPartyNotices ("<em><a id='" + $key + "'>" +  $license.title + "</a></em>")
+    Out-ThirdPartyNotices ("<a id='" + $key + "'>_" + $license.title + "_</a>")
     Out-ThirdPartyNotices ""
     Out-ThirdPartyNotices "``````"
     Out-ThirdPartyNotices $json.licenses[$key].text

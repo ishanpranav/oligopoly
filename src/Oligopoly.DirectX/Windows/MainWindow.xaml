@@ -14,7 +14,7 @@
                 Height="25"
                 Width="150"
                 RenderTransformOrigin="0.502,1.701"
-                Margin="0,187,0,0"
+                Margin="0,217,0,0"
                 Click="Button_Click" />
         <Button Content="Existing game"
                 HorizontalAlignment="Center"
@@ -22,7 +22,18 @@
                 Height="25"
                 Width="150"
                 RenderTransformOrigin="0.502,1.701"
-                Margin="0,217,0,0"
+                Margin="0,247,0,0"
                 Click="Button_Click" />
+        <TextBlock HorizontalAlignment="Center"
+                   Margin="0,111,0,0"
+                   TextWrapping="Wrap"
+                   Text="oligopoly"
+                   TextAlignment="Center"
+                   VerticalAlignment="Top"
+                   Height="101"
+                   Width="430"
+                   FontSize="60"
+                   FontFamily="{StaticResource JoanRegular}"
+                   FontStyle="Normal" />
     </Grid>
 </Window>
