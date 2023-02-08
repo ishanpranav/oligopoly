@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json.Serialization;
 using MessagePack;
 using Nito.Collections;
 using Oligopoly.Cards;
+using Oligopoly.Dice;
+using Oligopoly.Shuffles;
 using Oligopoly.Squares;
 
 namespace Oligopoly;
@@ -14,9 +14,9 @@ public class Game
 {
     private readonly Deque<int>[] _deques;
 
-    public Game(ICollection<Player> players, IReadOnlyList<ISquare> squares, IReadOnlyList<Deck> decks)
+    public Game(IReadOnlyList<ISquare> squares, IReadOnlyList<Deck> decks, IDice dice, IShuffle shuffle)
     {
-        Players = players;
+        Players = new List<Player>();
 
         Dictionary<int, Deed> dictionary = new Dictionary<int, Deed>();
 
@@ -43,23 +43,14 @@ public class Game
 
         foreach (Deque<int> deque in _deques)
         {
-            int n = deque.Count;
-
-            while (n > 1)
-            {
-                n--;
-
-                int k = Random.Next(n + 1);
-                int id = deque[k];
-
-                deque[k] = deque[n];
-                deque[n] = id;
-            }
+            shuffle.Shuffle(deque);
         }
+
+        Dice = dice;
     }
 
     [SerializationConstructor]
-    public Game(ICollection<Player> players, IReadOnlyDictionary<int, Deed> deeds, IReadOnlyList<IEnumerable<int>> deckIds)
+    public Game(ICollection<Player> players, IReadOnlyDictionary<int, Deed> deeds, IReadOnlyList<IEnumerable<int>> deckIds, IDice dice)
     {
         Players = players;
 
@@ -75,11 +66,9 @@ public class Game
         {
             _deques[i] = new Deque<int>(deckIds[i]);
         }
-    }
 
-    [IgnoreMember]
-    [JsonIgnore]
-    public Random Random { get; } = new Random(0);
+        Dice = dice;
+    }
 
     [Key(0)]
     public ICollection<Player> Players { get; }
@@ -95,6 +84,9 @@ public class Game
             return _deques;
         }
     }
+
+    [Key(3)]
+    public IDice Dice { get; }
 
     public ICard Draw(Deck deck)
     {

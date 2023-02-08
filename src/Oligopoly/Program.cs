@@ -2,13 +2,13 @@
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using MessagePack;
+using Oligopoly.Dice;
+using Oligopoly.Shuffles;
 
 namespace Oligopoly;
 
 internal static class Program
 {
-    private static int s_id;
     private static Board? s_board;
 
     private static void Main()
@@ -19,9 +19,6 @@ internal static class Program
         const string gameSourcePath = "../../../../../data/game.json";
 
         Game game;
-        MessagePackSerializerOptions messagePackOptions = MessagePackSerializerOptions.Standard
-            .WithCompression(MessagePackCompression.Lz4Block)
-            .WithSecurity(MessagePackSecurity.UntrustedData);
         JsonSerializerOptions jsonOptions = new JsonSerializerOptions()
         {
             AllowTrailingCommas = true,
@@ -36,7 +33,7 @@ internal static class Program
         {
             using Stream input = File.OpenRead(boardPath);
 
-            s_board = MessagePackSerializer.Deserialize<Board>(input, messagePackOptions);
+            s_board = OligopolySerializer.ReadBoard(input);
         }
         else
         {
@@ -46,34 +43,35 @@ internal static class Program
 
             using Stream output = File.Create(boardPath);
 
-            MessagePackSerializer.Serialize(output, s_board, messagePackOptions);
+            OligopolySerializer.Write(output, s_board);
         }
+
+        GameController controller;
 
         if (File.Exists(gamePath))
         {
             using Stream input = File.OpenRead(gamePath);
 
-            game = MessagePackSerializer.Deserialize<Game>(input, messagePackOptions);
+            game = OligopolySerializer.ReadGame(input);
+            controller = new GameController(s_board, game);
         }
         else
         {
-            game = new Game(new Player[]
-            {
-                CreatePlayer("Mark"),
-                CreatePlayer("Jacob"),
-                CreatePlayer("Alexander")
-            }, s_board.Squares, s_board.Decks);
+            game = new Game(s_board.Squares, s_board.Decks, new D6PairDice(Random.Shared), new FisherYatesShuffle(Random.Shared));
+            controller = new GameController(s_board, game);
+
+            controller.AddPlayer("Mark");
+            controller.AddPlayer("Jacob");
+            controller.AddPlayer("Alexander");
         }
-
-        GameController controller = new GameController(s_board, game);
-
+        
         controller.Start();
 
         while (controller.MoveNext())
         {
             using (Stream output = File.Create(gamePath))
             {
-                MessagePackSerializer.Serialize(output, game, messagePackOptions);
+                OligopolySerializer.Write(output, game);
             }
 
             using (Stream output = File.Create(gameSourcePath))
@@ -83,15 +81,5 @@ internal static class Program
 
             Console.ReadLine();
         }
-    }
-
-    private static Player CreatePlayer(string name)
-    {
-        s_id++;
-
-        return new Player(s_id, name)
-        {
-            Cash = s_board!.Savings
-        };
     }
 }

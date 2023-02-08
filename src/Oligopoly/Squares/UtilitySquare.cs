@@ -37,7 +37,7 @@ public class UtilitySquare : PropertySquare
             }
         }
 
-        return controller.Board.UtilityBillMultipliers[count] * controller.Dice;
+        return controller.Board.UtilityBillMultipliers[count] * controller.Game.Dice.Amount;
     }
 
     /// <inheritdoc/>

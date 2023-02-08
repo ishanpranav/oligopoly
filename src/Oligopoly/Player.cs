@@ -36,7 +36,7 @@ public class Player : IAsset
     public int Cash { get; set; }
 
     [Key(4)]
-    public int SquareId { get; set; } = 1;
+    public int SquareId { get; set; }
 
     [Key(5)]
     public int Sentence { get; set; }

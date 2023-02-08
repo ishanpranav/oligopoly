@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Numerics;
 using Oligopoly.Agents;
 using Oligopoly.Auctions;
 using Oligopoly.Cards;
@@ -12,6 +10,7 @@ namespace Oligopoly;
 
 public class GameController
 {
+    private int _id;
     private bool _proposing;
 
     public GameController(Board board, Game game)
@@ -30,7 +29,6 @@ public class GameController
 
     public Board Board { get; }
     public Game Game { get; }
-    public int Dice { get; private set; }
     public bool Flying { get; private set; }
     public IAuction Auction { get; set; } = new EnglishAuction();
 
@@ -46,6 +44,21 @@ public class GameController
         }
 
         OnStarted(new GameEventArgs(Game));
+    }
+
+    public Player AddPlayer(string name)
+    {
+        _id++;
+
+        Player result = new Player(_id, name)
+        {
+            Cash = Board.Savings,
+            SquareId = 1
+        };
+
+        Game.Players.Add(result);
+
+        return result;
     }
 
     public bool MoveNext()
@@ -74,7 +87,7 @@ public class GameController
 
             int speed = 0;
 
-            while (Roll(player))
+            while (Game.Dice.Roll(controller: this, player))
             {
                 speed++;
 
@@ -107,45 +120,6 @@ public class GameController
         }
 
         return true;
-    }
-
-    private bool Roll(Player player)
-    {
-        int first = Game.Random.Next(1, 7);
-        int second = Game.Random.Next(1, 7);
-
-        Dice = first + second;
-
-        Console.WriteLine("Rolled ({0}, {1})", first, second);
-
-        if (player.Sentence > 0)
-        {
-            if (first == second)
-            {
-                player.Sentence = 0;
-
-                Jump(player, Dice);
-
-                return false;
-            }
-            else
-            {
-                player.Sentence--;
-
-                if (player.Sentence is 0)
-                {
-                    Tax(player, Board.Bail);
-                }
-
-                return false;
-            }
-        }
-        else
-        {
-            Jump(player, Dice);
-
-            return first == second;
-        }
     }
 
     private void Jailbreak(Player player)
