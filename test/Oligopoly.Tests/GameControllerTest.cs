@@ -4,7 +4,7 @@ using Oligopoly.Dice;
 namespace Oligopoly.Tests;
 
 [TestClass]
-public class ControllerTest
+public class GameControllerTest
 {
     [TestMethod("Salary (1)")]
     public void TestSalary()

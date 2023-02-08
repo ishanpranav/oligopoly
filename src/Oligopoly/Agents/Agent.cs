@@ -3,10 +3,10 @@ using Oligopoly.EventArgs;
 
 namespace Oligopoly.Agents;
 
-internal sealed class Agent : IAgent
+public class Agent : IAgent
 {
     /// <inheritdoc/>
-    public void Connect(GameController controller)
+    public virtual void Connect(GameController controller)
     {
         Console.WriteLine(">> Connect");
 
@@ -101,7 +101,7 @@ internal sealed class Agent : IAgent
     }
 
     /// <inheritdoc/>
-    public int Bid(Game game, Player player, IAsset asset, int bid)
+    public virtual int Bid(Game game, Player player, IAsset asset, int bid)
     {
         Console.WriteLine("<< Bid [0] against {1} for {0}", asset, bid);
 

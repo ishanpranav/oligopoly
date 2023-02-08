@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using Oligopoly.Agents;
 using Oligopoly.Auctions;
 using Oligopoly.Cards;
@@ -74,34 +75,7 @@ public class GameController
                 continue;
             }
 
-            Console.WriteLine();
-            Console.WriteLine("{0}: Cash=${1}, Net Worth=${2}, Sentence={3}", player, player.Cash, player.Appraise(Board, Game), player.Sentence);
-
-            GameEventArgs e = new GameEventArgs(Game);
-
-            OnTurnStarted(e);
-            Propose(player);
-            Jailbreak(player);
-            Unmortgage(player);
-            Improve(player);
-
-            int speed = 0;
-
-            while (Game.Dice.Roll(controller: this, player))
-            {
-                speed++;
-
-                if (speed == Board.SpeedLimit)
-                {
-                    Police(player);
-
-                    break;
-                }
-            }
-
-            Console.WriteLine("{0}: Cash=${1}, Net Worth=${2}, Sentence={3}", player, player.Cash, player.Appraise(Board, Game), player.Sentence);
-
-            OnTurnEnded(e);
+            Move(player);
 
             foreach (Player other in players)
             {
@@ -113,13 +87,44 @@ public class GameController
 
             if (Game.Players.Count < 2)
             {
-                OnEnded(e);
+                OnEnded(new GameEventArgs(Game));
 
                 return false;
             }
         }
 
         return true;
+    }
+
+    public void Move(Player player)
+    {
+        Console.WriteLine();
+        Console.WriteLine("{0}: Cash=${1}, Net Worth=${2}, Sentence={3}", player, player.Cash, player.Appraise(Board, Game), player.Sentence);
+
+        GameEventArgs e = new GameEventArgs(Game);
+
+        OnTurnStarted(e);
+        Propose(player);
+        Jailbreak(player);
+        Unmortgage(player);
+        Improve(player);
+
+        int speed = 0;
+
+        while (Game.Dice.Roll(controller: this, player))
+        {
+            speed++;
+
+            if (speed == Board.SpeedLimit)
+            {
+                Police(player);
+
+                break;
+            }
+        }
+
+        Console.WriteLine("{0}: Cash=${1}, Net Worth=${2}, Sentence={3}", player, player.Cash, player.Appraise(Board, Game), player.Sentence);
+        OnTurnEnded(e);
     }
 
     private void Jailbreak(Player player)
