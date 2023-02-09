@@ -1,5 +1,5 @@
-# Third-Party Notices
-
+Third-Party Notices
+===================
 Oligopoly by Ishan Pranav
 
 Copyright (c) 2023 Ishan Pranav
@@ -14,26 +14,98 @@ distributed under licenses different than the software.
 
 The attached notices are provided for informational purposes only.
 
-________________________________________________________________________________
+Dependencies
+------------
+This section contains notices for binary dependencies redistributed alongside
+the application.
 
-**Joan** _typeface_
-- Source: https://github.com/PaoloBiagini/Joan
+__Joan__&emsp;*typeface*&ensp;
 - Author: The Joan Project Authors
 - Designer: Paolo Biagini
+- Source: [PaoloBiagini/Joan](https://github.com/PaoloBiagini/Joan)
 - License: [SIL Open Font License 1.1](#ofl-1.1-joan-project-authors-2021)
 
-**VisualStudio.gitignore** _gitignore_
-- Source: https://github.com/github/gitignore/
+__Deque__&emsp;*c#*&ensp;
+- Source: [StephenCleary/Deque](https://github.com/StephenCleary/Deque)
+- License: [MIT](#mit-stephen-cleary-2015)
+
+__.NET Runtime__&emsp;*c#*&ensp;*c++*&ensp;*c*&ensp;
+- Source: [dotnet/runtime](https://github.com/dotnet/runtime)
+- License: [MIT](#mit-dotnet)
+
+__Microsoft.Build (MSBuild)__&emsp;*c#*&ensp;
+- Source: [dotnet/msbuild](https://github.com/dotnet/msbuild)
+- License: [MIT](#mit-dotnet)
+
+__MessagePack for C#__&emsp;*c#*&ensp;
+- Source: [neuecc/MessagePack-CSharp](https://github.com/neuecc/MessagePack-CSharp)
+- License: [MIT](#mit-yoshifumi-kawai-etal-2017)
+
+__lz4net__&emsp;*c#*&ensp;
+- Source: [MiloszKrajewski/lz4net](https://github.com/MiloszKrajewski/lz4net)
+- License: [BSD 2-Clause "Simplified" License](#bsd-2-clause-milosz-krajewski-2013-2017)
+
+References
+----------
+This section contains references to parts of the source code based on or
+inspired by third-party open-source software.
+
+__Monopyly__&emsp;*python*&ensp;
+- Author: Richard Shepherd
+- Source: [richard-shepherd/monopyly](https://github.com/richard-shepherd/monopyly)
+- License: [MIT](#mit-richard-shepherd-2013)
+
+Resources
+---------
+This section contains attributions for helpful resources used to assist in the
+development of this software.
+
+__VisualStudio.gitignore__&emsp;*ignore list*&ensp;
+- Source: [github/gitignore](https://github.com/github/gitignore)
 - License: [Creative Commons Zero v1.0 Universal](#cc0-1.0)
 
-**Monopyly** _python_
-- Source: https://github.com/richard-shepherd/monopyly
-- Author: Richard Shepherd
-- License: [MIT](#mit-richard-shepherd-2013)
+Licenses
+--------
+This section contains licenses provided by third-party software vendors.
 
 ________________________________________________________________________________
 
-<a id='cc0-1.0'>_Creative Commons Zero v1.0 Universal_</a>
+_<a id='bsd-2-clause-milosz-krajewski-2013-2017'>
+BSD 2-Clause "Simplified" License - Milosz Krajewski
+</a>_
+
+```
+Copyright (c) 2013-2017, Milosz Krajewski
+
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, 
+are permitted provided that the following conditions are met:
+
+* Redistributions of source code must retain the above copyright notice, this list 
+  of conditions and the following disclaimer.
+  
+* Redistributions in binary form must reproduce the above copyright notice, this 
+  list of conditions and the following disclaimer in the documentation and/or other 
+  materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, 
+BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, 
+OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+POSSIBILITY OF SUCH DAMAGE.
+```
+
+________________________________________________________________________________
+
+_<a id='cc0-1.0'>
+Creative Commons Zero v1.0 Universal
+</a>_
 
 ```
 Creative Commons Legal Code
@@ -161,7 +233,41 @@ express Statement of Purpose.
 
 ________________________________________________________________________________
 
-<a id='mit-richard-shepherd-2013'>_MIT_</a>
+_<a id='mit-dotnet'>
+MIT - .NET Foundation and Contributors
+</a>_
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+________________________________________________________________________________
+
+_<a id='mit-richard-shepherd-2013'>
+MIT - Richard Shepherd
+</a>_
 
 ```
 The MIT License (MIT)
@@ -188,7 +294,70 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 ________________________________________________________________________________
 
-<a id='ofl-1.1-joan-project-authors-2021'>_SIL Open Font License 1.1_</a>
+_<a id='mit-stephen-cleary-2015'>
+MIT - Stephen Cleary
+</a>_
+
+```
+The MIT License (MIT)
+
+Copyright (c) 2015 Stephen Cleary
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+```
+
+________________________________________________________________________________
+
+_<a id='mit-yoshifumi-kawai-etal-2017'>
+MIT - Yoshifumi Kawai and Contributors
+</a>_
+
+```
+MIT License
+
+Copyright (c) 2017 Yoshifumi Kawai and contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+________________________________________________________________________________
+
+_<a id='ofl-1.1-joan-project-authors-2021'>
+SIL Open Font License 1.1 - The Joan Project Authors
+</a>_
 
 ```
 Copyright 2021 The Joan Project Authors (https://github.com/PaoloBiagini/Joan)
