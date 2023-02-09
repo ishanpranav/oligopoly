@@ -6,11 +6,12 @@ using Oligopoly.Shuffles;
 
 namespace Oligopoly.Tests;
 
-internal static class Factory
+[TestClass]
+public class Factory
 {
     public static Board CreateBoard()
     {
-        string messagePackPath = "board.bin";
+        string messagePackPath = "../../../../../data/board.bin";
 
         if (File.Exists(messagePackPath))
         {
@@ -20,7 +21,7 @@ internal static class Factory
         }
         else
         {
-            using FileStream input = File.OpenRead("board.json");
+            using FileStream input = File.OpenRead("../../../../../data/board.json");
 
             Board? board = JsonSerializer.Deserialize<Board>(input, new JsonSerializerOptions()
             {
@@ -49,6 +50,10 @@ internal static class Factory
             shuffle = new FisherYatesShuffle();
         }
 
-        return new Game(board.Squares, board.Decks, dice, shuffle);
+        return new Game(board.Squares, board.Decks, dice, shuffle)
+        {
+            Houses = board.Houses,
+            Hotels = board.Hotels
+        };
     }
 }

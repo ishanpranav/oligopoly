@@ -57,7 +57,11 @@ internal static class Program
         }
         else
         {
-            game = new Game(s_board.Squares, s_board.Decks, new D6PairDice(Random.Shared), new FisherYatesShuffle(Random.Shared));
+            game = new Game(s_board.Squares, s_board.Decks, new D6PairDice(Random.Shared), new FisherYatesShuffle(Random.Shared))
+            {
+                Houses = s_board.Houses,
+                Hotels = s_board.Hotels
+            };
             controller = new GameController(s_board, game);
 
             controller.AddPlayer("Mark");

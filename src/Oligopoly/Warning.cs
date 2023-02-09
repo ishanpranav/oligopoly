@@ -13,5 +13,7 @@ public enum Warning
     Improved,
     Unimproved,
     NotImprovable,
-    UnbalancedImprovements
+    UnbalancedImprovements,
+    HouseShortage,
+    HotelShortage
 }

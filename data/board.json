@@ -12,6 +12,8 @@
   "groupRentMultiplier": 2,
   "railroadFares": [ 25, 50, 100, 200, 400 ],
   "utilityBillMultipliers": [ 4, 10 ],
+  "houses": 32,
+  "hotels": 12,
   "squares": [
     {
       "$type": "none",
@@ -281,6 +283,10 @@
       "name": "Chance",
       "cards": [
         {
+          "$type": "jailbreak",
+          "name": "Get Out of Jail Free"
+        },
+        {
           "$type": "advance",
           "name": "Advance to GO (Collect £200)",
           "square": 1
@@ -316,10 +322,6 @@
           "$type": "untax",
           "name": "Bank pays you dividend of £50",
           "amount": 50
-        },
-        {
-          "$type": "jailbreak",
-          "name": "Get Out of Jail Free"
         },
         {
           "$type": "jump",
@@ -362,6 +364,10 @@
       "name": "Community Chest",
       "cards": [
         {
+          "$type": "jailbreak",
+          "name": "Get Out of Jail Free"
+        },
+        {
           "$type": "advance",
           "name": "Advance to GO (Collect £200)",
           "square": 1
@@ -380,10 +386,6 @@
           "$type": "untax",
           "name": "From sale of stock you get £50",
           "amount": 50
-        },
-        {
-          "$type": "jailbreak",
-          "name": "Get Out of Jail Free"
         },
         {
           "$type": "police",

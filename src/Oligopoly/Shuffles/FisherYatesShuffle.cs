@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using MessagePack;
+using Nito.Collections;
+using Oligopoly.Cards;
 
 namespace Oligopoly.Shuffles;
 
@@ -20,8 +22,19 @@ public class FisherYatesShuffle : IShuffle
     }
 
     /// <inheritdoc/>
-    public void Shuffle<T>(IList<T> items)
+    public void Shuffle(IList<int> items)
     {
+        int n = items.Count;
 
+        while (n > 1)
+        {
+            n--;
+
+            int k = _random.Next(n + 1);
+            int value = items[k];
+
+            items[k] = items[n];
+            items[n] = value;
+        }
     }
 }

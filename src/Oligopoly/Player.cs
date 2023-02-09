@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using MessagePack;
 using Oligopoly.Agents;
@@ -7,7 +8,7 @@ using Oligopoly.Cards;
 namespace Oligopoly;
 
 [MessagePackObject]
-public class Player : IAsset
+public class Player : IAsset, IComparable, IComparable<Player>, IEquatable<Player>
 {
     public Player(int id, string name) : this(id, name, new Queue<CardId>()) { }
 
@@ -55,6 +56,51 @@ public class Player : IAsset
         }
 
         return result;
+    }
+
+    /// <inheritdoc/>
+    public int CompareTo(object? obj)
+    {
+        if (obj is null)
+        {
+            return 1;
+        }
+
+        if (obj is not Player other)
+        {
+            throw new ArgumentException(message: null, nameof(obj));
+        }
+
+        return CompareTo(other);
+    }
+
+    /// <inheritdoc/>
+    public int CompareTo(Player? other)
+    {
+        if (other is null)
+        {
+            return 1;
+        }
+
+        return Id - other.Id;
+    }
+
+    /// <inheritdoc/>
+    public override bool Equals(object? obj)
+    {
+        return obj is Player other && Equals(other);
+    }
+
+    /// <inheritdoc/>
+    public bool Equals(Player? other)
+    {
+        return other is not null && other.Id == Id;
+    }
+
+    /// <inheritdoc/>
+    public override int GetHashCode()
+    {
+        return Id;
     }
 
     /// <inheritdoc/>

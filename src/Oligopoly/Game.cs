@@ -16,7 +16,7 @@ public class Game
 
     public Game(IReadOnlyList<ISquare> squares, IReadOnlyList<Deck> decks, IDice dice, IShuffle shuffle)
     {
-        Players = new List<Player>();
+        Players = new SortedSet<Player>();
 
         Dictionary<int, Deed> dictionary = new Dictionary<int, Deed>();
 
@@ -50,7 +50,7 @@ public class Game
     }
 
     [SerializationConstructor]
-    public Game(ICollection<Player> players, IReadOnlyDictionary<int, Deed> deeds, IReadOnlyList<IEnumerable<int>> deckIds, IDice dice)
+    public Game(ISet<Player> players, IReadOnlyDictionary<int, Deed> deeds, IReadOnlyList<IEnumerable<int>> deckIds, IDice dice)
     {
         Players = players;
 
@@ -71,13 +71,13 @@ public class Game
     }
 
     [Key(0)]
-    public ICollection<Player> Players { get; }
+    public ISet<Player> Players { get; }
 
     [Key(1)]
     public IReadOnlyDictionary<int, Deed> Deeds { get; }
 
     [Key(2)]
-    public IReadOnlyList<IEnumerable<int>> DeckIds
+    public IReadOnlyList<IReadOnlyList<int>> DeckIds
     {
         get
         {
@@ -87,6 +87,12 @@ public class Game
 
     [Key(3)]
     public IDice Dice { get; }
+
+    [Key(4)]
+    public int Houses { get; set; }
+
+    [Key(5)]
+    public int Hotels { get; set; }
 
     public ICard Draw(Deck deck)
     {

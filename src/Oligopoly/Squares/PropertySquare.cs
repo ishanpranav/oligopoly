@@ -51,7 +51,7 @@ public abstract class PropertySquare : IAsset, ISquare
                     int rent = GetRent(player.SquareId, owner, controller);
 
                     Console.WriteLine("{0} must pay rent of £{1} to {2}", player, rent, owner);
-                    controller.Demand(player, owner, rent);
+                    controller.Gift(player, owner, rent);
 
                     break;
                 }

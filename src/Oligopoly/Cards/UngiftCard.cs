@@ -37,7 +37,7 @@ public class UngiftCard : ICard
                 continue;
             }
 
-            controller.Demand(other, player, Amount);
+            controller.Gift(other, player, Amount);
         }
 
         controller.Game.Discard(Id);

@@ -57,6 +57,14 @@
         "type": "integer"
       }
     },
+    "houses": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "hotels": {
+      "type": "integer",
+      "minimum": 0
+    },
     "squares": {
       "type": "array",
       "additionalItems": false,

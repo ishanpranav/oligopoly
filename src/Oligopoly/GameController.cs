@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Numerics;
 using Oligopoly.Agents;
 using Oligopoly.Auctions;
 using Oligopoly.Cards;
@@ -81,6 +80,7 @@ public class GameController
             {
                 if (other.Cash < 0)
                 {
+                    Bankrupt(other);
                     Game.Players.Remove(other);
                 }
             }
@@ -99,7 +99,7 @@ public class GameController
     public void Move(Player player)
     {
         Console.WriteLine();
-        Console.WriteLine("{0}: Cash=${1}, Net Worth=${2}, Sentence={3}", player, player.Cash, player.Appraise(Board, Game), player.Sentence);
+        Console.WriteLine("{0}: Cash=${1}, Net Worth=${2}, Sentence={3}, Square={4}", player, player.Cash, player.Appraise(Board, Game), player.Sentence, player.SquareId);
 
         GameEventArgs e = new GameEventArgs(Game);
 
@@ -123,7 +123,7 @@ public class GameController
             }
         }
 
-        Console.WriteLine("{0}: Cash=${1}, Net Worth=${2}, Sentence={3}", player, player.Cash, player.Appraise(Board, Game), player.Sentence);
+        Console.WriteLine("{0}: Cash=${1}, Net Worth=${2}, Sentence={3}, Square={4}", player, player.Cash, player.Appraise(Board, Game), player.Sentence, player.SquareId);
         OnTurnEnded(e);
     }
 
@@ -222,37 +222,20 @@ public class GameController
         Advance(player, squareId);
     }
 
-    public bool Request(Player sender, Player recipient, int amount)
+    public bool Gift(Player debtor, Player creditor, int amount)
     {
-        Tax(sender, amount);
+        int actualAmount = Tax(debtor, amount);
 
-        if (sender.Cash < 0)
+        if (debtor.Cash < 0)
         {
-            Untax(sender, amount);
+            Untax(creditor, actualAmount);
+            Bankrupt(debtor, creditor);
 
             return false;
         }
         else
         {
-            Untax(recipient, amount);
-
-            return true;
-        }
-    }
-
-    public bool Demand(Player sender, Player recipient, int amount)
-    {
-        int actualAmount = Tax(sender, amount);
-
-        if (sender.Cash < 0)
-        {
-            Untax(recipient, actualAmount);
-
-            return false;
-        }
-        else
-        {
-            Untax(recipient, amount);
+            Untax(creditor, amount);
 
             return true;
         }
@@ -268,18 +251,17 @@ public class GameController
         int cash = player.Cash;
 
         player.Cash -= amount;
+
         player.Agent.Taxed(Game, player, amount);
 
         Console.WriteLine("{0} pays £{1}", player, amount);
 
-        if (player.Cash >= 0)
-        {
-            return amount;
-        }
-        else
+        if (player.Cash < 0)
         {
             return cash;
         }
+
+        return amount;
     }
 
     public void Untax(Player player, int amount)
@@ -386,6 +368,20 @@ public class GameController
 
             Console.WriteLine("{0} wants to build a house on {1}", player, id);
 
+            if (Board.Houses <= 0)
+            {
+                Warn(player, Warning.HouseShortage);
+
+                return;
+            }
+
+            if (Board.Hotels <= 0)
+            {
+                Warn(player, Warning.HotelShortage);
+
+                return;
+            }
+
             Deed deed = Game.Deeds[id - 1];
 
             if (Board.Squares[id - 1] is not StreetSquare streetSquare)
@@ -395,7 +391,7 @@ public class GameController
                 break;
             }
 
-            deed.Improvements++;
+            deed.Improve(Game, streetSquare);
 
             Group? group = streetSquare.Group!;
 
@@ -403,8 +399,7 @@ public class GameController
 
             if (player.Cash < 0)
             {
-                deed.Improvements--;
-
+                deed.Unimprove(Game, streetSquare);
                 Untax(player, group.ImprovementCost);
                 Warn(player, Warning.InsufficientFunds);
 
@@ -413,6 +408,7 @@ public class GameController
 
             if (deed.Improvements >= streetSquare.Rents.Count - 1)
             {
+                deed.Unimprove(Game, streetSquare);
                 Untax(player, group.ImprovementCost);
                 Warn(player, Warning.Improved);
 
@@ -421,6 +417,7 @@ public class GameController
 
             if (deed.PlayerId != player.Id)
             {
+                deed.Unimprove(Game, streetSquare);
                 Untax(player, group.ImprovementCost);
                 Warn(player, Warning.AccessDenied);
 
@@ -429,6 +426,7 @@ public class GameController
 
             if (deed.Mortgaged)
             {
+                deed.Unimprove(Game, streetSquare);
                 Untax(player, group.ImprovementCost);
                 Warn(player, Warning.Mortgaged);
 
@@ -457,6 +455,7 @@ public class GameController
 
                 if (indexedDeed.Value.PlayerId != player.Id)
                 {
+                    deed.Unimprove(Game, streetSquare);
                     Untax(player, group.ImprovementCost);
                     Warn(player, Warning.GroupAccessDenied);
 
@@ -465,6 +464,7 @@ public class GameController
 
                 if (indexedDeed.Value.Mortgaged)
                 {
+                    deed.Unimprove(Game, streetSquare);
                     Untax(player, group.ImprovementCost);
                     Warn(player, Warning.GroupMortgaged);
 
@@ -484,6 +484,7 @@ public class GameController
 
             if (maxImprovements - minImprovements > 1)
             {
+                deed.Unimprove(Game, streetSquare);
                 Untax(player, group.ImprovementCost);
                 Warn(player, Warning.UnbalancedImprovements);
 
@@ -557,8 +558,7 @@ public class GameController
                 return;
             }
 
-            deed.Improvements--;
-
+            deed.Unimprove(Game, streetSquare);
             Untax(player, (int)(streetSquare.Group!.ImprovementCost * (1 - Board.UnimprovementRate)));
         }
     }
@@ -621,6 +621,70 @@ public class GameController
                     _proposing = false;
                 }
             }
+        }
+    }
+
+    private void Bankrupt(Player debtor, Player creditor)
+    {
+        foreach (KeyValuePair<int, Deed> indexedDeed in Game.Deeds)
+        {
+            if (indexedDeed.Value.PlayerId != debtor.Id)
+            {
+                continue;
+            }
+
+            if (indexedDeed.Value.Mortgaged)
+            {
+                Tax(creditor, (int)(Board.MortgageInterestRate * indexedDeed.Value.Appraise(Board, Game)));
+
+                indexedDeed.Value.PlayerId = creditor.Id;
+
+                Unmortgage(creditor);
+            }
+            else
+            {
+                indexedDeed.Value.PlayerId = creditor.Id;
+            }
+
+            if (Board.Squares[indexedDeed.Key] is StreetSquare streetSquare)
+            {
+                while (indexedDeed.Value.Improvements > 0)
+                {
+                    indexedDeed.Value.Unimprove(Game, streetSquare);
+                }
+            }
+        }
+
+        while (debtor.CardIds.TryDequeue(out CardId cardId))
+        {
+            creditor.CardIds.Enqueue(cardId);
+        }
+    }
+
+    private void Bankrupt(Player player)
+    {
+        foreach (KeyValuePair<int, Deed> indexedDeed in Game.Deeds)
+        {
+            if (indexedDeed.Value.PlayerId != player.Id)
+            {
+                continue;
+            }
+
+            indexedDeed.Value.PlayerId = 0;
+            indexedDeed.Value.Mortgaged = false;
+
+            if (Board.Squares[indexedDeed.Key] is StreetSquare streetSquare)
+            {
+                while (indexedDeed.Value.Improvements > 0)
+                {
+                    indexedDeed.Value.Unimprove(Game, streetSquare);
+                }
+            }
+        }
+
+        while (player.CardIds.TryDequeue(out CardId cardId))
+        {
+            Game.Discard(cardId);
         }
     }
 
