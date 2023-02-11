@@ -15,5 +15,7 @@ public enum Warning
     NotImprovable,
     UnbalancedImprovements,
     HouseShortage,
-    HotelShortage
+    HotelShortage,
+    SelfProposal,
+    ProposalRejected,
 }

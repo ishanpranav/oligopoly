@@ -1,5 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 using MessagePack;
+using Oligopoly.Assets;
 using Oligopoly.Squares;
 
 namespace Oligopoly.Cards;

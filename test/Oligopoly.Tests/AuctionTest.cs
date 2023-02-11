@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Oligopoly.Assets;
 using Oligopoly.Dice;
 using Oligopoly.Squares;
 
@@ -21,7 +22,6 @@ public class AuctionTest
         TestAgent secondAgent = TestAgent
             .Create()
             .ThenBid(175, 175);
-        ISquare square = board.Squares[19];
         Deed deed = game.Deeds[19];
 
         first.Agent = firstAgent;
@@ -32,13 +32,17 @@ public class AuctionTest
         controller.Move(first);
         Assert.AreEqual(2, deed.PlayerId);
         Assert.AreEqual(1500, first.Cash);
-        Assert.AreEqual(square, firstAgent.Auction!.Asset);
-        Assert.AreEqual(second, firstAgent.Auction!.Bid.Bidder);
+        Assert.IsNotNull(firstAgent.Auction);
+        Assert.IsNotNull(secondAgent.Auction);
+        Assert.AreEqual(deed, firstAgent.Auction.Asset);
+        Assert.IsTrue(firstAgent.Auction.Succeeded);
+        Assert.AreEqual(second, firstAgent.Auction.Bid.Bidder);
         Assert.AreEqual(175, firstAgent.Auction!.Bid.Amount);
         Assert.AreEqual(1325, second.Cash);
-        Assert.AreEqual(square, secondAgent.Auction!.Asset);
-        Assert.AreEqual(second, secondAgent.Auction!.Bid.Bidder);
-        Assert.AreEqual(175, secondAgent.Auction!.Bid.Amount);
+        Assert.AreEqual(deed, secondAgent.Auction.Asset);
+        Assert.IsTrue(secondAgent.Auction.Succeeded);
+        Assert.AreEqual(second, secondAgent.Auction.Bid.Bidder);
+        Assert.AreEqual(175, secondAgent.Auction.Bid.Amount);
     }
 
     [TestMethod("Auction (2)")]

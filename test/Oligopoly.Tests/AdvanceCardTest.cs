@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Oligopoly.Assets;
 using Oligopoly.Cards;
 
 namespace Oligopoly.Tests;

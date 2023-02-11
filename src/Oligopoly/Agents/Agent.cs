@@ -1,4 +1,5 @@
 ﻿using System;
+using Oligopoly.Assets;
 using Oligopoly.EventArgs;
 
 namespace Oligopoly.Agents;
@@ -63,8 +64,6 @@ public class Agent : IAgent
     /// <inheritdoc/>
     public virtual int Mortgage(Game game, Player player)
     {
-        Console.WriteLine("<< Mortgage [0]");
-
         return 0;
     }
 
@@ -79,41 +78,37 @@ public class Agent : IAgent
     /// <inheritdoc/>
     public virtual int Improve(Game game, Player player)
     {
-        Console.WriteLine("<< Improve [0]");
-
         return 0;
     }
 
     /// <inheritdoc/>
     public virtual int Unimprove(Game game, Player player)
     {
-        Console.WriteLine("<< Unimprove [0]");
-
         return 0;
     }
 
     /// <inheritdoc/>
     public virtual bool Offer(Game game, Player player, IAsset asset)
     {
-        Console.WriteLine("<< Offer [FALSE] for {0}", asset);
-
         return false;
     }
 
     /// <inheritdoc/>
-    public virtual int Bid(Game game, Player player, IAsset asset, int bid)
+    public virtual int Bid(Game game, Player player, Offer offer)
     {
-        Console.WriteLine("<< Bid [0] against {1} for {0}", asset, bid);
-
         return 0;
     }
 
     /// <inheritdoc/>
-    public DealProposal? Propose(Game game, Player player)
+    public virtual Offer? Propose(Game game, Player player)
     {
-        Console.WriteLine("<< Propose [0]");
-
         return null;
+    }
+
+    /// <inheritdoc/>
+    public virtual bool Respond(Game game, Player player)
+    {
+        return false;
     }
 
     /// <inheritdoc/>

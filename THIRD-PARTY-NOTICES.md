@@ -26,32 +26,40 @@ the application.
 - Source: [PaoloBiagini/Joan](https://github.com/PaoloBiagini/Joan)
 - License: [SIL Open Font License 1.1](#ofl-1.1_biagini)
 
-### Deque&emsp;<sub><sup>*c#*&ensp;</sup></sub>
+### Deque&emsp;<sub><sup>*c\#*&ensp;</sup></sub>
 - Author: Stephen Cleary
 - Source: [StephenCleary/Deque](https://github.com/StephenCleary/Deque)
 - License: [MIT](#mit_cleary)
 
-### .NET Runtime&emsp;<sub><sup>*c#*&ensp;*c++*&ensp;*c*&ensp;</sup></sub>
+### .NET Runtime&emsp;<sub><sup>*c\#*&ensp;*c++*&ensp;*c*&ensp;</sup></sub>
 - Author: .NET Foundation and Contributors
 - Source: [dotnet/runtime](https://github.com/dotnet/runtime)
 - License: [MIT](#mit_dotnet)
 
-### Windows Presentation Foundation (WPF)&emsp;<sub><sup>*c#*&ensp;</sup></sub>
+For more information about this software, please see its [third-party notices](https://github.com/dotnet/runtime/blob/main/THIRD-PARTY-NOTICES.TXT).
+
+### Windows Presentation Foundation (WPF)&emsp;<sub><sup>*c\#*&ensp;</sup></sub>
 - Author: .NET Foundation and Contributors
 - Source: [dotnet/wpf](https://github.com/dotnet/wpf)
 - License: [MIT](#mit_dotnet)
 
-### Microsoft.Build (MSBuild)&emsp;<sub><sup>*c#*&ensp;</sup></sub>
+For more information about this software, please see its [third-party notices](https://github.com/dotnet/wpf/blob/main/THIRD-PARTY-NOTICES.TXT).
+
+### Microsoft.Build (MSBuild)&emsp;<sub><sup>*c\#*&ensp;</sup></sub>
 - Author: .NET Foundation and Contributors
 - Source: [dotnet/msbuild](https://github.com/dotnet/msbuild)
 - License: [MIT](#mit_dotnet)
 
-### MessagePack for C#&emsp;<sub><sup>*c#*&ensp;</sup></sub>
+For more information about this software, please see its [third-party notices](https://github.com/dotnet/msbuild/blob/main/THIRDPARTYNOTICES.txt).
+
+### MessagePack for C\#&emsp;<sub><sup>*c\#*&ensp;</sup></sub>
 - Author: Yoshifumi Kawai
 - Source: [neuecc/MessagePack-CSharp](https://github.com/neuecc/MessagePack-CSharp)
 - License: [MIT](#mit_kawai)
 
-### lz4net&emsp;<sub><sup>*c#*&ensp;</sup></sub>
+For more information about this software, please see its [third-party notices](https://github.com/neuecc/MessagePack-CSharp/blob/master/LICENSE).
+
+### lz4net&emsp;<sub><sup>*c\#*&ensp;</sup></sub>
 - Author: Milosz Krajewski
 - Source: [MiloszKrajewski/lz4net](https://github.com/MiloszKrajewski/lz4net)
 - License: [BSD 2-Clause "Simplified" License](#bsd-2-clause_krajewski)
@@ -71,7 +79,7 @@ Resources
 This section contains attributions for helpful resources that assisted in the
 development of this software.
 
-### Coverlet&emsp;<sub><sup>*c#*&ensp;</sup></sub>
+### Coverlet&emsp;<sub><sup>*c\#*&ensp;</sup></sub>
 - Author: Toni Solarin-Sodara
 - Source: [coverlet-coverage/coverlet](https://github.com/coverlet-coverage/coverlet)
 - License: [MIT](#mit_coverlet)
@@ -81,10 +89,57 @@ For more information about this software, please see its [third-party notices](h
 ### VisualStudio.gitignore&emsp;<sub><sup>*ignore list*&ensp;</sup></sub>
 - Source: [github/gitignore](https://github.com/github/gitignore)
 - License: [Creative Commons Zero v1.0 Universal](#cc0-1.0)
+See [here](https://github.com/github/gitignore/blob/main/VisualStudio.gitignore) for the resource included in the repository.
+
+### VSTest&emsp;<sub><sup>*c\#*&ensp;</sup></sub>
+- Author: Microsoft Corporation
+- Source: [microsoft/vstest](https://github.com/microsoft/vstest)
+- License: [MIT](#mit_microsoft-2020)
+
+For more information about this software, please see its [third-party notices](https://github.com/microsoft/vstest/blob/main/THIRD-PARTY-NOTICES.txt).
+
+### Microsoft Test Framework&emsp;<sub><sup>*c\#*&ensp;</sup></sub>
+- Author: Microsoft Corporation
+- Source: [microsoft/testfx](https://github.com/microsoft/testfx)
+- License: [MIT](#mit_microsoft)
+
+### Json.NET&emsp;<sub><sup>*c\#*&ensp;</sup></sub>
+- Author: James Newton-King
+- Source: [JamesNK/Newtonsoft.Json](https://github.com/JamesNK/Newtonsoft.Json)
+- License: [MIT](#mit_newton-king)
+
+### NuGet Client Tools&emsp;<sub><sup>*c\#*&ensp;</sup></sub>
+- Author: .NET Foundation and Contributors
+- Source: [NuGet/NuGet.Client](https://github.com/NuGet/NuGet.Client)
+- License: [Apache license 2.0](#apache-2.0-nuget)
 
 Licenses
 --------
 This section contains licenses provided by third-party software vendors.
+
+________________________________________________________________________________
+
+_<a id='apache-2.0-nuget'>
+Apache license 2.0
+</a>_
+
+```
+Copyright (c) .NET Foundation and Contributors.
+
+All rights reserved.
+
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+these files except in compliance with the License. You may obtain a copy of the
+License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed
+under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+CONDITIONS OF ANY KIND, either express or implied. See the License for the
+specific language governing permissions and limitations under the License.
+```
 
 ________________________________________________________________________________
 
@@ -379,6 +434,102 @@ SOFTWARE.
 
 ________________________________________________________________________________
 
+_<a id='mit_microsoft'>
+MIT
+</a>_
+
+```
+The MIT License (MIT)
+
+Copyright (c) Microsoft Corporation
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+________________________________________________________________________________
+
+_<a id='mit_microsoft-2020'>
+MIT
+</a>_
+
+```
+The MIT License (MIT)
+
+Copyright (c) 2020 Microsoft Corporation
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+________________________________________________________________________________
+
+_<a id='mit_newton-king'>
+MIT
+</a>_
+
+```
+The MIT License (MIT)
+
+Copyright (c) 2006 James Newton-King
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+________________________________________________________________________________
+
 _<a id='mit_shepherd'>
 MIT
 </a>_
@@ -416,7 +567,7 @@ SIL Open Font License 1.1
 </a>_
 
 ```
-Copyright 2021 2021 The Joan Project Authors (https://github.com/PaoloBiagini/Joan)
+Copyright 2021 The Joan Project Authors (https://github.com/PaoloBiagini/Joan)
 
 This Font Software is licensed under the SIL Open Font License, Version 1.1.
 This license is copied below, and is also available with a FAQ at:

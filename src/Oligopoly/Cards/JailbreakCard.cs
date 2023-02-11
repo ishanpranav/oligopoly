@@ -1,10 +1,11 @@
 ﻿using System.Text.Json.Serialization;
 using MessagePack;
+using Oligopoly.Assets;
 
 namespace Oligopoly.Cards;
 
 [MessagePackObject]
-public class JailbreakCard : ICard
+public class JailbreakCard : IAppraisable, ICard
 {
     public JailbreakCard(string name)
     {
@@ -19,6 +20,12 @@ public class JailbreakCard : ICard
     /// <inheritdoc/>
     [Key(0)]
     public string Name { get; }
+
+    /// <inheritdoc/>
+    public int Appraise(Board board, Game game)
+    {
+        return Id.Appraise(board, game);
+    }
 
     /// <inheritdoc/>
     public void Draw(Player player, GameController controller)

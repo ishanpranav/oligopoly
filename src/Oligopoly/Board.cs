@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using MessagePack;
+using Oligopoly.Assets;
 using Oligopoly.Cards;
 using Oligopoly.Squares;
 

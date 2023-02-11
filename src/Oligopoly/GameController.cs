@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Oligopoly.Agents;
+using Oligopoly.Assets;
 using Oligopoly.Auctions;
-using Oligopoly.Cards;
 using Oligopoly.EventArgs;
 using Oligopoly.Squares;
 
@@ -81,7 +81,11 @@ public class GameController
             {
                 if (other.Cash < 0)
                 {
-                    Bankrupt(other);
+                    foreach (IAsset asset in other.GetAssets(Game))
+                    {
+                        asset.Discard(controller: this, other);
+                    }
+
                     Game.Players.Remove(other);
                 }
             }
@@ -230,7 +234,11 @@ public class GameController
         if (debtor.Cash < 0)
         {
             Untax(creditor, actualAmount);
-            Bankrupt(debtor, creditor);
+
+            foreach (IAsset asset in debtor.GetAssets(Game))
+            {
+                asset.Transfer(controller: this, debtor, creditor);
+            }
 
             return false;
         }
@@ -313,7 +321,7 @@ public class GameController
         }
     }
 
-    private void Unmortgage(Player player)
+    public void Unmortgage(Player player)
     {
         while (true)
         {
@@ -566,16 +574,15 @@ public class GameController
 
     public void Offer(Player player, Deed deed)
     {
-        PropertySquare propertySquare = (PropertySquare)Board.Squares[deed.SquareId - 1];
-
-        if (player.Agent.Offer(Game, player, propertySquare))
+        if (player.Agent.Offer(Game, player, deed))
         {
-            int cost = propertySquare.Appraise(Board, Game);
+            int cost = deed.Appraise(Board, Game);
 
             Tax(player, cost);
 
             if (player.Cash < 0)
             {
+                Warn(player, Warning.InsufficientCash);
                 Untax(player, cost);
             }
             else
@@ -586,14 +593,14 @@ public class GameController
             }
         }
 
-        Bid(deed, propertySquare);
+        Bid(player, deed, deed);
     }
 
-    public void Bid(Deed deed, IAsset asset)
+    public void Bid(Player player, Deed deed, IAsset asset)
     {
-        Bid bid = Auction.Perform(controller: this, asset);
+        Bid? bid = Auction.Perform(controller: this, player, asset);
 
-        if (bid.IsEmpty)
+        if (bid is null)
         {
             OnAuctionFailed(new AuctionEventArgs(asset));
         }
@@ -609,87 +616,76 @@ public class GameController
 
     private void Propose(Player player)
     {
-        if (!_proposing)
+        if (_proposing)
         {
-            _proposing = true;
-
-            while (_proposing)
-            {
-                DealProposal? proposal = player.Agent.Propose(Game, player);
-
-                if (proposal is null)
-                {
-                    _proposing = false;
-                }
-            }
+            return;
         }
-    }
 
-    private void Bankrupt(Player debtor, Player creditor)
-    {
-        foreach (KeyValuePair<int, Deed> indexedDeed in Game.Deeds)
+        _proposing = true;
+
+        while (true)
         {
-            if (indexedDeed.Value.PlayerId != debtor.Id)
+            Offer? offer = player.Agent.Propose(Game, player);
+
+            if (offer is null || offer.Player is null)
             {
-                continue;
+                break;
             }
 
-            if (indexedDeed.Value.Mortgaged)
+            if (offer.Player.Id == player.Id)
             {
-                Tax(creditor, (int)(Board.MortgageInterestRate * indexedDeed.Value.Appraise(Board, Game)));
+                Warn(player, Warning.SelfProposal);
 
-                indexedDeed.Value.PlayerId = creditor.Id;
+                break;
+            }
 
-                Unmortgage(creditor);
+            Console.WriteLine("{0} proposed deal to {1}: {2} for {3}", player, offer.Player, offer.Asset, offer.Amount);
+
+            bool response = offer.Player.Agent.Respond(Game, offer.Player);
+
+            if (!response)
+            {
+                Warn(player, Warning.ProposalRejected);
+
+                break;
+            }
+
+            int ownerId = offer.Asset.GetPlayerId(Game);
+
+            if (ownerId == player.Id)
+            {
+                if (!offer.Asset.Transfer(controller: this, player, offer.Player))
+                {
+                    break;
+                }
+
+                int amount = Tax(offer.Player, offer.Amount);
+
+                Untax(player, amount);
+            }
+            else if (ownerId == offer.Player.Id)
+            {
+                if (!offer.Asset.Transfer(controller: this, offer.Player, player))
+                {
+                    break;
+                }
+
+                int amount = Tax(player, offer.Amount);
+
+                Untax(offer.Player, amount);
             }
             else
             {
-                indexedDeed.Value.PlayerId = creditor.Id;
-            }
+                Warn(player, Warning.AccessDenied);
 
-            if (Board.Squares[indexedDeed.Key] is StreetSquare streetSquare)
-            {
-                while (indexedDeed.Value.Improvements > 0)
-                {
-                    indexedDeed.Value.Unimprove(Game, streetSquare);
-                }
+                break;
             }
         }
 
-        while (debtor.CardIds.TryDequeue(out CardId cardId))
-        {
-            creditor.CardIds.Enqueue(cardId);
-        }
+        _proposing = false;
     }
 
-    private void Bankrupt(Player player)
-    {
-        foreach (KeyValuePair<int, Deed> indexedDeed in Game.Deeds)
-        {
-            if (indexedDeed.Value.PlayerId != player.Id)
-            {
-                continue;
-            }
-
-            indexedDeed.Value.PlayerId = 0;
-            indexedDeed.Value.Mortgaged = false;
-
-            if (Board.Squares[indexedDeed.Key] is StreetSquare streetSquare)
-            {
-                while (indexedDeed.Value.Improvements > 0)
-                {
-                    indexedDeed.Value.Unimprove(Game, streetSquare);
-                }
-            }
-        }
-
-        while (player.CardIds.TryDequeue(out CardId cardId))
-        {
-            Game.Discard(cardId);
-        }
-    }
-
-    private void Warn(Player player, Warning warning)
+    public void Warn(Player player, Warning warning)
     {
         player.Agent.Warn(Game, player, warning);
 

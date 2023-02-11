@@ -1,6 +1,8 @@
-﻿namespace Oligopoly.Auctions;
+﻿using Oligopoly.Assets;
+
+namespace Oligopoly.Auctions;
 
 public interface IAuction
 {
-    Bid Perform(GameController controller, IAsset asset);
+    Bid? Perform(GameController controller, Player player, IAsset asset);
 }

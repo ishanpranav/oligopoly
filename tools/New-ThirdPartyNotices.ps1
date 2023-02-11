@@ -10,6 +10,12 @@ function Out-ThirdPartyNotices {
     Out-File -FilePath $path -Append -InputObject $value
 }
 
+function Escape-MarkdownString {
+    param ($value)
+
+    return $value.Replace('#', "\#")
+}
+
 $hashtable = @{}
 
 function Out-Dependencies {
@@ -18,10 +24,10 @@ function Out-Dependencies {
     foreach ($dependency in $dependencies | Sort-Object -Property "index") {
         Out-ThirdPartyNotices ""
         
-        $out = "### " + $dependency.title + "&emsp;<sub><sup>"
+        $out = "### " + (Escape-MarkdownString $dependency.title) + "&emsp;<sub><sup>"
         
         foreach ($format in $dependency.formats) {
-            $out += '*' + $format + "*&ensp;"
+            $out += '*' + (Escape-MarkdownString $format) + "*&ensp;"
         }
     
         Out-ThirdPartyNotices ($out + "</sup></sub>")
@@ -58,6 +64,10 @@ function Out-Dependencies {
         }
 
         Out-ThirdPartyNotices ("- License: [" + $license.title + "](#" + $dependency.license + ')')
+
+        if ($null -ne $dependency.resource) {
+            Out-ThirdPartyNotices ("See [here](" + $dependency.resource + ") for the resource included in the repository.")
+        }
 
         if ($null -ne $dependency.notices) {
             Out-ThirdPartyNotices ""

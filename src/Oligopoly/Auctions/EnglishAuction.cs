@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using Oligopoly.Assets;
 
 namespace Oligopoly.Auctions;
 
 public class EnglishAuction : IAuction
 {
     /// <inheritdoc/>
-    public Bid Perform(GameController controller, IAsset asset)
+    public Bid? Perform(GameController controller, Player player, IAsset asset)
     {
         Console.WriteLine("{0} offered for auction", asset);
 
@@ -16,7 +17,7 @@ public class EnglishAuction : IAuction
         while (bidders.Count > 0)
         {
             Player bidder = bidders.Dequeue();
-            int bid = bidder.Agent.Bid(controller.Game, bidder, asset, previousBid);
+            int bid = bidder.Agent.Bid(controller.Game, player, new Offer(bidder, asset, previousBid));
 
             Console.WriteLine("{0} bids {1}", bidder, bid);
 
@@ -35,6 +36,6 @@ public class EnglishAuction : IAuction
             }
         }
 
-        return Bid.Empty;
+        return null;
     }
 }

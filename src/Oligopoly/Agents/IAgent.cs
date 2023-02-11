@@ -1,4 +1,6 @@
-﻿namespace Oligopoly.Agents;
+﻿using Oligopoly.Assets;
+
+namespace Oligopoly.Agents;
 
 public interface IAgent
 {
@@ -11,8 +13,9 @@ public interface IAgent
     int Improve(Game game, Player player);
     int Unimprove(Game game, Player player);
     bool Offer(Game game, Player player, IAsset asset);
-    int Bid(Game game, Player player, IAsset asset, int bid);
-    DealProposal? Propose(Game game, Player player);
+    int Bid(Game game, Player player, Offer offer);
+    Offer? Propose(Game game, Player player);
+    bool Respond(Game game, Player player);
     JailbreakStrategy Jailbreak(Game game, Player player);
     void Warn(Game game, Player player, Warning warning);
 }

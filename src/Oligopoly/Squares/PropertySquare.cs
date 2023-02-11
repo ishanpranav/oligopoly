@@ -1,9 +1,10 @@
 ﻿using System;
 using MessagePack;
+using Oligopoly.Assets;
 
 namespace Oligopoly.Squares;
 
-public abstract class PropertySquare : IAsset, ISquare
+public abstract class PropertySquare : IAppraisable, ISquare
 {
     protected PropertySquare(string name)
     {

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using MessagePack;
+using Oligopoly.Assets;
 
 namespace Oligopoly.Squares;
 

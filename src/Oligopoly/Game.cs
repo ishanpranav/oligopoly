@@ -2,6 +2,7 @@
 using System.Linq;
 using MessagePack;
 using Nito.Collections;
+using Oligopoly.Assets;
 using Oligopoly.Cards;
 using Oligopoly.Dice;
 using Oligopoly.Shuffles;

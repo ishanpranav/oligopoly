@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using MessagePack;
 using Oligopoly.Agents;
-using Oligopoly.Cards;
+using Oligopoly.Assets;
 
 namespace Oligopoly;
 
 [MessagePackObject]
-public class Player : IAsset, IComparable, IComparable<Player>, IEquatable<Player>
+public class Player : IAppraisable, IComparable, IComparable<Player>, IEquatable<Player>
 {
     public Player(int id, string name) : this(id, name, new Queue<CardId>()) { }
 
@@ -42,17 +42,36 @@ public class Player : IAsset, IComparable, IComparable<Player>, IEquatable<Playe
     [Key(5)]
     public int Sentence { get; set; }
 
+    public IEnumerable<IAsset> GetAssets(Game game)
+    {
+        foreach (Deed deed in game.Deeds.Values)
+        {
+            if (deed.PlayerId != Id)
+            {
+                continue;
+            }
+
+            yield return deed;
+        }
+
+        CardId[] array = new CardId[CardIds.Count];
+
+        CardIds.CopyTo(array, arrayIndex: 0);
+
+        foreach (CardId cardId in array)
+        {
+            yield return cardId;
+        }
+    }
+
     /// <inheritdoc/>
     public int Appraise(Board board, Game game)
     {
         int result = Cash;
 
-        foreach (Deed deed in game.Deeds.Values)
+        foreach (IAsset asset in GetAssets(game))
         {
-            if (deed.PlayerId == Id)
-            {
-                result += deed.Appraise(board, game);
-            }
+            result += asset.Appraise(board, game);
         }
 
         return result;

@@ -1,5 +1,6 @@
-﻿using MessagePack;
-using Oligopoly.Auctions;
+﻿using System.Diagnostics.CodeAnalysis;
+using MessagePack;
+using Oligopoly.Assets;
 
 namespace Oligopoly.EventArgs;
 
@@ -21,5 +22,15 @@ public class AuctionEventArgs
     public IAsset Asset { get; }
 
     [Key(1)]
-    public Bid Bid { get; }
+    public Bid? Bid { get; }
+
+    [IgnoreMember]
+    [MemberNotNullWhen(true, nameof(Bid))]
+    public bool Succeeded
+    {
+        get
+        {
+            return Bid is not null;
+        }
+    }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using MessagePack;
+using Oligopoly.Assets;
 
 namespace Oligopoly.Squares;
 
@@ -31,19 +32,6 @@ public class StreetSquare : PropertySquare
     /// <inheritdoc/>
     public override int GetRent(int squareId, Player owner, GameController controller)
     {
-        /*if self.number_of_houses == 0:
-            rent = self.rents[0]
-            owner = self.owner
-            if self.property_set in owner.state.owned_unmortgaged_sets:
-                # The player owns the whole set, so the rent is doubled...
-                rent *= 2
-        else:
-            # The street has houses, so we find the rent for the number
-            # of houses there are...
-            rent = self.rents[self.number_of_houses]
-
-        return */
-
         Deed deed = controller.Game.Deeds[squareId - 1];
 
         if (deed.Improvements is 0)
