@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Oligopoly.Agents;
 using Oligopoly.Auctions;
 using Oligopoly.Cards;
@@ -348,7 +347,7 @@ public class GameController
             if (player.Cash < 0)
             {
                 Untax(player, amount);
-                Warn(player, Warning.InsufficientFunds);
+                Warn(player, Warning.InsufficientCash);
 
                 break;
             }
@@ -403,12 +402,12 @@ public class GameController
             {
                 deed.Unimprove(Game, streetSquare);
                 Untax(player, group.ImprovementCost);
-                Warn(player, Warning.InsufficientFunds);
+                Warn(player, Warning.InsufficientCash);
 
                 break;
             }
 
-            if (deed.Improvements >= streetSquare.Rents.Count - 1)
+            if (deed.Improvements >= streetSquare.Rents.Count)
             {
                 deed.Unimprove(Game, streetSquare);
                 Untax(player, group.ImprovementCost);

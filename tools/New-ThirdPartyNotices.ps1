@@ -10,19 +10,21 @@ function Out-ThirdPartyNotices {
     Out-File -FilePath $path -Append -InputObject $value
 }
 
+$hashtable = @{}
+
 function Out-Dependencies {
     param ($dependencies)
 
     foreach ($dependency in $dependencies | Sort-Object -Property "index") {
         Out-ThirdPartyNotices ""
         
-        $out = "__" + $dependency.title + "__&emsp;"
+        $out = "### " + $dependency.title + "&emsp;<sub><sup>"
         
         foreach ($format in $dependency.formats) {
-            $out += "*" + $format + "*&ensp;"
+            $out += '*' + $format + "*&ensp;"
         }
     
-        Out-ThirdPartyNotices $out
+        Out-ThirdPartyNotices ($out + "</sup></sub>")
     
         if ($null -ne $dependency.author) {
             Out-ThirdPartyNotices ("- Author: " + $dependency.author)
@@ -35,18 +37,33 @@ function Out-Dependencies {
         if ($dependency.source.StartsWith("https://github.com/")) {
             Out-ThirdPartyNotices ("- Source: [" + $dependency.source.Substring(19) + "](" + $dependency.source + ")")
         }
-        
-        $license = $json.licenses[$dependency.license]
-        $licenseTitleSeparatorIndex = $license.title.IndexOf(" - ")
-    
-        if ($licenseTitleSeparatorIndex -eq -1) {
-            $licenseTitle = $license.title
-        } else {
-            $licenseTitle = $license.title.Substring(0, $licenseTitleSeparatorIndex)
+
+        $index = $dependency.license.IndexOf('_')
+
+        if ($index -eq -1) {
+            $key = $dependency.license
         }
-    
-        Out-ThirdPartyNotices ("- License: [" + $licenseTitle + "](#" + $dependency.license + ')')
-    }    
+        else {
+            $key = $dependency.license.SubString(0, $index)
+        }
+
+        $license = $json.licenses[$key]
+
+        if ($null -eq $dependency.copyright) {
+            $dependency.copyright = ""
+        }
+
+        if (-Not ($hashtable.ContainsKey($dependency.license))) {
+            $hashtable.Add($dependency.license, [string]::Format($license.text, $dependency.copyright))
+        }
+
+        Out-ThirdPartyNotices ("- License: [" + $license.title + "](#" + $dependency.license + ')')
+
+        if ($null -ne $dependency.notices) {
+            Out-ThirdPartyNotices ""
+            Out-ThirdPartyNotices ("For more information about this software, please see its [third-party notices](" + $dependency.notices + ").")
+        }
+    }
 
     Out-ThirdPartyNotices ""
 }
@@ -67,7 +84,8 @@ For more details, please see the [license](LICENSE.txt).
 This software uses third-party libraries or other resources that may be
 distributed under licenses different than the software.
 
-The attached notices are provided for informational purposes only.
+The attached notices are provided for informational purposes only. Please
+create a new GitHub issue if a required notice is missing. 
 
 Dependencies
 ------------
@@ -81,24 +99,32 @@ inspired by third-party open-source software."
 Out-Dependencies $json.references
 Out-ThirdPartyNotices "Resources
 ---------
-This section contains attributions for helpful resources used to assist in the
+This section contains attributions for helpful resources that assisted in the
 development of this software."
 Out-Dependencies $json.tools
 Out-ThirdPartyNotices "Licenses
 --------
 This section contains licenses provided by third-party software vendors."
 
-foreach ($key in $json.licenses.Keys | Sort-Object) {
-    $license = $json.licenses[$key]
+foreach ($key in $hashtable.Keys | Sort-Object) {
+    $licenseText = $hashtable[$key]
+    $index = $key.IndexOf('_')
+
+    if ($index -eq -1) {
+        $license = $key
+    }
+    else {
+        $license = $key.Substring(0, $index)
+    }
 
     Out-ThirdPartyNotices ""
     Out-ThirdPartyNotices "________________________________________________________________________________"
     Out-ThirdPartyNotices ""
     Out-ThirdPartyNotices ("_<a id='" + $key + "'>")
-    Out-ThirdPartyNotices $license.title
+    Out-ThirdPartyNotices $json.licenses[$license].title
     Out-ThirdPartyNotices "</a>_"
     Out-ThirdPartyNotices ""
     Out-ThirdPartyNotices "``````"
-    Out-ThirdPartyNotices $license.text
+    Out-ThirdPartyNotices $licenseText
     Out-ThirdPartyNotices "``````"
 }

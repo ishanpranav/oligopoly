@@ -12,59 +12,73 @@ For more details, please see the [license](LICENSE.txt).
 This software uses third-party libraries or other resources that may be
 distributed under licenses different than the software.
 
-The attached notices are provided for informational purposes only.
+The attached notices are provided for informational purposes only. Please
+create a new GitHub issue if a required notice is missing. 
 
 Dependencies
 ------------
 This section contains notices for binary dependencies redistributed alongside
 the application.
 
-__Joan__&emsp;*typeface*&ensp;
+### Joan&emsp;<sub><sup>*typeface*&ensp;</sup></sub>
 - Author: The Joan Project Authors
 - Designer: Paolo Biagini
 - Source: [PaoloBiagini/Joan](https://github.com/PaoloBiagini/Joan)
-- License: [SIL Open Font License 1.1](#ofl-1.1-joan-project-authors-2021)
+- License: [SIL Open Font License 1.1](#ofl-1.1_biagini)
 
-__Deque__&emsp;*c#*&ensp;
+### Deque&emsp;<sub><sup>*c#*&ensp;</sup></sub>
+- Author: Stephen Cleary
 - Source: [StephenCleary/Deque](https://github.com/StephenCleary/Deque)
-- License: [MIT](#mit-stephen-cleary-2015)
+- License: [MIT](#mit_cleary)
 
-__.NET Runtime__&emsp;*c#*&ensp;*c++*&ensp;*c*&ensp;
+### .NET Runtime&emsp;<sub><sup>*c#*&ensp;*c++*&ensp;*c*&ensp;</sup></sub>
+- Author: .NET Foundation and Contributors
 - Source: [dotnet/runtime](https://github.com/dotnet/runtime)
-- License: [MIT](#mit-dotnet)
+- License: [MIT](#mit_dotnet)
 
-__Windows Presentation Foundation (WPF)__&emsp;*c#*&ensp;
+### Windows Presentation Foundation (WPF)&emsp;<sub><sup>*c#*&ensp;</sup></sub>
+- Author: .NET Foundation and Contributors
 - Source: [dotnet/wpf](https://github.com/dotnet/wpf)
-- License: [MIT](#mit-dotnet)
+- License: [MIT](#mit_dotnet)
 
-__Microsoft.Build (MSBuild)__&emsp;*c#*&ensp;
+### Microsoft.Build (MSBuild)&emsp;<sub><sup>*c#*&ensp;</sup></sub>
+- Author: .NET Foundation and Contributors
 - Source: [dotnet/msbuild](https://github.com/dotnet/msbuild)
-- License: [MIT](#mit-dotnet)
+- License: [MIT](#mit_dotnet)
 
-__MessagePack for C#__&emsp;*c#*&ensp;
+### MessagePack for C#&emsp;<sub><sup>*c#*&ensp;</sup></sub>
+- Author: Yoshifumi Kawai
 - Source: [neuecc/MessagePack-CSharp](https://github.com/neuecc/MessagePack-CSharp)
-- License: [MIT](#mit-yoshifumi-kawai-etal-2017)
+- License: [MIT](#mit_kawai)
 
-__lz4net__&emsp;*c#*&ensp;
+### lz4net&emsp;<sub><sup>*c#*&ensp;</sup></sub>
+- Author: Milosz Krajewski
 - Source: [MiloszKrajewski/lz4net](https://github.com/MiloszKrajewski/lz4net)
-- License: [BSD 2-Clause "Simplified" License](#bsd-2-clause-milosz-krajewski-2013-2017)
+- License: [BSD 2-Clause "Simplified" License](#bsd-2-clause_krajewski)
 
 References
 ----------
 This section contains references to parts of the source code based on or
 inspired by third-party open-source software.
 
-__Monopyly__&emsp;*python*&ensp;
+### Monopyly&emsp;<sub><sup>*python*&ensp;</sup></sub>
 - Author: Richard Shepherd
 - Source: [richard-shepherd/monopyly](https://github.com/richard-shepherd/monopyly)
-- License: [MIT](#mit-richard-shepherd-2013)
+- License: [MIT](#mit_shepherd)
 
 Resources
 ---------
-This section contains attributions for helpful resources used to assist in the
+This section contains attributions for helpful resources that assisted in the
 development of this software.
 
-__VisualStudio.gitignore__&emsp;*ignore list*&ensp;
+### Coverlet&emsp;<sub><sup>*c#*&ensp;</sup></sub>
+- Author: Toni Solarin-Sodara
+- Source: [coverlet-coverage/coverlet](https://github.com/coverlet-coverage/coverlet)
+- License: [MIT](#mit_coverlet)
+
+For more information about this software, please see its [third-party notices](https://github.com/coverlet-coverage/coverlet/blob/a014bf0cd0fdb5a65a24df393d254ae98f7f45f9/THIRD-PARTY-NOTICES.txt).
+
+### VisualStudio.gitignore&emsp;<sub><sup>*ignore list*&ensp;</sup></sub>
 - Source: [github/gitignore](https://github.com/github/gitignore)
 - License: [Creative Commons Zero v1.0 Universal](#cc0-1.0)
 
@@ -74,8 +88,8 @@ This section contains licenses provided by third-party software vendors.
 
 ________________________________________________________________________________
 
-_<a id='bsd-2-clause-milosz-krajewski-2013-2017'>
-BSD 2-Clause "Simplified" License - Milosz Krajewski
+_<a id='bsd-2-clause_krajewski'>
+BSD 2-Clause "Simplified" License
 </a>_
 
 ```
@@ -237,8 +251,72 @@ express Statement of Purpose.
 
 ________________________________________________________________________________
 
-_<a id='mit-dotnet'>
-MIT - .NET Foundation and Contributors
+_<a id='mit_cleary'>
+MIT
+</a>_
+
+```
+The MIT License (MIT)
+
+Copyright (c) 2015 Stephen Cleary
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+________________________________________________________________________________
+
+_<a id='mit_coverlet'>
+MIT
+</a>_
+
+```
+The MIT License (MIT)
+
+Copyright (c) 2018 Toni Solarin-Sodara
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+________________________________________________________________________________
+
+_<a id='mit_dotnet'>
+MIT
 </a>_
 
 ```
@@ -269,8 +347,40 @@ SOFTWARE.
 
 ________________________________________________________________________________
 
-_<a id='mit-richard-shepherd-2013'>
-MIT - Richard Shepherd
+_<a id='mit_kawai'>
+MIT
+</a>_
+
+```
+The MIT License (MIT)
+
+Copyright (c) 2017 Yoshifumi Kawai and contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+________________________________________________________________________________
+
+_<a id='mit_shepherd'>
+MIT
 </a>_
 
 ```
@@ -278,65 +388,7 @@ The MIT License (MIT)
 
 Copyright (c) 2013 Richard Shepherd
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of
-this software and associated documentation files (the "Software"), to deal in
-the Software without restriction, including without limitation the rights to
-use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
-the Software, and to permit persons to whom the Software is furnished to do so,
-subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
-FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-```
-
-________________________________________________________________________________
-
-_<a id='mit-stephen-cleary-2015'>
-MIT - Stephen Cleary
-</a>_
-
-```
-The MIT License (MIT)
-
-Copyright (c) 2015 Stephen Cleary
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
-```
-
-________________________________________________________________________________
-
-_<a id='mit-yoshifumi-kawai-etal-2017'>
-MIT - Yoshifumi Kawai and Contributors
-</a>_
-
-```
-MIT License
-
-Copyright (c) 2017 Yoshifumi Kawai and contributors
+All rights reserved.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -359,12 +411,12 @@ SOFTWARE.
 
 ________________________________________________________________________________
 
-_<a id='ofl-1.1-joan-project-authors-2021'>
-SIL Open Font License 1.1 - The Joan Project Authors
+_<a id='ofl-1.1_biagini'>
+SIL Open Font License 1.1
 </a>_
 
 ```
-Copyright 2021 The Joan Project Authors (https://github.com/PaoloBiagini/Joan)
+Copyright 2021 2021 The Joan Project Authors (https://github.com/PaoloBiagini/Joan)
 
 This Font Software is licensed under the SIL Open Font License, Version 1.1.
 This license is copied below, and is also available with a FAQ at:

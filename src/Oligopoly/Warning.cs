@@ -5,7 +5,7 @@ public enum Warning
     None,
     AccessDenied,
     GroupAccessDenied,
-    InsufficientFunds,
+    InsufficientCash,
     InsufficientCards,
     Mortgaged,
     GroupMortgaged,

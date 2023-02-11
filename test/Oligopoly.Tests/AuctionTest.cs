@@ -15,8 +15,12 @@ public class AuctionTest
         GameController controller = new GameController(board, game);
         Player first = controller.AddPlayer("Mark");
         Player second = controller.AddPlayer("John");
-        TestAgent firstAgent = new TestAgent(nextBid: 150);
-        TestAgent secondAgent = new TestAgent(nextBid: 175);
+        TestAgent firstAgent = TestAgent
+            .Create()
+            .ThenBid(150, 150);
+        TestAgent secondAgent = TestAgent
+            .Create()
+            .ThenBid(175, 175);
         ISquare square = board.Squares[19];
         Deed deed = game.Deeds[19];
 
@@ -46,15 +50,13 @@ public class AuctionTest
         Player first = controller.AddPlayer("Mark");
         Player second = controller.AddPlayer("John");
         Player third = controller.AddPlayer("Allison");
-        TestAgent firstAgent = new TestAgent(nextBid: 150);
-        TestAgent secondAgent = new TestAgent(nextBid: 0);
-        TestAgent thirdAgent = new TestAgent(nextBid: 0);
+        TestAgent firstAgent = TestAgent
+            .Create()
+            .ThenBid(150, 150);
         Deed deed = game.Deeds[19];
 
         first.Agent = firstAgent;
         first.SquareId = 11;
-        second.Agent = secondAgent;
-        third.Agent = thirdAgent;
 
         controller.Start();
         controller.Move(first);
@@ -73,9 +75,15 @@ public class AuctionTest
         Player first = controller.AddPlayer("Mark");
         Player second = controller.AddPlayer("John");
         Player third = controller.AddPlayer("Allison");
-        TestAgent firstAgent = new TestAgent(nextBid: 200);
-        TestAgent secondAgent = new TestAgent(nextBid: 400);
-        TestAgent thirdAgent = new TestAgent(nextBid: 300);
+        TestAgent firstAgent = TestAgent
+            .Create()
+            .ThenBid(200, 200);
+        TestAgent secondAgent = TestAgent
+            .Create()
+            .ThenBid(400, 400);
+        TestAgent thirdAgent = TestAgent
+            .Create()
+            .ThenBid(300, 300);
         Deed deed = game.Deeds[19];
 
         first.Agent = firstAgent;

@@ -61,7 +61,7 @@ public class Agent : IAgent
     }
 
     /// <inheritdoc/>
-    public int Mortgage(Game game, Player player)
+    public virtual int Mortgage(Game game, Player player)
     {
         Console.WriteLine("<< Mortgage [0]");
 
@@ -69,7 +69,7 @@ public class Agent : IAgent
     }
 
     /// <inheritdoc/>
-    public int Unmortgage(Game game, Player player)
+    public virtual int Unmortgage(Game game, Player player)
     {
         Console.WriteLine("<< Unmortgage [0]");
 
@@ -77,7 +77,7 @@ public class Agent : IAgent
     }
 
     /// <inheritdoc/>
-    public int Improve(Game game, Player player)
+    public virtual int Improve(Game game, Player player)
     {
         Console.WriteLine("<< Improve [0]");
 
@@ -85,7 +85,7 @@ public class Agent : IAgent
     }
 
     /// <inheritdoc/>
-    public int Unimprove(Game game, Player player)
+    public virtual int Unimprove(Game game, Player player)
     {
         Console.WriteLine("<< Unimprove [0]");
 
@@ -93,7 +93,7 @@ public class Agent : IAgent
     }
 
     /// <inheritdoc/>
-    public bool Offer(Game game, Player player, IAsset asset)
+    public virtual bool Offer(Game game, Player player, IAsset asset)
     {
         Console.WriteLine("<< Offer [FALSE] for {0}", asset);
 
@@ -125,7 +125,7 @@ public class Agent : IAgent
     }
 
     /// <inheritdoc/>
-    public void Warn(Game game, Player player, Warning warning)
+    public virtual void Warn(Game game, Player player, Warning warning)
     {
         throw new InvalidOperationException(warning.ToString());
     }
