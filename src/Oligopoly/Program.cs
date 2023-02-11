@@ -13,8 +13,8 @@ internal static class Program
 
     private static void Main()
     {
-        const string boardSourcePath = "../../../../../data/board.json";
-        const string boardPath = "../../../../../data/board.bin";
+        const string boardSourcePath = "../../../../../data/board-california.json";
+        const string boardPath = "../../../../../data/board-california.bin";
         const string gamePath = "../../../../../data/game.bin";
         const string gameSourcePath = "../../../../../data/game.json";
 

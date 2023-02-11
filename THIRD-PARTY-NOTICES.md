@@ -33,6 +33,10 @@ __.NET Runtime__&emsp;*c#*&ensp;*c++*&ensp;*c*&ensp;
 - Source: [dotnet/runtime](https://github.com/dotnet/runtime)
 - License: [MIT](#mit-dotnet)
 
+__Windows Presentation Foundation (WPF)__&emsp;*c#*&ensp;
+- Source: [dotnet/wpf](https://github.com/dotnet/wpf)
+- License: [MIT](#mit-dotnet)
+
 __Microsoft.Build (MSBuild)__&emsp;*c#*&ensp;
 - Source: [dotnet/msbuild](https://github.com/dotnet/msbuild)
 - License: [MIT](#mit-dotnet)

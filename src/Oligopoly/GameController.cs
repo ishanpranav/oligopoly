@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Oligopoly.Agents;
 using Oligopoly.Auctions;
 using Oligopoly.Cards;
@@ -66,6 +67,7 @@ public class GameController
         Player[] players = new Player[Game.Players.Count];
 
         Game.Players.CopyTo(players, arrayIndex: 0);
+        Array.Sort(players);
 
         foreach (Player player in players)
         {

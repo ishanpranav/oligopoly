@@ -21,7 +21,7 @@
     },
     {
       "$type": "street",
-      "name": "Old Kent Road",
+      "name": "Merced",
       "cost": 60,
       "rents": [ 2, 10, 30, 90, 160, 250 ],
       "group": 1
@@ -32,7 +32,7 @@
     },
     {
       "$type": "street",
-      "name": "Whitechapel Road",
+      "name": "Fresno",
       "cost": 60,
       "rents": [ 4, 20, 60, 180, 320, 450 ],
       "group": 1
@@ -44,11 +44,11 @@
     },
     {
       "$type": "railroad",
-      "name": "King's Cross Station"
+      "name": "Ontario Airport"
     },
     {
       "$type": "street",
-      "name": "The Angel Islington",
+      "name": "San Bernardino",
       "cost": 100,
       "rents": [ 6, 30, 90, 270, 400, 550 ],
       "group": 2
@@ -59,54 +59,54 @@
     },
     {
       "$type": "street",
-      "name": "Euston Road",
+      "name": "Ontario",
       "cost": 100,
       "rents": [ 6, 30, 90, 270, 400, 550 ],
       "group": 2
     },
     {
       "$type": "street",
-      "name": "Pentonville Road",
+      "name": "Riverside",
       "cost": 120,
       "rents": [ 8, 40, 100, 300, 450, 600 ],
       "group": 2
     },
     {
       "$type": "jail",
-      "name": "Jail"
+      "name": "Alcatraz"
     },
     {
       "$type": "street",
-      "name": "Pall Mall",
+      "name": "Sacramento",
       "cost": 140,
       "rents": [ 10, 50, 150, 450, 625, 750 ],
       "group": 3
     },
     {
       "$type": "utility",
-      "name": "Electric Company"
+      "name": "PG&E"
     },
     {
       "$type": "street",
-      "name": "Whitehall",
+      "name": "Fairfield",
       "cost": 140,
       "rents": [ 10, 50, 150, 450, 625, 750 ],
       "group": 3
     },
     {
       "$type": "street",
-      "name": "Northumberland Avenue",
+      "name": "Davis",
       "cost": 160,
       "rents": [ 12, 60, 180, 500, 700, 900 ],
       "group": 3
     },
     {
       "$type": "railroad",
-      "name": "Marylebone Station"
+      "name": "Los Angeles Airport"
     },
     {
       "$type": "street",
-      "name": "Bow Street",
+      "name": "Burbank",
       "cost": 180,
       "rents": [ 14, 70, 200, 550, 750, 950 ],
       "group": 4
@@ -117,25 +117,25 @@
     },
     {
       "$type": "street",
-      "name": "Marlborough Street",
+      "name": "Ventura",
       "cost": 180,
       "rents": [ 14, 70, 200, 550, 750, 950 ],
       "group": 4
     },
     {
       "$type": "street",
-      "name": "Vine Street",
+      "name": "Los Angeles",
       "cost": 200,
       "rents": [ 16, 80, 220, 600, 800, 1000 ],
       "group": 4
     },
     {
       "$type": "none",
-      "name": "Free Parking"
+      "name": "Visiting San Diego"
     },
     {
       "$type": "street",
-      "name": "Strand",
+      "name": "Santa Barbara",
       "cost": 220,
       "rents": [ 18, 90, 250, 700, 875, 1050 ],
       "group": 5
@@ -146,61 +146,61 @@
     },
     {
       "$type": "street",
-      "name": "Fleet Street",
+      "name": "Huntington Beach",
       "cost": 220,
       "rents": [ 18, 90, 250, 700, 875, 1050 ],
       "group": 5
     },
     {
       "$type": "street",
-      "name": "Trafalgar Square",
+      "name": "Santa Monica",
       "cost": 240,
       "rents": [ 20, 100, 300, 750, 925, 1100 ],
       "group": 5
     },
     {
       "$type": "railroad",
-      "name": "Fenchurch Street Station"
+      "name": "Oakland Airport"
     },
     {
       "$type": "street",
-      "name": "Leicester Square",
+      "name": "Santa Cruz",
       "cost": 260,
       "rents": [ 22, 110, 330, 800, 975, 1150 ],
       "group": 6
     },
     {
       "$type": "street",
-      "name": "Coventry Street",
+      "name": "Monterey",
       "cost": 260,
       "rents": [ 22, 110, 330, 800, 975, 1150 ],
       "group": 6
     },
     {
       "$type": "utility",
-      "name": "Water Works"
+      "name": "Comcast"
     },
     {
       "$type": "street",
-      "name": "Piccadilly",
+      "name": "Pebble Beach",
       "cost": 280,
       "rents": [ 22, 120, 360, 850, 1025, 1200 ],
       "group": 6
     },
     {
       "$type": "police",
-      "name": "Go to Jail"
+      "name": "Go to Alcatraz"
     },
     {
       "$type": "street",
-      "name": "Regent Street",
+      "name": "Laguna Beach",
       "cost": 300,
       "rents": [ 26, 130, 390, 900, 1100, 1275 ],
       "group": 7
     },
     {
       "$type": "street",
-      "name": "Oxford Street",
+      "name": "Beverly Hills",
       "cost": 300,
       "rents": [ 26, 130, 390, 900, 1100, 1275 ],
       "group": 7
@@ -211,14 +211,14 @@
     },
     {
       "$type": "street",
-      "name": "Bond Street",
+      "name": "Malibu",
       "cost": 320,
       "rents": [ 28, 150, 450, 1000, 1200, 1400 ],
       "group": 7
     },
     {
       "$type": "railroad",
-      "name": "Liverpool Street Station"
+      "name": "San Francisco Airport"
     },
     {
       "$type": "card",
@@ -226,19 +226,19 @@
     },
     {
       "$type": "street",
-      "name": "Park Lane",
+      "name": "San Mateo",
       "cost": 350,
       "rents": [ 35, 175, 500, 1100, 1300, 1500 ],
       "group": 8
     },
     {
       "$type": "tax",
-      "name": "Super Tax",
+      "name": "Luxury Tax",
       "amount": 100
     },
     {
       "$type": "street",
-      "name": "Mayfair",
+      "name": "San Francisco",
       "cost": 400,
       "rents": [ 50, 200, 600, 1400, 1700, 2000 ],
       "group": 8

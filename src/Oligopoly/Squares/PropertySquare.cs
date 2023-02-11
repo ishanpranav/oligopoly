@@ -41,20 +41,20 @@ public abstract class PropertySquare : IAsset, ISquare
         if (deed.PlayerId is 0)
         {
             controller.Offer(player, deed);
+
+            return;
         }
-        else
+
+        foreach (Player owner in controller.Game.Players)
         {
-            foreach (Player owner in controller.Game.Players)
+            if (deed.PlayerId == owner.Id)
             {
-                if (deed.PlayerId == owner.Id)
-                {
-                    int rent = GetRent(player.SquareId, owner, controller);
+                int rent = GetRent(player.SquareId, owner, controller);
 
-                    Console.WriteLine("{0} must pay rent of £{1} to {2}", player, rent, owner);
-                    controller.Gift(player, owner, rent);
+                Console.WriteLine("{0} must pay rent of £{1} to {2}", player, rent, owner);
+                controller.Gift(player, owner, rent);
 
-                    break;
-                }
+                break;
             }
         }
     }

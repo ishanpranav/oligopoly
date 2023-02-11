@@ -38,6 +38,13 @@
       "index": "dotnet"
     },
     {
+      "title": "Windows Presentation Foundation (WPF)",
+      "formats": [ "c#" ],
+      "source": "https://github.com/dotnet/wpf",
+      "license": "mit-dotnet",
+      "index": "dotnet"
+    },
+    {
       "title": "MessagePack for C#",
       "formats": [ "c#" ],
       "source": "https://github.com/neuecc/MessagePack-CSharp",
