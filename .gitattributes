@@ -2,5 +2,6 @@
 # Licensed under the MIT License.
 
 * text=auto
+*.json -linguist-detectable
 *.xaml linguist-detectable
 THIRD-PARTY-NOTICES.md linguist-generated
