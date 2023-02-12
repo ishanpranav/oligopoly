@@ -6,25 +6,25 @@ namespace Oligopoly.Tests;
 [TestClass]
 public class StreetSquareTest
 {
-    [DataRow(21, 2, 5, 1478, 1522, 28, DisplayName = "Advance (1)")]
-    [DataRow(26, 4, 5, 1444, 1556, 32, 33, 35, DisplayName = "Advance (2)")]
+    [DataRow(21, 2, 5, 28, 1478, 1522, 28, DisplayName = "Advance (1)")]
+    [DataRow(26, 4, 5, 35, 1444, 1556, 32, 33, 35, DisplayName = "Advance (2)")]
     [DataTestMethod]
-    public void TestAdvance(int startSquare, int first, int second, int playerCash, int ownerCash, params int[] squareIds)
+    public void TestAdvance(int squareId, int first, int second, int destinationSquareId, int playerCash, int ownerCash, params int[] squareIds)
     {
         Controller controller = Factory.CreateController(first, second, 6, 4);
         Player player = controller.AddPlayer("Mark");
         Player owner = controller.AddPlayer("John");
 
-        player.SquareId = startSquare;
+        player.SquareId = squareId;
 
-        foreach (int squareId in squareIds)
+        foreach (int id in squareIds)
         {
-            controller.Game.Deeds[squareId - 1].PlayerId = 2;
+            controller.Game.Deeds[id - 1].PlayerId = 2;
         }
 
         controller.Start();
         controller.MoveNext();
-        Assert.AreEqual(startSquare + first + second, player.SquareId);
+        Assert.AreEqual(destinationSquareId, player.SquareId);
         Assert.AreEqual(playerCash, player.Cash);
         Assert.AreEqual(ownerCash, owner.Cash);
     }

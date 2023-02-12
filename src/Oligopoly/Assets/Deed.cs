@@ -40,13 +40,22 @@ public class Deed : IAsset
             return;
         }
 
+        PlayerId = recipient.Id;
+
         if (Mortgaged)
         {
-            controller.Tax(recipient, (int)(controller.Board.MortgageInterestRate * Appraise(controller.Board, controller.Game)));
+            int amount = (int)(controller.Board.MortgageLoanProportion * controller.Board.MortgageInterestRate * Appraise(controller.Board, controller.Game));
+
+            controller.Tax(recipient, amount);
 
             PlayerId = recipient.Id;
 
             controller.Unmortgage(recipient);
+
+            if (!Mortgaged)
+            {
+                controller.Untax(recipient, amount);
+            }
         }
         else
         {

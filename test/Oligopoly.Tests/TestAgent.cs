@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Oligopoly.Agents;
 using Oligopoly.Assets;
+using Oligopoly.EventArgs;
 
 namespace Oligopoly.Tests;
 
 internal sealed class TestAgent : IAgent
 {
     private readonly Queue<int> _mortgages = new Queue<int>();
+    private readonly Queue<int> _unmortgages = new Queue<int>();
     private readonly Queue<int> _improvements = new Queue<int>();
     private readonly Queue<int> _unimprovements = new Queue<int>();
     private readonly Queue<bool> _offers = new Queue<bool>();
@@ -41,6 +43,18 @@ internal sealed class TestAgent : IAgent
         }
 
         _mortgages.Enqueue(0);
+
+        return this;
+    }
+
+    public TestAgent ThenUnmortgage(params int[] values)
+    {
+        foreach (int value in values)
+        {
+            _unmortgages.Enqueue(value);
+        }
+
+        _unmortgages.Enqueue(0);
 
         return this;
     }
@@ -128,6 +142,12 @@ internal sealed class TestAgent : IAgent
     public void Connect(Controller controller)
     {
         _board = controller.Board;
+        controller.Ended += OnControllerEnded;
+    }
+
+    private void OnControllerEnded(object? sender, PlayerEventArgs e)
+    {
+        Assert.AreEqual(0, _warnings.Count);
     }
 
     /// <inheritdoc/>
@@ -143,7 +163,11 @@ internal sealed class TestAgent : IAgent
     /// <inheritdoc/>
     public int Unmortgage(Game game, Player player)
     {
-        return 0;
+        _unmortgages.TryDequeue(out int id);
+
+        Console.WriteLine("<< Unmortgage [{0}]", id);
+
+        return id;
     }
 
     /// <inheritdoc/>

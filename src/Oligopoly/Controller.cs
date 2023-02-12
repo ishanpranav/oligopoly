@@ -359,7 +359,7 @@ public class Controller
                 break;
             }
 
-            int amount = (int)((Board.MortgageLoanProportion + Board.MortgageInterestRate) * deed.Appraise(Board, Game));
+            int amount = (int)(Board.MortgageLoanProportion * deed.Appraise(Board, Game) * (1 + Board.MortgageInterestRate));
 
             Tax(player, amount);
 
@@ -371,7 +371,7 @@ public class Controller
                 break;
             }
 
-            deed.Mortgaged = true;
+            deed.Mortgaged = false;
         }
     }
 
@@ -525,6 +525,13 @@ public class Controller
             }
 
             Deed deed = Game.Deeds[id - 1];
+
+            if (deed.PlayerId != player.Id)
+            {
+                Warn(player, Warning.AccessDenied);
+
+                break;
+            }
 
             if (deed.Improvements <= 0)
             {

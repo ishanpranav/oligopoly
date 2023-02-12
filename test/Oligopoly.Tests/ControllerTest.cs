@@ -7,33 +7,20 @@ namespace Oligopoly.Tests;
 [TestClass]
 public class ControllerTest
 {
-    [TestMethod("Salary (1)")]
-    public void TestSalary()
+    [DataRow(38, 1, 2, 1, DisplayName = "Salary (1)")]
+    [DataRow(40, 5, 6, 11, DisplayName = "Salary (2)")]
+    [DataTestMethod]
+    public void TestSalary(int squareId, int first, int second, int destinationSquareId)
     {
-        Controller controller = Factory.CreateController(5, 6, 6, 4);
+        Controller controller = Factory.CreateController(first, second, 6, 4);
         Player player = controller.AddPlayer("Mark");
 
-        player.SquareId = 40;
+        player.SquareId = squareId;
 
         controller.AddPlayer("John");
         controller.Start();
         controller.MoveNext();
-        Assert.AreEqual(11, player.SquareId);
-        Assert.AreEqual(1700, player.Cash);
-    }
-
-    [TestMethod("Salary (2)")]
-    public void TestSalaryAdvance()
-    {
-        Controller controller = Factory.CreateController(1, 2, 4, 6);
-        Player player = controller.AddPlayer("Mark");
-
-        player.SquareId = 38;
-
-        controller.AddPlayer("John");
-        controller.Start();
-        controller.MoveNext();
-        Assert.AreEqual(1, player.SquareId);
+        Assert.AreEqual(destinationSquareId, player.SquareId);
         Assert.AreEqual(1700, player.Cash);
     }
 
@@ -75,7 +62,7 @@ public class ControllerTest
 
         controller.Start();
         controller.MoveNext();
-        Assert.AreEqual(2278, first.Cash);
+        Assert.AreEqual(2289, first.Cash);
         Assert.IsFalse(game.Players.Contains(second));
         Assert.AreEqual(0, firstOrange.Improvements);
         Assert.AreEqual(1, firstOrange.PlayerId);
@@ -132,12 +119,47 @@ public class ControllerTest
     }
 
     [TestMethod("Mortgage (2)")]
+    public void TestMortgageMortgaged()
+    {
+        Controller controller = Factory.CreateController(1, 2, 6, 4);
+        Game game = controller.Game;
+        Player player = controller.AddPlayer("Mark");
+        Deed railroad = game.Deeds[5];
+        Deed firstBlue = game.Deeds[37];
+        Deed firstOrange = game.Deeds[16];
+        Deed secondOrange = game.Deeds[18];
+
+        player.Agent = TestAgent
+            .Create()
+            .ThenMortgage(17, 6, 19)
+            .ThenExpect(Warning.Mortgaged);
+        player.SquareId = 36;
+        railroad.PlayerId = 1;
+        firstBlue.PlayerId = 1;
+        firstOrange.PlayerId = 1;
+        secondOrange.PlayerId = 1;
+        secondOrange.Mortgaged = true;
+
+        controller.AddPlayer("John");
+        controller.Start();
+        Assert.IsFalse(railroad.Mortgaged);
+        Assert.IsFalse(firstBlue.Mortgaged);
+        Assert.IsFalse(firstOrange.Mortgaged);
+        Assert.IsTrue(secondOrange.Mortgaged);
+        controller.MoveNext();
+        Assert.AreEqual(1590, player.Cash);
+        Assert.IsTrue(railroad.Mortgaged);
+        Assert.IsFalse(firstBlue.Mortgaged);
+        Assert.IsTrue(firstOrange.Mortgaged);
+        Assert.IsTrue(secondOrange.Mortgaged);
+    }
+
+    [TestMethod("Mortgage (3)")]
     public void TestMortgageAccessDenied()
     {
         Controller controller = Factory.CreateController(1, 2, 6, 4, 6, 4, 6, 4);
         Game game = controller.Game;
         Player first = controller.AddPlayer("Mark");
-        Player second = controller.AddPlayer("John");
         Deed firstOrange = game.Deeds[16];
         Deed secondOrange = game.Deeds[18];
         Deed thirdOrange = game.Deeds[19];
@@ -159,11 +181,11 @@ public class ControllerTest
         secondRed.PlayerId = 2;
         thirdRed.PlayerId = 3;
 
+        controller.AddPlayer("John");
         controller.Start();
         controller.MoveNext();
         controller.MoveNext();
         Assert.AreEqual(1690, first.Cash);
-        Assert.AreEqual(1500, second.Cash);
         Assert.IsTrue(firstOrange.Mortgaged);
         Assert.IsFalse(secondOrange.Mortgaged);
         Assert.IsFalse(thirdOrange.Mortgaged);
@@ -172,7 +194,7 @@ public class ControllerTest
         Assert.IsFalse(thirdRed.Mortgaged);
     }
 
-    [TestMethod("Mortgage (3)")]
+    [TestMethod("Mortgage (4)")]
     public void TestMortgageImproved()
     {
         Controller controller = Factory.CreateController(1, 2, 6, 4);
@@ -194,6 +216,109 @@ public class ControllerTest
         controller.MoveNext();
         Assert.AreEqual(1400, player.Cash);
         Assert.IsFalse(deed.Mortgaged);
+    }
+
+    [TestMethod("Unmortgage (1)")]
+    public void TestUnmortgage()
+    {
+        Controller controller = Factory.CreateController(4, 6, 6, 4);
+        Game game = controller.Game;
+        Player player = controller.AddPlayer("Mark");
+        Deed secondOrange = game.Deeds[18];
+        Deed thirdOrange = game.Deeds[19];
+
+        player.Agent = TestAgent
+            .Create()
+            .ThenUnmortgage(19, 20);
+        secondOrange.PlayerId = 1;
+        secondOrange.Mortgaged = true;
+        thirdOrange.PlayerId = 1;
+        thirdOrange.Mortgaged = true;
+
+        controller.AddPlayer("John");
+        controller.Start();
+        controller.MoveNext();
+        Assert.AreEqual(1291, player.Cash);
+        Assert.IsFalse(secondOrange.Mortgaged);
+        Assert.IsFalse(thirdOrange.Mortgaged);
+    }
+
+    [TestMethod("Unmortgage (2)")]
+    public void TestUnmortgageAccessDenied()
+    {
+        Controller controller = Factory.CreateController(4, 6, 6, 4);
+        Game game = controller.Game;
+        Player player = controller.AddPlayer("Mark");
+        Deed secondOrange = game.Deeds[18];
+        Deed thirdOrange = game.Deeds[19];
+
+        player.Agent = TestAgent
+            .Create()
+            .ThenUnmortgage(19, 20)
+            .ThenExpect(Warning.AccessDenied);
+        secondOrange.PlayerId = 1;
+        secondOrange.Mortgaged = true;
+        thirdOrange.PlayerId = 2;
+        thirdOrange.Mortgaged = true;
+
+        controller.AddPlayer("John");
+        controller.Start();
+        controller.MoveNext();
+        Assert.AreEqual(1401, player.Cash);
+        Assert.IsFalse(secondOrange.Mortgaged);
+        Assert.IsTrue(thirdOrange.Mortgaged);
+    }
+
+    [TestMethod("Unmortgage (3)")]
+    public void TestUnmortgageUnmortgaged()
+    {
+        Controller controller = Factory.CreateController(4, 6, 6, 4);
+        Game game = controller.Game;
+        Player player = controller.AddPlayer("Mark");
+        Deed secondOrange = game.Deeds[18];
+        Deed thirdOrange = game.Deeds[19];
+
+        player.Agent = TestAgent
+            .Create()
+            .ThenUnmortgage(19, 20)
+            .ThenExpect(Warning.Unmortgaged);
+        secondOrange.PlayerId = 1;
+        secondOrange.Mortgaged = true;
+        thirdOrange.PlayerId = 1;
+
+        controller.AddPlayer("John");
+        controller.Start();
+        controller.MoveNext();
+        Assert.AreEqual(1401, player.Cash);
+        Assert.IsFalse(secondOrange.Mortgaged);
+        Assert.IsFalse(thirdOrange.Mortgaged);
+    }
+
+    [TestMethod("Unmortgage (4)")]
+    public void TestUnmortgageInsufficientCash()
+    {
+        Controller controller = Factory.CreateController(4, 6, 6, 4);
+        Game game = controller.Game;
+        Player player = controller.AddPlayer("Mark");
+        Deed secondOrange = game.Deeds[18];
+        Deed thirdOrange = game.Deeds[19];
+
+        player.Agent = TestAgent
+            .Create()
+            .ThenUnmortgage(19, 20)
+            .ThenExpect(Warning.InsufficientCash);
+        player.Cash = 200;
+        secondOrange.PlayerId = 1;
+        secondOrange.Mortgaged = true;
+        thirdOrange.PlayerId = 1;
+        thirdOrange.Mortgaged = true;
+
+        controller.AddPlayer("John");
+        controller.Start();
+        controller.MoveNext();
+        Assert.AreEqual(101, player.Cash);
+        Assert.IsFalse(secondOrange.Mortgaged);
+        Assert.IsTrue(thirdOrange.Mortgaged);
     }
 
     [TestMethod("Improve (1)")]
@@ -411,6 +536,105 @@ public class ControllerTest
         Assert.AreEqual(1500, player.Cash);
         Assert.AreEqual(32, game.Houses);
         Assert.AreEqual(12, game.Hotels);
+    }
+
+    [TestMethod("Unimprove (1)")]
+    public void TestUnimprove()
+    {
+        Controller controller = Factory.CreateController(1, 3, 6, 4);
+        Game game = controller.Game;
+        Player player = controller.AddPlayer("Mark");
+        Deed firstPink = game.Deeds[11];
+        Deed secondPink = game.Deeds[13];
+        Deed thirdPink = game.Deeds[14];
+
+        player.Agent = TestAgent
+            .Create()
+            .ThenUnimprove(12, 14, 15, 12, 14);
+        firstPink.PlayerId = 1;
+        firstPink.Improvements = 4;
+        secondPink.PlayerId = 1;
+        secondPink.Improvements = 4;
+        thirdPink.PlayerId = 1;
+        thirdPink.Improvements = 4;
+        game.Houses -= 12;
+
+        controller.AddPlayer("John");
+        controller.Start();
+        controller.MoveNext();
+        Assert.AreEqual(2, firstPink.Improvements);
+        Assert.AreEqual(2, secondPink.Improvements);
+        Assert.AreEqual(3, thirdPink.Improvements);
+        Assert.AreEqual(25, game.Houses);
+        Assert.AreEqual(12, game.Hotels);
+        Assert.AreEqual(1550, player.Cash);
+    }
+
+    [TestMethod("Unimprove (2)")]
+    public void TestUnimproveUnimproved()
+    {
+        Controller controller = Factory.CreateController(1, 3, 6, 4);
+        Game game = controller.Game;
+        Player player = controller.AddPlayer("Mark");
+        Deed firstPink = game.Deeds[11];
+        Deed secondPink = game.Deeds[13];
+        Deed thirdPink = game.Deeds[14];
+
+        player.Agent = TestAgent
+            .Create()
+            .ThenUnimprove(12, 14, 15, 12, 14, 15, 12, 14, 15, 12, 14, 15, 12, 14, 15)
+            .ThenExpect(Warning.Unimproved);
+        firstPink.PlayerId = 1;
+        firstPink.Improvements = 4;
+        secondPink.PlayerId = 1;
+        secondPink.Improvements = 4;
+        thirdPink.PlayerId = 1;
+        thirdPink.Improvements = 4;
+        game.Houses -= 12;
+
+        controller.AddPlayer("John");
+        controller.Start();
+        controller.MoveNext();
+        Assert.AreEqual(0, firstPink.Improvements);
+        Assert.AreEqual(0, secondPink.Improvements);
+        Assert.AreEqual(0, thirdPink.Improvements);
+        Assert.AreEqual(32, game.Houses);
+        Assert.AreEqual(12, game.Hotels);
+        Assert.AreEqual(1900, player.Cash);
+    }
+
+    [TestMethod("Unimprove (3)")]
+    public void TestUnimproveAccessDenied()
+    {
+        Controller controller = Factory.CreateController(1, 3, 6, 4);
+        Game game = controller.Game;
+        Player player = controller.AddPlayer("Mark");
+        Deed firstPink = game.Deeds[11];
+        Deed secondPink = game.Deeds[13];
+        Deed thirdPink = game.Deeds[14];
+
+        player.Agent = TestAgent
+            .Create()
+            .ThenUnimprove(12, 14, 15, 12, 14, 15)
+            .ThenExpect(Warning.AccessDenied);
+            
+        firstPink.PlayerId = 2;
+        firstPink.Improvements = 4;
+        secondPink.PlayerId = 2;
+        secondPink.Improvements = 4;
+        thirdPink.PlayerId = 2;
+        thirdPink.Improvements = 4;
+        game.Houses -= 12;
+
+        controller.AddPlayer("John");
+        controller.Start();
+        controller.MoveNext();
+        Assert.AreEqual(4, firstPink.Improvements);
+        Assert.AreEqual(4, secondPink.Improvements);
+        Assert.AreEqual(4, thirdPink.Improvements);
+        Assert.AreEqual(20, game.Houses);
+        Assert.AreEqual(12, game.Hotels);
+        Assert.AreEqual(1300, player.Cash);
     }
 
     [TestMethod("Offer (1)")]
