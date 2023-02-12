@@ -10,17 +10,14 @@ public class AdvanceCardTest
     [TestMethod("Draw")]
     public void TestDraw()
     {
-        Board board = Factory.CreateBoard();
-        Game game = Factory.CreateGame(board);
-        GameController controller = new GameController(board, game);
+        GameController controller = Factory.CreateController();
         Player player = controller.AddPlayer("Mark");
-
-        player.SquareId = 18;
-
-        AdvanceCard card = new AdvanceCard("Advance to Free Parking", squareId: 21)
+        AdvanceCard card = new AdvanceCard(nameof(AdvanceCard), squareId: 21)
         {
             Id = new CardId(id: 1, deckId: 1)
         };
+
+        player.SquareId = 18;
 
         card.Draw(player, controller);
         Assert.AreEqual(21, player.SquareId);
@@ -35,7 +32,7 @@ public class AdvanceCardTest
         Assert.AreEqual(21, player.SquareId);
         Assert.AreEqual(1700, player.Cash);
 
-        card = new AdvanceCard("Advance to GO", squareId: 1)
+        card = new AdvanceCard(nameof(AdvanceCard), squareId: 1)
         {
             Id = new CardId(id: 2, deckId: 1)
         };

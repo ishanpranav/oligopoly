@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Oligopoly.Agents;
+using System.Linq;
 using Oligopoly.Assets;
 using Oligopoly.Auctions;
 using Oligopoly.EventArgs;
@@ -19,10 +19,9 @@ public class GameController
         Game = game;
     }
 
-    public event EventHandler<GameEventArgs>? Started;
-    public event EventHandler<GameEventArgs>? Ended;
-    public event EventHandler<GameEventArgs>? TurnStarted;
-    public event EventHandler<GameEventArgs>? TurnEnded;
+    public event EventHandler<PlayerEventArgs>? Ended;
+    public event EventHandler<PlayerEventArgs>? TurnStarted;
+    public event EventHandler<PlayerEventArgs>? TurnEnded;
     public event EventHandler<PlayerEventArgs>? Advanced;
     public event EventHandler<AuctionEventArgs>? AuctionSucceeded;
     public event EventHandler<AuctionEventArgs>? AuctionFailed;
@@ -42,8 +41,6 @@ public class GameController
 
             Console.WriteLine("\t{0}", player.Name);
         }
-
-        OnStarted(new GameEventArgs(Game));
     }
 
     public Player AddPlayer(string name)
@@ -70,6 +67,13 @@ public class GameController
 
         foreach (Player player in players)
         {
+            if (Game.Players.Count < 2)
+            {
+                OnEnded(new PlayerEventArgs(Game.Players.First()));
+
+                return false;
+            }
+
             if (player.Cash < 0)
             {
                 continue;
@@ -89,13 +93,6 @@ public class GameController
                     Game.Players.Remove(other);
                 }
             }
-
-            if (Game.Players.Count < 2)
-            {
-                OnEnded(new GameEventArgs(Game));
-
-                return false;
-            }
         }
 
         return true;
@@ -106,9 +103,7 @@ public class GameController
         Console.WriteLine();
         Console.WriteLine("{0}: Cash=${1}, Net Worth=${2}, Sentence={3}, Square={4}", player, player.Cash, player.Appraise(Board, Game), player.Sentence, player.SquareId);
 
-        GameEventArgs e = new GameEventArgs(Game);
-
-        OnTurnStarted(e);
+        OnTurnStarted(new PlayerEventArgs(player));
         Propose(player);
         Jailbreak(player);
         Unmortgage(player);
@@ -129,7 +124,7 @@ public class GameController
         }
 
         Console.WriteLine("{0}: Cash=${1}, Net Worth=${2}, Sentence={3}, Square={4}", player, player.Cash, player.Appraise(Board, Game), player.Sentence, player.SquareId);
-        OnTurnEnded(e);
+        OnTurnEnded(new PlayerEventArgs(player));
     }
 
     private void Jailbreak(Player player)
@@ -691,15 +686,7 @@ public class GameController
         Console.WriteLine("WARNING to {0}: {1}", player, warning);
     }
 
-    protected virtual void OnStarted(GameEventArgs e)
-    {
-        if (Started is not null)
-        {
-            Started(sender: this, e);
-        }
-    }
-
-    protected virtual void OnEnded(GameEventArgs e)
+    protected virtual void OnEnded(PlayerEventArgs e)
     {
         if (Ended is not null)
         {
@@ -707,7 +694,7 @@ public class GameController
         }
     }
 
-    protected virtual void OnTurnStarted(GameEventArgs e)
+    protected virtual void OnTurnStarted(PlayerEventArgs e)
     {
         if (TurnStarted is not null)
         {
@@ -715,7 +702,7 @@ public class GameController
         }
     }
 
-    protected virtual void OnTurnEnded(GameEventArgs e)
+    protected virtual void OnTurnEnded(PlayerEventArgs e)
     {
         if (TurnEnded is not null)
         {

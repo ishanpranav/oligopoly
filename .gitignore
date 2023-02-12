@@ -3,6 +3,7 @@
 # License: Creative Commons Zero v1.0 Universal
 
 *.bin
+data/game.json
 .vscode/
 
 # User-specific files

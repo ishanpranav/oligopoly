@@ -11,21 +11,27 @@ public class Agent : IAgent
     {
         Console.WriteLine(">> Connect");
 
-        controller.Started += OnControllerStarted;
         controller.TurnStarted += OnControllerTurnStarted;
+        controller.TurnEnded += OnControllerTurnEnded;
         controller.Advanced += OnControllerAdvanced;
         controller.AuctionFailed += OnControllerAuctionFailed;
         controller.AuctionSucceeded += OnControllerAuctionSucceeded;
+        controller.Ended += OnControllerEnded;
     }
 
-    private void OnControllerStarted(object? sender, GameEventArgs e)
-    {
-        Console.WriteLine("== Started");
-    }
-
-    private void OnControllerTurnStarted(object? sender, GameEventArgs e)
+    private void OnControllerTurnStarted(object? sender, PlayerEventArgs e)
     {
         Console.WriteLine("== Turn Started");
+    }
+
+    private void OnControllerTurnEnded(object? sender, PlayerEventArgs e)
+    {
+        Console.WriteLine("== Turn Ended");
+    }
+
+    private void OnControllerAdvanced(object? sender, PlayerEventArgs e)
+    {
+        Console.WriteLine("== Advanced {0}", e.Player);
     }
 
     private void OnControllerAuctionFailed(object? sender, AuctionEventArgs e)
@@ -38,9 +44,9 @@ public class Agent : IAgent
         Console.WriteLine("== Auction Succeeded {0}, {1}", e.Asset, e.Bid);
     }
 
-    private void OnControllerAdvanced(object? sender, PlayerEventArgs e)
+    private void OnControllerEnded(object? sender, PlayerEventArgs e)
     {
-        Console.WriteLine("== Advanced {0}", e.Player);
+        Console.WriteLine("== Ended {0}", e.Player);
     }
 
     /// <inheritdoc/>
@@ -112,10 +118,8 @@ public class Agent : IAgent
     }
 
     /// <inheritdoc/>
-    public JailbreakStrategy Jailbreak(Game game, Player player)
+    public virtual JailbreakStrategy Jailbreak(Game game, Player player)
     {
-        Console.WriteLine("<< Jailbreak [NONE]");
-
         return JailbreakStrategy.None;
     }
 

@@ -29,8 +29,6 @@ public class UngiftCard : ICard
     /// <inheritdoc/>
     public void Draw(Player player, GameController controller)
     {
-        Console.WriteLine("It is {0}'s birthday", player);
-
         foreach (Player other in controller.Game.Players)
         {
             if (other.Id == player.Id)

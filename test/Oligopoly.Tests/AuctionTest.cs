@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Oligopoly.Assets;
 using Oligopoly.Dice;
+using Oligopoly.EventArgs;
 
 namespace Oligopoly.Tests;
 
@@ -26,22 +27,26 @@ public class AuctionTest
         first.Agent = firstAgent;
         first.SquareId = 11;
         second.Agent = secondAgent;
+        controller.AuctionFailed += OnControllerAuctionEnded;
+        controller.AuctionSucceeded += OnControllerAuctionEnded;
 
         controller.Start();
         controller.Move(first);
         Assert.AreEqual(2, deed.PlayerId);
         Assert.AreEqual(1500, first.Cash);
-        Assert.IsNotNull(firstAgent.Auction);
-        Assert.IsNotNull(secondAgent.Auction);
-        Assert.AreEqual(deed, firstAgent.Auction.Asset);
-        Assert.IsTrue(firstAgent.Auction.Succeeded);
-        Assert.AreEqual(second, firstAgent.Auction.Bid.Bidder);
-        Assert.AreEqual(175, firstAgent.Auction!.Bid.Amount);
         Assert.AreEqual(1325, second.Cash);
-        Assert.AreEqual(deed, secondAgent.Auction.Asset);
-        Assert.IsTrue(secondAgent.Auction.Succeeded);
-        Assert.AreEqual(second, secondAgent.Auction.Bid.Bidder);
-        Assert.AreEqual(175, secondAgent.Auction.Bid.Amount);
+    }
+
+    private void OnControllerAuctionEnded(object? sender, AuctionEventArgs e)
+    {
+        Assert.IsTrue(e.Succeeded);
+        Assert.IsNotNull(sender);
+
+        GameController controller = (GameController)sender;
+
+        Assert.AreEqual(controller.Game.Deeds[19], e.Asset);
+        Assert.AreEqual(2, e.Bid.Bidder.Id);
+        Assert.AreEqual(175, e.Bid.Amount);
     }
 
     [TestMethod("Auction (2)")]

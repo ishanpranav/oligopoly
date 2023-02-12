@@ -9,8 +9,6 @@ public class EnglishAuction : IAuction
     /// <inheritdoc/>
     public Bid? Perform(GameController controller, Player player, IAsset asset)
     {
-        Console.WriteLine("{0} offered for auction", asset);
-
         int previousBid = 1;
         Queue<Player> bidders = new Queue<Player>(controller.Game.Players);
 
@@ -18,8 +16,6 @@ public class EnglishAuction : IAuction
         {
             Player bidder = bidders.Dequeue();
             int bid = bidder.Agent.Bid(controller.Game, player, new Offer(bidder, asset, previousBid));
-
-            Console.WriteLine("{0} bids {1}", bidder, bid);
 
             if (bid < previousBid || bid > bidder.Cash)
             {

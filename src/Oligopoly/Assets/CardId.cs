@@ -19,15 +19,6 @@ public readonly struct CardId : IAsset
     public int DeckId { get; }
 
     /// <inheritdoc/>
-    public bool IsImproved
-    {
-        get
-        {
-            return true;
-        }
-    }
-
-    /// <inheritdoc/>
     public int GetPlayerId(Game game)
     {
         foreach (Player player in game.Players)

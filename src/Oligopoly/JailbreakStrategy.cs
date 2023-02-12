@@ -1,4 +1,4 @@
-﻿namespace Oligopoly.Agents;
+﻿namespace Oligopoly;
 
 public enum JailbreakStrategy
 {

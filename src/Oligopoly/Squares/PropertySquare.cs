@@ -1,5 +1,4 @@
-﻿using System;
-using MessagePack;
+﻿using MessagePack;
 using Oligopoly.Assets;
 
 namespace Oligopoly.Squares;
@@ -25,17 +24,8 @@ public abstract class PropertySquare : IAppraisable, ISquare
     {
         Deed deed = controller.Game.Deeds[player.SquareId - 1];
 
-        if (deed.PlayerId == player.Id)
+        if (deed.PlayerId == player.Id || deed.Mortgaged)
         {
-            Console.WriteLine("{0} already owns this property", player);
-
-            return;
-        }
-
-        if (deed.Mortgaged)
-        {
-            Console.WriteLine("Property is mortgaged");
-
             return;
         }
 
@@ -50,10 +40,7 @@ public abstract class PropertySquare : IAppraisable, ISquare
         {
             if (deed.PlayerId == owner.Id)
             {
-                int rent = GetRent(player.SquareId, owner, controller);
-
-                Console.WriteLine("{0} must pay rent of £{1} to {2}", player, rent, owner);
-                controller.Gift(player, owner, rent);
+                controller.Gift(player, owner, GetRent(player.SquareId, owner, controller));
 
                 break;
             }

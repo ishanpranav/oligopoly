@@ -73,4 +73,18 @@ public class Factory
             Hotels = board.Hotels
         };
     }
+
+    public static GameController CreateController()
+    {
+        Board board = CreateBoard();
+
+        return new GameController(board, CreateGame(board));
+    }
+
+    public static GameController CreateController(params int[] items)
+    {
+        Board board = CreateBoard();
+
+        return new GameController(board, CreateGame(board, new D6PairDice(new TestRandom(items))));
+    }
 }

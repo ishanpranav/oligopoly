@@ -113,8 +113,7 @@ This section contains attributions for helpful resources that assisted in the
 development of this software."
 Out-Dependencies $json.tools
 Out-ThirdPartyNotices "Licenses
---------
-This section contains licenses provided by third-party software vendors."
+--------"
 
 foreach ($key in $hashtable.Keys | Sort-Object) {
     $licenseText = $hashtable[$key]
@@ -128,8 +127,6 @@ foreach ($key in $hashtable.Keys | Sort-Object) {
     }
 
     Out-ThirdPartyNotices ""
-    Out-ThirdPartyNotices "________________________________________________________________________________"
-    Out-ThirdPartyNotices ""
     Out-ThirdPartyNotices ("_<a id='" + $key + "'>")
     Out-ThirdPartyNotices $json.licenses[$license].title
     Out-ThirdPartyNotices "</a>_"
@@ -137,4 +134,5 @@ foreach ($key in $hashtable.Keys | Sort-Object) {
     Out-ThirdPartyNotices "``````"
     Out-ThirdPartyNotices $licenseText
     Out-ThirdPartyNotices "``````"
+    Out-ThirdPartyNotices "________________________________________________________________________________"
 }

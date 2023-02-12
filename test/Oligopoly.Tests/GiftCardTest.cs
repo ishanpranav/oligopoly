@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Oligopoly.Dice;
+using Oligopoly.Assets;
+using Oligopoly.Cards;
 
 namespace Oligopoly.Tests;
 
@@ -10,18 +11,21 @@ public class GiftCardTest
     public void TestDraw()
     {
         Board board = Factory.CreateBoard();
-        Game game = Factory.CreateGame(board, new D6PairDice(new TestRandom(4, 6, 3, 4, 4, 6, 4, 6)), new TestShuffle(15));
+        Game game = Factory.CreateGame(board);
         GameController controller = new GameController(board, game);
         Player first = controller.AddPlayer("Mark");
         Player second = controller.AddPlayer("John");
         Player third = controller.AddPlayer("Allison");
         Player fourth = controller.AddPlayer("Elizabeth");
+        GiftCard card = new GiftCard(nameof(GiftCard), 25)
+        {
+            Id = new CardId(id: 1, deckId: 1)
+        };
 
-        controller.Start();
-        controller.MoveNext();
-        Assert.AreEqual(1550, first.Cash);
-        Assert.AreEqual(1350, second.Cash);
-        Assert.AreEqual(1550, third.Cash);
-        Assert.AreEqual(1550, fourth.Cash);
+        card.Draw(second, controller);
+        Assert.AreEqual(1525, first.Cash);
+        Assert.AreEqual(1425, second.Cash);
+        Assert.AreEqual(1525, third.Cash);
+        Assert.AreEqual(1525, fourth.Cash);
     }
 }

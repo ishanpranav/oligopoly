@@ -44,23 +44,19 @@ public class D6PairDice : IDice
 
                 return false;
             }
-            else
+
+            player.Sentence--;
+
+            if (player.Sentence > 0)
             {
-                player.Sentence--;
-
-                if (player.Sentence is 0)
-                {
-                    controller.Tax(player, controller.Board.Bail);
-                }
-
                 return false;
             }
-        }
-        else
-        {
-            controller.Jump(player, Amount);
 
-            return first == second;
+            controller.Tax(player, controller.Board.Bail);
         }
+
+        controller.Jump(player, Amount);
+
+        return first == second;
     }
 }

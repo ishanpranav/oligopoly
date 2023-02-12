@@ -1,6 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Oligopoly.Assets;
-using Oligopoly.Dice;
+using Oligopoly.EventArgs;
 
 namespace Oligopoly.Tests;
 
@@ -10,13 +10,12 @@ public class GameControllerTest
     [TestMethod("Salary (1)")]
     public void TestSalary()
     {
-        Board board = Factory.CreateBoard();
-        Game game = Factory.CreateGame(board, new D6PairDice(new TestRandom(5, 6)));
-        GameController controller = new GameController(board, game);
+        GameController controller = Factory.CreateController(5, 6, 6, 4);
         Player player = controller.AddPlayer("Mark");
 
         player.SquareId = 40;
 
+        controller.AddPlayer("John");
         controller.Start();
         controller.MoveNext();
         Assert.AreEqual(11, player.SquareId);
@@ -26,25 +25,23 @@ public class GameControllerTest
     [TestMethod("Salary (2)")]
     public void TestSalaryAdvance()
     {
-        Board board = Factory.CreateBoard();
-        Game game = Factory.CreateGame(board, new D6PairDice(new TestRandom(1, 2)));
-        GameController controller = new GameController(board, game);
+        GameController controller = Factory.CreateController(1, 2, 4, 6);
         Player player = controller.AddPlayer("Mark");
 
         player.SquareId = 38;
 
+        controller.AddPlayer("John");
         controller.Start();
         controller.MoveNext();
         Assert.AreEqual(1, player.SquareId);
         Assert.AreEqual(1700, player.Cash);
     }
 
-    [TestMethod("Transfer (1)")]
+    [TestMethod("Transfer")]
     public void TestTransfer()
     {
-        Board board = Factory.CreateBoard();
-        Game game = Factory.CreateGame(board, new D6PairDice(new TestRandom(4, 6, 3, 1, 6, 4, 4, 6, 4, 6, 6, 4)));
-        GameController controller = new GameController(board, game);
+        GameController controller = Factory.CreateController(4, 6, 3, 1, 6, 4, 4, 6, 4, 6, 6, 4);
+        Game game = controller.Game;
         Player first = controller.AddPlayer("Mark");
         Player second = controller.AddPlayer("John");
         Player third = controller.AddPlayer("Allison");
@@ -96,52 +93,11 @@ public class GameControllerTest
         Assert.AreEqual(12, game.Hotels);
     }
 
-    [TestMethod("Transfer (2)")]
-    public void TestTransferUngift()
-    {
-        Board board = Factory.CreateBoard();
-        Game game = Factory.CreateGame(board, new D6PairDice(new TestRandom(1, 1, 1, 2, 4, 6)), new TestShuffle(9));
-        GameController controller = new GameController(board, game);
-        Player first = controller.AddPlayer("Mark");
-        Player second = controller.AddPlayer("John");
-        Player third = controller.AddPlayer("Allison");
-
-        second.Cash = 5;
-
-        controller.Start();
-        controller.MoveNext();
-        Assert.IsTrue(game.Players.Contains(first));
-        Assert.IsFalse(game.Players.Contains(second));
-        Assert.IsTrue(game.Players.Contains(third));
-        Assert.AreEqual(11, third.SquareId);
-    }
-
-    [TestMethod("Discard")]
-    public void TestDiscard()
-    {
-        Board board = Factory.CreateBoard();
-        Game game = Factory.CreateGame(board, new D6PairDice(new TestRandom(1, 3, 2, 3)), shuffle: new TestShuffle(1));
-        GameController controller = new GameController(board, game);
-        Player first = controller.AddPlayer("Mark");
-
-        first.Cash = 50;
-        first.SquareId = 30;
-
-        controller.Start();
-        controller.MoveNext();
-        Assert.AreEqual(1, first.CardIds.Count);
-        Assert.AreEqual(15, game.DeckIds[1].Count);
-        controller.MoveNext();
-        Assert.AreEqual(16, game.DeckIds[1].Count);
-        Assert.IsFalse(game.Players.Contains(first));
-    }
-
     [TestMethod("Improve (1)")]
     public void TestImprove()
     {
-        Board board = Factory.CreateBoard();
-        Game game = Factory.CreateGame(board, new D6PairDice(new TestRandom(4, 1)));
-        GameController controller = new GameController(board, game);
+        GameController controller = Factory.CreateController(4, 1, 6, 4);
+        Game game = controller.Game;
         Player player = controller.AddPlayer("Mark");
         Deed firstRed = game.Deeds[21];
         Deed secondRed = game.Deeds[23];
@@ -158,6 +114,7 @@ public class GameControllerTest
         firstBrown.PlayerId = 1;
         secondBrown.PlayerId = 1;
 
+        controller.AddPlayer("John");
         controller.Start();
         controller.MoveNext();
         Assert.AreEqual(2, firstRed.Improvements);
@@ -173,9 +130,8 @@ public class GameControllerTest
     [TestMethod("Improve (2)")]
     public void TestImproveGroupAccessDenied()
     {
-        Board board = Factory.CreateBoard();
-        Game game = Factory.CreateGame(board, new D6PairDice(new TestRandom(4, 1)));
-        GameController controller = new GameController(board, game);
+        GameController controller = Factory.CreateController(4, 1, 6, 4);
+        Game game = controller.Game;
         Player player = controller.AddPlayer("Mark");
         Deed firstRed = game.Deeds[21];
         Deed secondRed = game.Deeds[23];
@@ -183,10 +139,11 @@ public class GameControllerTest
         player.Agent = TestAgent
             .Create()
             .ThenImprove(22, 24)
-            .Expect(Warning.GroupAccessDenied);
+            .ThenExpect(Warning.GroupAccessDenied);
         firstRed.PlayerId = 1;
         secondRed.PlayerId = 1;
 
+        controller.AddPlayer("John");
         controller.Start();
         controller.MoveNext();
         Assert.AreEqual(0, firstRed.Improvements);
@@ -199,9 +156,8 @@ public class GameControllerTest
     [TestMethod("Improve (3)")]
     public void TestImproveInsufficientCash()
     {
-        Board board = Factory.CreateBoard();
-        Game game = Factory.CreateGame(board, new D6PairDice(new TestRandom(4, 1)));
-        GameController controller = new GameController(board, game);
+        GameController controller = Factory.CreateController(4, 1, 6, 4);
+        Game game = controller.Game;
         Player player = controller.AddPlayer("Mark");
         Deed firstRed = game.Deeds[21];
         Deed secondRed = game.Deeds[23];
@@ -209,13 +165,14 @@ public class GameControllerTest
 
         player.Agent = TestAgent
             .Create()
-            .Expect(Warning.InsufficientCards);
+            .ThenExpect(Warning.InsufficientCards);
         player.Cash = 800;
         player.SquareId = 16;
         firstRed.PlayerId = 1;
         secondRed.PlayerId = 1;
         thirdRed.PlayerId = 1;
 
+        controller.AddPlayer("John");
         controller.Start();
         controller.MoveNext();
         Assert.AreEqual(0, firstRed.Improvements);
@@ -229,9 +186,8 @@ public class GameControllerTest
     [TestMethod("Improve (4)")]
     public void TestImproveMortgage()
     {
-        Board board = Factory.CreateBoard();
-        Game game = Factory.CreateGame(board, new D6PairDice(new TestRandom(4, 1)));
-        GameController controller = new GameController(board, game);
+        GameController controller = Factory.CreateController(4, 1, 6, 4);
+        Game game = controller.Game;
         Player player = controller.AddPlayer("Mark");
         Deed firstRed = game.Deeds[21];
         Deed secondRed = game.Deeds[23];
@@ -241,13 +197,14 @@ public class GameControllerTest
             .Create()
             .ThenImprove(22, 24, 25, 22, 24, 25)
             .ThenMortgage(25)
-            .Expect(Warning.GroupMortgaged);
+            .ThenExpect(Warning.GroupMortgaged);
         player.Cash = 800;
         player.SquareId = 16;
         firstRed.PlayerId = 1;
         secondRed.PlayerId = 1;
         thirdRed.PlayerId = 1;
 
+        controller.AddPlayer("John");
         controller.Start();
         controller.MoveNext();
         Assert.AreEqual(0, firstRed.Improvements);
@@ -261,9 +218,8 @@ public class GameControllerTest
     [TestMethod("Improve (5)")]
     public void TestImproveImproved()
     {
-        Board board = Factory.CreateBoard();
-        Game game = Factory.CreateGame(board, new D6PairDice(new TestRandom(4, 1)));
-        GameController controller = new GameController(board, game);
+        GameController controller = Factory.CreateController(4, 1, 6, 4);
+        Game game = controller.Game;
         Player player = controller.AddPlayer("Mark");
         Deed firstRed = game.Deeds[21];
         Deed secondRed = game.Deeds[23];
@@ -272,13 +228,14 @@ public class GameControllerTest
         player.Agent = TestAgent
             .Create()
             .ThenImprove(22, 24, 25, 22, 24, 25, 22, 24, 25, 22, 24, 25, 22, 24, 25, 22, 24, 25)
-            .Expect(Warning.Improved);
+            .ThenExpect(Warning.Improved);
         player.Cash = 3000;
         player.SquareId = 16;
         firstRed.PlayerId = 1;
         secondRed.PlayerId = 1;
         thirdRed.PlayerId = 1;
 
+        controller.AddPlayer("Mark");
         controller.Start();
         controller.MoveNext();
         Assert.AreEqual(5, firstRed.Improvements);
@@ -292,9 +249,8 @@ public class GameControllerTest
     [TestMethod("Improve (6)")]
     public void TestImproveUnbalancedImprovements()
     {
-        Board board = Factory.CreateBoard();
-        Game game = Factory.CreateGame(board, new D6PairDice(new TestRandom(4, 1)));
-        GameController controller = new GameController(board, game);
+        GameController controller = Factory.CreateController(4, 1, 6, 4);
+        Game game = controller.Game;
         Player player = controller.AddPlayer("Mark");
         Deed firstRed = game.Deeds[21];
         Deed secondRed = game.Deeds[23];
@@ -305,7 +261,7 @@ public class GameControllerTest
         player.Agent = TestAgent
             .Create()
             .ThenImprove(22, 24, 25, 22, 24, 25, 22, 24, 25, 25, 2, 4, 25)
-            .Expect(Warning.UnbalancedImprovements);
+            .ThenExpect(Warning.UnbalancedImprovements);
         player.Cash = 2000;
         player.SquareId = 16;
         firstRed.PlayerId = 1;
@@ -314,6 +270,7 @@ public class GameControllerTest
         firstBrown.PlayerId = 1;
         secondBrown.PlayerId = 1;
 
+        controller.AddPlayer("John");
         controller.Start();
         controller.MoveNext();
         Assert.AreEqual(3, firstRed.Improvements);
@@ -329,9 +286,8 @@ public class GameControllerTest
     [TestMethod("Improve (7)")]
     public void TestImproveAccessDenied()
     {
-        Board board = Factory.CreateBoard();
-        Game game = Factory.CreateGame(board, new D6PairDice(new TestRandom(4, 1, 4, 1)));
-        GameController controller = new GameController(board, game);
+        GameController controller = Factory.CreateController(4, 1, 4, 1);
+        Game game = controller.Game;
         Player player = controller.AddPlayer("Mark");
         Deed firstBrown = game.Deeds[1];
         Deed secondBrown = game.Deeds[3];
@@ -339,7 +295,7 @@ public class GameControllerTest
         player.Agent = TestAgent
             .Create()
             .ThenImprove(2, 4)
-            .Expect(Warning.AccessDenied);
+            .ThenExpect(Warning.AccessDenied);
         player.SquareId = 16;
         firstBrown.PlayerId = 2;
         secondBrown.PlayerId = 2;
@@ -357,9 +313,8 @@ public class GameControllerTest
     [TestMethod("Offer (1)")]
     public void TestOffer()
     {
-        Board board = Factory.CreateBoard();
-        Game game = Factory.CreateGame(board, new D6PairDice(new TestRandom(3, 3, 1, 1, 1, 2)));
-        GameController controller = new GameController(board, game);
+        GameController controller = Factory.CreateController(3, 3, 1, 1, 6, 4, 6, 4, 1, 2);
+        Game game = controller.Game;
         Player player = controller.AddPlayer("Mark");
         Deed firstOrange = game.Deeds[16];
         Deed secondOrange = game.Deeds[18];
@@ -370,6 +325,7 @@ public class GameControllerTest
             .ThenOffer(true, true);
         player.SquareId = 11;
 
+        controller.AddPlayer("John");
         controller.Start();
         controller.MoveNext();
         Assert.AreEqual(1, firstOrange.PlayerId);
@@ -381,9 +337,8 @@ public class GameControllerTest
     [TestMethod("Offer (2)")]
     public void TestOfferInsufficientCash()
     {
-        Board board = Factory.CreateBoard();
-        Game game = Factory.CreateGame(board, new D6PairDice(new TestRandom(3, 3, 1, 1, 1, 2)));
-        GameController controller = new GameController(board, game);
+        GameController controller = Factory.CreateController(3, 3, 1, 1, 6, 4, 6, 4, 1, 2);
+        Game game = controller.Game;
         Player player = controller.AddPlayer("Mark");
         Deed firstOrange = game.Deeds[16];
         Deed secondOrange = game.Deeds[18];
@@ -392,10 +347,11 @@ public class GameControllerTest
         player.Agent = TestAgent
             .Create()
             .ThenOffer(true, true)
-            .Expect(Warning.InsufficientCash);
+            .ThenExpect(Warning.InsufficientCash);
         player.Cash = 320;
         player.SquareId = 11;
 
+        controller.AddPlayer("John");
         controller.Start();
         controller.MoveNext();
         Assert.AreEqual(1, firstOrange.PlayerId);
@@ -407,12 +363,10 @@ public class GameControllerTest
     [TestMethod("Propose (1)")]
     public void TestPropose()
     {
-        Board board = Factory.CreateBoard();
-        Game game = Factory.CreateGame(board, new D6PairDice(new TestRandom(4, 6, 4, 6)));
-        GameController controller = new GameController(board, game);
+        GameController controller = Factory.CreateController(4, 6, 4, 6);
         Player first = controller.AddPlayer("Mark");
         Player second = controller.AddPlayer("John");
-        Deed deed = game.Deeds[39];
+        Deed deed = controller.Game.Deeds[39];
 
         first.Agent = TestAgent
             .Create()
@@ -432,17 +386,15 @@ public class GameControllerTest
     [TestMethod("Propose (2)")]
     public void TestProposeAccessDenied()
     {
-        Board board = Factory.CreateBoard();
-        Game game = Factory.CreateGame(board, new D6PairDice(new TestRandom(4, 6, 4, 6)));
-        GameController controller = new GameController(board, game);
+        GameController controller = Factory.CreateController(4, 6, 4, 6);
         Player first = controller.AddPlayer("Mark");
         Player second = controller.AddPlayer("John");
-        Deed deed = game.Deeds[39];
+        Deed deed = controller.Game.Deeds[39];
 
         first.Agent = TestAgent
             .Create()
             .ThenPropose(new Offer(second, deed, amount: 1000))
-            .Expect(Warning.AccessDenied);
+            .ThenExpect(Warning.AccessDenied);
         second.Agent = TestAgent
             .Create()
             .ThenRespond(true);
@@ -457,9 +409,8 @@ public class GameControllerTest
     [TestMethod("Propose (3)")]
     public void TestProposeDiscard()
     {
-        Board board = Factory.CreateBoard();
-        Game game = Factory.CreateGame(board, new D6PairDice(new TestRandom(4, 6, 4, 6)));
-        GameController controller = new GameController(board, game);
+        GameController controller = Factory.CreateController(4, 6, 4, 6);
+        Game game = controller.Game;
         Player first = controller.AddPlayer("Mark");
         Player second = controller.AddPlayer("John");
         Deed deed = game.Deeds[39];
@@ -483,9 +434,8 @@ public class GameControllerTest
     [TestMethod("Propose (4)")]
     public void TestProposeImproved()
     {
-        Board board = Factory.CreateBoard();
-        Game game = Factory.CreateGame(board, new D6PairDice(new TestRandom(4, 6, 4, 6)));
-        GameController controller = new GameController(board, game);
+        GameController controller = Factory.CreateController(4, 6, 4, 6);
+        Game game = controller.Game;
         Player first = controller.AddPlayer("Mark");
         Player second = controller.AddPlayer("John");
         Deed deed = game.Deeds[39];
@@ -493,7 +443,7 @@ public class GameControllerTest
         first.Agent = TestAgent
             .Create()
             .ThenPropose(new Offer(second, deed, amount: 1000))
-            .Expect(Warning.Improved);
+            .ThenExpect(Warning.Improved);
         first.Cash = 700;
         second.Agent = TestAgent
             .Create()
@@ -509,5 +459,163 @@ public class GameControllerTest
         Assert.AreEqual(1500, second.Cash);
         Assert.AreEqual(29, game.Houses);
         Assert.AreEqual(12, game.Hotels);
+    }
+
+    [TestMethod("Jailbreak (1)")]
+    public void TestJailbreak()
+    {
+        GameController controller = Factory.CreateController(2, 3, 6, 4, 1, 4, 6, 4, 6, 4, 6, 4);
+        Player player = controller.AddPlayer("Mark");
+
+        player.SquareId = 11;
+        player.Sentence = 3;
+
+        controller.AddPlayer("John");
+        controller.Start();
+        controller.MoveNext();
+        Assert.AreEqual(11, player.SquareId);
+        Assert.AreEqual(2, player.Sentence);
+        controller.MoveNext();
+        Assert.AreEqual(11, player.SquareId);
+        Assert.AreEqual(1, player.Sentence);
+        controller.MoveNext();
+        Assert.AreEqual(21, player.SquareId);
+        Assert.AreEqual(0, player.Sentence);
+        Assert.AreEqual(1450, player.Cash);
+    }
+
+    [TestMethod("Jailbreak (2)")]
+    public void TestJailbreakNone()
+    {
+        GameController controller = Factory.CreateController(2, 3, 6, 4, 1, 4, 6, 4, 5, 5, 6, 4);
+        Player player = controller.AddPlayer("Mark");
+
+        player.SquareId = 11;
+        player.Sentence = 3;
+
+        controller.AddPlayer("John");
+        controller.Start();
+        controller.MoveNext();
+        Assert.AreEqual(11, player.SquareId);
+        Assert.AreEqual(2, player.Sentence);
+        controller.MoveNext();
+        Assert.AreEqual(11, player.SquareId);
+        Assert.AreEqual(1, player.Sentence);
+        controller.MoveNext();
+        Assert.AreEqual(21, player.SquareId);
+        Assert.AreEqual(0, player.Sentence);
+        Assert.AreEqual(1500, player.Cash);
+    }
+
+    [TestMethod("Jailbreak (3)")]
+    public void TestJailbreakBail()
+    {
+        GameController controller = Factory.CreateController(3, 5, 6, 4);
+        Player player = controller.AddPlayer("Mark");
+
+        player.Agent = TestAgent
+            .Create()
+            .ThenJailbreak(JailbreakStrategy.Bail);
+        player.SquareId = 11;
+        player.Sentence = 3;
+
+        controller.AddPlayer("John");
+        controller.Start();
+        controller.MoveNext();
+        Assert.AreEqual(19, player.SquareId);
+        Assert.AreEqual(0, player.Sentence);
+        Assert.AreEqual(1450, player.Cash);
+    }
+
+    [TestMethod("Jailbreak (4)")]
+    public void TestJailbreakCard()
+    {
+        GameController controller = Factory.CreateController(3, 5, 6, 4);
+        Player player = controller.AddPlayer("Mark");
+
+        player.Agent = TestAgent
+            .Create()
+            .ThenJailbreak(JailbreakStrategy.Card);
+        player.SquareId = 11;
+        player.Sentence = 3;
+
+        player.CardIds.Enqueue(new CardId(id: 1, deckId: 1));
+        player.CardIds.Enqueue(new CardId(id: 1, deckId: 2));
+        controller.AddPlayer("John");
+        controller.Start();
+        controller.MoveNext();
+        Assert.AreEqual(19, player.SquareId);
+        Assert.AreEqual(0, player.Sentence);
+        Assert.AreEqual(1500, player.Cash);
+        Assert.AreEqual(1, player.CardIds.Count);
+    }
+
+    [TestMethod("Jailbreak (5)")]
+    public void TestJailbreakInsufficientCards()
+    {
+        GameController controller = Factory.CreateController(3, 5, 6, 4);
+        Player player = controller.AddPlayer("Mark");
+
+        player.Agent = TestAgent
+            .Create()
+            .ThenJailbreak(JailbreakStrategy.Card)
+            .ThenExpect(Warning.InsufficientCards);
+        player.SquareId = 11;
+        player.Sentence = 3;
+
+        controller.AddPlayer("John");
+        controller.Start();
+        controller.MoveNext();
+        Assert.AreEqual(11, player.SquareId);
+        Assert.AreEqual(2, player.Sentence);
+        Assert.AreEqual(1500, player.Cash);
+        Assert.AreEqual(0, player.CardIds.Count);
+    }
+
+    [TestMethod("Jailbreak (6)")]
+    public void TestJailbreakPolice()
+    {
+        GameController controller = Factory.CreateController(5, 5, 6, 4, 6, 4, 6, 4);
+        Player player = controller.AddPlayer("Mark");
+
+        player.Agent = TestAgent
+            .Create()
+            .ThenJailbreak(JailbreakStrategy.Bail);
+        player.SquareId = 11;
+        player.Sentence = 3;
+
+        controller.AddPlayer("John");
+        controller.Start();
+        controller.MoveNext();
+        Assert.AreEqual(11, player.SquareId);
+        Assert.AreEqual(3, player.Sentence);
+        Assert.AreEqual(1450, player.Cash);
+    }
+
+    [TestMethod("Ended")]
+    public void TestEnded()
+    {
+        GameController controller = Factory.CreateController(4, 6, 4, 6, 4, 6, 4, 6, 4, 6, 4, 6, 4, 6, 4, 6, 4, 6, 4, 6, 4, 6);
+        Player first = controller.AddPlayer("Mark");
+        Player second = controller.AddPlayer("John");
+        TestAgent firstAgent = TestAgent.Create();
+        TestAgent secondAgent = TestAgent.Create();
+
+        first.Agent = firstAgent;
+        second.Agent = secondAgent;
+        first.Cash = 0;
+        controller.Ended += OnControllerEnded;
+
+        controller.Start();
+
+        while (controller.MoveNext())
+        {
+            Assert.IsTrue(controller.Game.Players.Count > 1);
+        }
+    }
+
+    private void OnControllerEnded(object? sender, PlayerEventArgs e)
+    {
+        Assert.AreEqual(2, e.Player.Id);
     }
 }

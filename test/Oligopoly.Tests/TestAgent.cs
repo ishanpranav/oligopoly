@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json.Linq;
 using Oligopoly.Agents;
 using Oligopoly.Assets;
 using Oligopoly.EventArgs;
@@ -16,13 +17,12 @@ internal sealed class TestAgent : Agent
     private readonly Queue<int> _bids = new Queue<int>();
     private readonly Queue<Offer?> _proposals = new Queue<Offer?>();
     private readonly Queue<bool> _responses = new Queue<bool>();
+    private readonly Queue<JailbreakStrategy> _jailbreakStrategies = new Queue<JailbreakStrategy>();
     private readonly Queue<Warning> _warnings = new Queue<Warning>();
 
     private Board _board = null!;
 
     private TestAgent() { }
-
-    public AuctionEventArgs? Auction { get; private set; }
 
     public TestAgent ThenMortgage(int value)
     {
@@ -88,7 +88,14 @@ internal sealed class TestAgent : Agent
         return this;
     }
 
-    public TestAgent Expect(Warning value)
+    public TestAgent ThenJailbreak(JailbreakStrategy value)
+    {
+        _jailbreakStrategies.Enqueue(value);
+
+        return this;
+    }
+
+    public TestAgent ThenExpect(Warning value)
     {
         _warnings.Enqueue(value);
 
@@ -99,13 +106,6 @@ internal sealed class TestAgent : Agent
     public override void Connect(GameController controller)
     {
         _board = controller.Board;
-        controller.AuctionSucceeded += AuctionEnded;
-        controller.AuctionFailed += AuctionEnded;
-    }
-
-    private void AuctionEnded(object? sender, AuctionEventArgs e)
-    {
-        Auction = e;
     }
 
     /// <inheritdoc/>
@@ -180,7 +180,17 @@ internal sealed class TestAgent : Agent
     {
         _responses.TryDequeue(out bool result);
 
-        Console.WriteLine("<< Respond [0]");
+        Console.WriteLine("<< Respond [{0}]", result);
+
+        return result;
+    }
+
+    /// <inheritdoc/>
+    public override JailbreakStrategy Jailbreak(Game game, Player player)
+    {
+        _jailbreakStrategies.TryDequeue(out JailbreakStrategy result);
+
+        Console.WriteLine("<< Jailbreak [{0}]", result);
 
         return result;
     }
