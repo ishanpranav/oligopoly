@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using MessagePack;
 using Oligopoly.Assets;
 using Oligopoly.Squares;
@@ -35,30 +36,30 @@ public class RepairCard : ICard
     {
         int cost = 0;
 
-        foreach (Deed deed in controller.Game.Deeds.Values)
+        foreach (KeyValuePair<int, Deed> indexedDeed in controller.Game.Deeds)
         {
-            if (deed.PlayerId != player.Id)
+            if (indexedDeed.Value.PlayerId != player.Id)
             {
                 continue;
             }
 
-            if (deed.Improvements is 0)
+            if (indexedDeed.Value.Improvements is 0)
             {
                 continue;
             }
 
-            if (controller.Board.Squares[deed.SquareId - 1] is not StreetSquare streetSquare)
+            if (controller.Board.Squares[indexedDeed.Key] is not StreetSquare streetSquare)
             {
                 continue;
             }
 
-            if (deed.Improvements == streetSquare.Rents.Count - 1)
+            if (indexedDeed.Value.Improvements == streetSquare.Rents.Count - 1)
             {
                 cost += HotelCost;
             }
             else
             {
-                cost += HouseCost;
+                cost += HouseCost * indexedDeed.Value.Improvements;
             }
         }
 
