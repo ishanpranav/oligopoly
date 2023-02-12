@@ -10,7 +10,7 @@ function Out-ThirdPartyNotices {
     Out-File -FilePath $path -Append -InputObject $value
 }
 
-function Escape-MarkdownString {
+function Convert-MarkdownString {
     param ($value)
 
     return $value.Replace('#', "\#")
@@ -21,13 +21,19 @@ $hashtable = @{}
 function Out-Dependencies {
     param ($dependencies)
 
+    foreach ($dependency in $dependencies) {
+        if ($null -eq $dependency.index) {
+            $dependency.index = $dependency.author
+        }
+    }
+
     foreach ($dependency in $dependencies | Sort-Object -Property "index") {
         Out-ThirdPartyNotices ""
         
-        $out = "### " + (Escape-MarkdownString $dependency.title) + "&emsp;<sub><sup>"
+        $out = "### " + (Convert-MarkdownString $dependency.title) + "&emsp;<sub><sup>"
         
         foreach ($format in $dependency.formats) {
-            $out += '*' + (Escape-MarkdownString $format) + "*&ensp;"
+            $out += '*' + (Convert-MarkdownString $format) + "*&ensp;"
         }
     
         Out-ThirdPartyNotices ($out + "</sup></sub>")
@@ -40,30 +46,42 @@ function Out-Dependencies {
             Out-ThirdPartyNotices ("- Designer: " + $dependency.designer)
         }
     
-        if ($dependency.source.StartsWith("https://github.com/")) {
-            Out-ThirdPartyNotices ("- Source: [" + $dependency.source.Substring(19) + "](" + $dependency.source + ")")
+        if ($null -ne $dependency.source) {
+            $source = $dependency.source
+
+            if ($source.StartsWith("https://github.com/")) {
+                $source = $source.Substring(19)
+            }
+
+            if ($source.StartsWith("https://en.wikipedia.org/wiki/")) {
+                $source = $source.Substring(30);
+            }
+
+            Out-ThirdPartyNotices ("- Source: [" + $source + "](" + $dependency.source + ")")
         }
 
-        $index = $dependency.license.IndexOf('_')
+        if ($null -ne $dependency.license) {
+            $index = $dependency.license.IndexOf('_')
 
-        if ($index -eq -1) {
-            $key = $dependency.license
+            if ($index -eq -1) {
+                $key = $dependency.license
+            }
+            else {
+                $key = $dependency.license.SubString(0, $index)
+            }
+
+            $license = $json.licenses[$key]
+
+            if ($null -eq $dependency.copyright) {
+                $dependency.copyright = ""
+            }
+
+            if (-Not ($hashtable.ContainsKey($dependency.license))) {
+                $hashtable.Add($dependency.license, [string]::Format($license.text, $dependency.copyright))
+            }
+
+            Out-ThirdPartyNotices ("- License: [" + $license.title + "](#" + $dependency.license + ')')
         }
-        else {
-            $key = $dependency.license.SubString(0, $index)
-        }
-
-        $license = $json.licenses[$key]
-
-        if ($null -eq $dependency.copyright) {
-            $dependency.copyright = ""
-        }
-
-        if (-Not ($hashtable.ContainsKey($dependency.license))) {
-            $hashtable.Add($dependency.license, [string]::Format($license.text, $dependency.copyright))
-        }
-
-        Out-ThirdPartyNotices ("- License: [" + $license.title + "](#" + $dependency.license + ')')
 
         if ($null -ne $dependency.resource) {
             Out-ThirdPartyNotices ("See [here](" + $dependency.resource + ") for the resource included in the repository.")

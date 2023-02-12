@@ -30,7 +30,7 @@
       "copyright": ".NET Foundation and Contributors",
       "license": "mit_dotnet",
       "notices": "https://github.com/dotnet/runtime/blob/main/THIRD-PARTY-NOTICES.TXT",
-      "index": "dotnet"
+      "index": ".NET Foundation, et al."
     },
     {
       "title": "Windows Presentation Foundation (WPF)",
@@ -40,7 +40,7 @@
       "copyright": ".NET Foundation and Contributors",
       "license": "mit_dotnet",
       "notices": "https://github.com/dotnet/wpf/blob/main/THIRD-PARTY-NOTICES.TXT",
-      "index": "dotnet"
+      "index": ".NET Foundation, et al."
     },
     {
       "title": "MessagePack for C#",
@@ -50,7 +50,7 @@
       "copyright": "2017 Yoshifumi Kawai and contributors",
       "license": "mit_kawai",
       "notices": "https://github.com/neuecc/MessagePack-CSharp/blob/master/LICENSE",
-      "index": "Kawai"
+      "index": "Kawai, Yoshifumi"
     },
     {
       "title": "Microsoft.Build (MSBuild)",
@@ -60,7 +60,7 @@
       "formats": [ "c#" ],
       "license": "mit_dotnet",
       "notices": "https://github.com/dotnet/msbuild/blob/main/THIRDPARTYNOTICES.txt",
-      "index": "dotnet"
+      "index": ".NET Foundation, et al."
     },
     {
       "title": "Deque",
@@ -69,7 +69,7 @@
       "copyright": "2015 Stephen Cleary",
       "formats": [ "c#" ],
       "license": "mit_cleary",
-      "index": "Cleary"
+      "index": "Cleary, Stephen"
     },
     {
       "title": "lz4net",
@@ -78,7 +78,7 @@
       "author": "Milosz Krajewski",
       "copyright": "2013-2017, Milosz Krajewski",
       "license": "bsd-2-clause_krajewski",
-      "index": "Krajewski"
+      "index": "Krajewski, Milosz"
     },
     {
       "title": "Joan",
@@ -88,7 +88,7 @@
       "copyright": "2021 The Joan Project Authors (https://github.com/PaoloBiagini/Joan)",
       "designer": "Paolo Biagini",
       "license": "ofl-1.1_biagini",
-      "index": "Biagini"
+      "index": "Biagini, Paolo"
     }
   ],
   "references": [
@@ -99,7 +99,14 @@
       "author": "Richard Shepherd",
       "copyright": "2013 Richard Shepherd",
       "license": "mit_shepherd",
-      "index": "Shepherd"
+      "index": "Shepherd, Richard"
+    },
+    {
+      "title": "Fisher–Yates Shuffle",
+      "formats": [ "algorithm" ],
+      "source": "https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle",
+      "author": "Ronald Fisher and Frank Yates",
+      "index": "Fisher, Ronald and Frank Yates"
     }
   ],
   "tools": [
@@ -109,7 +116,7 @@
       "source": "https://github.com/github/gitignore",
       "resource": "https://github.com/github/gitignore/blob/main/VisualStudio.gitignore",
       "license": "cc0-1.0",
-      "index": "github"
+      "index": 0
     },
     {
       "title": "Coverlet",
@@ -119,7 +126,7 @@
       "copyright": "2018 Toni Solarin-Sodara",
       "license": "mit_coverlet",
       "notices": "https://github.com/coverlet-coverage/coverlet/blob/a014bf0cd0fdb5a65a24df393d254ae98f7f45f9/THIRD-PARTY-NOTICES.txt",
-      "index": "coverlet"
+      "index": "Solarin-Sodara, Toni"
     },
     {
       "title": "VSTest",
@@ -128,8 +135,7 @@
       "author": "Microsoft Corporation",
       "copyright": "2020 Microsoft Corporation",
       "license": "mit_microsoft-2020",
-      "notices": "https://github.com/microsoft/vstest/blob/main/THIRD-PARTY-NOTICES.txt",
-      "index": "microsoft"
+      "notices": "https://github.com/microsoft/vstest/blob/main/THIRD-PARTY-NOTICES.txt"
     },
     {
       "title": "NuGet Client Tools",
@@ -137,7 +143,7 @@
       "source": "https://github.com/NuGet/NuGet.Client",
       "author": ".NET Foundation and Contributors",
       "license": "apache-2.0-nuget",
-      "index": "NuGet"
+      "index": ".NET Foundation, et al."
     },
     {
       "title": "Json.NET",
@@ -146,7 +152,7 @@
       "author": "James Newton-King",
       "copyright": "2006 James Newton-King",
       "license": "mit_newton-king",
-      "index": "Newton-King"
+      "index": "Newton-King, James"
     },
     {
       "title": "Microsoft Test Framework",
@@ -154,8 +160,7 @@
       "source": "https://github.com/microsoft/testfx",
       "author": "Microsoft Corporation",
       "copyright": "Microsoft Corporation",
-      "license": "mit_microsoft",
-      "index": "microsoft"
+      "license": "mit_microsoft"
     }
   ]
 }

@@ -20,17 +20,6 @@ Dependencies
 This section contains notices for binary dependencies redistributed alongside
 the application.
 
-### Joan&emsp;<sub><sup>*typeface*&ensp;</sup></sub>
-- Author: The Joan Project Authors
-- Designer: Paolo Biagini
-- Source: [PaoloBiagini/Joan](https://github.com/PaoloBiagini/Joan)
-- License: [SIL Open Font License 1.1](#ofl-1.1_biagini)
-
-### Deque&emsp;<sub><sup>*c\#*&ensp;</sup></sub>
-- Author: Stephen Cleary
-- Source: [StephenCleary/Deque](https://github.com/StephenCleary/Deque)
-- License: [MIT](#mit_cleary)
-
 ### .NET Runtime&emsp;<sub><sup>*c\#*&ensp;*c++*&ensp;*c*&ensp;</sup></sub>
 - Author: .NET Foundation and Contributors
 - Source: [dotnet/runtime](https://github.com/dotnet/runtime)
@@ -52,6 +41,17 @@ For more information about this software, please see its [third-party notices](h
 
 For more information about this software, please see its [third-party notices](https://github.com/dotnet/msbuild/blob/main/THIRDPARTYNOTICES.txt).
 
+### Joan&emsp;<sub><sup>*typeface*&ensp;</sup></sub>
+- Author: The Joan Project Authors
+- Designer: Paolo Biagini
+- Source: [PaoloBiagini/Joan](https://github.com/PaoloBiagini/Joan)
+- License: [SIL Open Font License 1.1](#ofl-1.1_biagini)
+
+### Deque&emsp;<sub><sup>*c\#*&ensp;</sup></sub>
+- Author: Stephen Cleary
+- Source: [StephenCleary/Deque](https://github.com/StephenCleary/Deque)
+- License: [MIT](#mit_cleary)
+
 ### MessagePack for C\#&emsp;<sub><sup>*c\#*&ensp;</sup></sub>
 - Author: Yoshifumi Kawai
 - Source: [neuecc/MessagePack-CSharp](https://github.com/neuecc/MessagePack-CSharp)
@@ -69,6 +69,10 @@ References
 This section contains references to parts of the source code based on or
 inspired by third-party open-source software.
 
+### Fisher–Yates Shuffle&emsp;<sub><sup>*algorithm*&ensp;</sup></sub>
+- Author: Ronald Fisher and Frank Yates
+- Source: [Fisher%E2%80%93Yates_shuffle](https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle)
+
 ### Monopyly&emsp;<sub><sup>*python*&ensp;</sup></sub>
 - Author: Richard Shepherd
 - Source: [richard-shepherd/monopyly](https://github.com/richard-shepherd/monopyly)
@@ -79,12 +83,10 @@ Resources
 This section contains attributions for helpful resources that assisted in the
 development of this software.
 
-### Coverlet&emsp;<sub><sup>*c\#*&ensp;</sup></sub>
-- Author: Toni Solarin-Sodara
-- Source: [coverlet-coverage/coverlet](https://github.com/coverlet-coverage/coverlet)
-- License: [MIT](#mit_coverlet)
-
-For more information about this software, please see its [third-party notices](https://github.com/coverlet-coverage/coverlet/blob/a014bf0cd0fdb5a65a24df393d254ae98f7f45f9/THIRD-PARTY-NOTICES.txt).
+### NuGet Client Tools&emsp;<sub><sup>*c\#*&ensp;</sup></sub>
+- Author: .NET Foundation and Contributors
+- Source: [NuGet/NuGet.Client](https://github.com/NuGet/NuGet.Client)
+- License: [Apache license 2.0](#apache-2.0-nuget)
 
 ### VisualStudio.gitignore&emsp;<sub><sup>*ignore list*&ensp;</sup></sub>
 - Source: [github/gitignore](https://github.com/github/gitignore)
@@ -108,10 +110,12 @@ For more information about this software, please see its [third-party notices](h
 - Source: [JamesNK/Newtonsoft.Json](https://github.com/JamesNK/Newtonsoft.Json)
 - License: [MIT](#mit_newton-king)
 
-### NuGet Client Tools&emsp;<sub><sup>*c\#*&ensp;</sup></sub>
-- Author: .NET Foundation and Contributors
-- Source: [NuGet/NuGet.Client](https://github.com/NuGet/NuGet.Client)
-- License: [Apache license 2.0](#apache-2.0-nuget)
+### Coverlet&emsp;<sub><sup>*c\#*&ensp;</sup></sub>
+- Author: Toni Solarin-Sodara
+- Source: [coverlet-coverage/coverlet](https://github.com/coverlet-coverage/coverlet)
+- License: [MIT](#mit_coverlet)
+
+For more information about this software, please see its [third-party notices](https://github.com/coverlet-coverage/coverlet/blob/a014bf0cd0fdb5a65a24df393d254ae98f7f45f9/THIRD-PARTY-NOTICES.txt).
 
 Licenses
 --------
