@@ -109,19 +109,22 @@ public class GameController
         Unmortgage(player);
         Improve(player);
 
-        int speed = 0;
+        bool accelerate;
+        int speed = 1;
 
-        while (Game.Dice.Roll(controller: this, player))
+        do
         {
-            speed++;
-
             if (speed == Board.SpeedLimit)
             {
                 Police(player);
 
                 break;
             }
+
+            accelerate = Game.Dice.Roll(controller: this, player);
+            speed++;
         }
+        while (accelerate);
 
         Console.WriteLine("{0}: Cash=${1}, Net Worth=${2}, Sentence={3}, Square={4}", player, player.Cash, player.Appraise(Board, Game), player.Sentence, player.SquareId);
         OnTurnEnded(new PlayerEventArgs(player));

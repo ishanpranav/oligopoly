@@ -592,6 +592,19 @@ public class GameControllerTest
         Assert.AreEqual(1450, player.Cash);
     }
 
+    [TestMethod("Police")]
+    public void TestPolice()
+    {
+        GameController controller = Factory.CreateController(2, 2, 3, 3, 5, 5, 6, 4);
+        Player player = controller.AddPlayer("Mark");
+
+        controller.AddPlayer("John");
+        controller.Start();
+        controller.MoveNext();
+        Assert.AreEqual(11, player.SquareId);
+        Assert.AreEqual(3, player.Sentence);
+    }
+
     [TestMethod("Ended")]
     public void TestEnded()
     {

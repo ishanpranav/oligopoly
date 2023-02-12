@@ -54,10 +54,10 @@ function Out-Dependencies {
             }
 
             if ($source.StartsWith("https://en.wikipedia.org/wiki/")) {
-                $source = $source.Substring(30);
+                $source = $source.Substring(30).Replace('_', "%20") + "%20-%20Wikipedia"
             }
 
-            Out-ThirdPartyNotices ("- Source: [" + $source + "](" + $dependency.source + ")")
+            Out-ThirdPartyNotices ("- Source: [" + [System.Web.HttpUtility]::UrlDecode($source) + "](" + $dependency.source + ")")
         }
 
         if ($null -ne $dependency.license) {
@@ -84,6 +84,7 @@ function Out-Dependencies {
         }
 
         if ($null -ne $dependency.resource) {
+            Out-ThirdPartyNotices ""
             Out-ThirdPartyNotices ("See [here](" + $dependency.resource + ") for the resource included in the repository.")
         }
 
@@ -145,9 +146,7 @@ foreach ($key in $hashtable.Keys | Sort-Object) {
     }
 
     Out-ThirdPartyNotices ""
-    Out-ThirdPartyNotices ("_<a id='" + $key + "'>")
-    Out-ThirdPartyNotices $json.licenses[$license].title
-    Out-ThirdPartyNotices "</a>_"
+    Out-ThirdPartyNotices ("### <a id='" + $key + "'>" + $json.licenses[$license].title + "</a>")
     Out-ThirdPartyNotices ""
     Out-ThirdPartyNotices "``````"
     Out-ThirdPartyNotices $licenseText

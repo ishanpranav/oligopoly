@@ -71,7 +71,7 @@ inspired by third-party open-source software.
 
 ### Fisher–Yates Shuffle&emsp;<sub><sup>*algorithm*&ensp;</sup></sub>
 - Author: Ronald Fisher and Frank Yates
-- Source: [Fisher%E2%80%93Yates_shuffle](https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle)
+- Source: [Fisher–Yates shuffle - Wikipedia](https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle)
 
 ### Monopyly&emsp;<sub><sup>*python*&ensp;</sup></sub>
 - Author: Richard Shepherd
@@ -91,6 +91,7 @@ development of this software.
 ### VisualStudio.gitignore&emsp;<sub><sup>*ignore list*&ensp;</sup></sub>
 - Source: [github/gitignore](https://github.com/github/gitignore)
 - License: [Creative Commons Zero v1.0 Universal](#cc0-1.0)
+
 See [here](https://github.com/github/gitignore/blob/main/VisualStudio.gitignore) for the resource included in the repository.
 
 ### VSTest&emsp;<sub><sup>*c\#*&ensp;</sup></sub>
@@ -120,9 +121,7 @@ For more information about this software, please see its [third-party notices](h
 Licenses
 --------
 
-_<a id='apache-2.0-nuget'>
-Apache license 2.0
-</a>_
+### <a id='apache-2.0-nuget'>Apache license 2.0</a>
 
 ```
 Copyright (c) .NET Foundation and Contributors.
@@ -143,9 +142,7 @@ specific language governing permissions and limitations under the License.
 ```
 ________________________________________________________________________________
 
-_<a id='bsd-2-clause_krajewski'>
-BSD 2-Clause "Simplified" License
-</a>_
+### <a id='bsd-2-clause_krajewski'>BSD 2-Clause "Simplified" License</a>
 
 ```
 Copyright (c) 2013-2017, Milosz Krajewski
@@ -175,9 +172,7 @@ POSSIBILITY OF SUCH DAMAGE.
 ```
 ________________________________________________________________________________
 
-_<a id='cc0-1.0'>
-Creative Commons Zero v1.0 Universal
-</a>_
+### <a id='cc0-1.0'>Creative Commons Zero v1.0 Universal</a>
 
 ```
 Creative Commons Legal Code
@@ -304,9 +299,7 @@ express Statement of Purpose.
 ```
 ________________________________________________________________________________
 
-_<a id='mit_cleary'>
-MIT
-</a>_
+### <a id='mit_cleary'>MIT</a>
 
 ```
 The MIT License (MIT)
@@ -335,9 +328,7 @@ SOFTWARE.
 ```
 ________________________________________________________________________________
 
-_<a id='mit_coverlet'>
-MIT
-</a>_
+### <a id='mit_coverlet'>MIT</a>
 
 ```
 The MIT License (MIT)
@@ -366,9 +357,7 @@ SOFTWARE.
 ```
 ________________________________________________________________________________
 
-_<a id='mit_dotnet'>
-MIT
-</a>_
+### <a id='mit_dotnet'>MIT</a>
 
 ```
 The MIT License (MIT)
@@ -397,9 +386,7 @@ SOFTWARE.
 ```
 ________________________________________________________________________________
 
-_<a id='mit_kawai'>
-MIT
-</a>_
+### <a id='mit_kawai'>MIT</a>
 
 ```
 The MIT License (MIT)
@@ -428,9 +415,7 @@ SOFTWARE.
 ```
 ________________________________________________________________________________
 
-_<a id='mit_microsoft'>
-MIT
-</a>_
+### <a id='mit_microsoft'>MIT</a>
 
 ```
 The MIT License (MIT)
@@ -459,9 +444,7 @@ SOFTWARE.
 ```
 ________________________________________________________________________________
 
-_<a id='mit_microsoft-2020'>
-MIT
-</a>_
+### <a id='mit_microsoft-2020'>MIT</a>
 
 ```
 The MIT License (MIT)
@@ -490,9 +473,7 @@ SOFTWARE.
 ```
 ________________________________________________________________________________
 
-_<a id='mit_newton-king'>
-MIT
-</a>_
+### <a id='mit_newton-king'>MIT</a>
 
 ```
 The MIT License (MIT)
@@ -521,9 +502,7 @@ SOFTWARE.
 ```
 ________________________________________________________________________________
 
-_<a id='mit_shepherd'>
-MIT
-</a>_
+### <a id='mit_shepherd'>MIT</a>
 
 ```
 The MIT License (MIT)
@@ -552,9 +531,7 @@ SOFTWARE.
 ```
 ________________________________________________________________________________
 
-_<a id='ofl-1.1_biagini'>
-SIL Open Font License 1.1
-</a>_
+### <a id='ofl-1.1_biagini'>SIL Open Font License 1.1</a>
 
 ```
 Copyright 2021 The Joan Project Authors (https://github.com/PaoloBiagini/Joan)

@@ -57,6 +57,6 @@ public class D6PairDice : IDice
 
         controller.Jump(player, Amount);
 
-        return first == second;
+        return first == second && player.Sentence is 0;
     }
 }
