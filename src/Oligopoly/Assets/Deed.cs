@@ -27,13 +27,17 @@ public class Deed : IAsset
     }
 
     /// <inheritdoc/>
-    public bool Transfer(GameController controller, Player sender, Player recipient)
+    public string GetDescription(Board board)
+    {
+        return board.Squares[SquareId - 1].Name;
+    }
+
+    /// <inheritdoc/>
+    public void Transfer(GameController controller, Player sender, Player recipient)
     {
         if (Improvements > 0)
         {
-            controller.Warn(sender, Warning.Improved);
-
-            return false;
+            return;
         }
 
         if (Mortgaged)
@@ -48,8 +52,6 @@ public class Deed : IAsset
         {
             PlayerId = recipient.Id;
         }
-
-        return true;
     }
 
     /// <inheritdoc/>

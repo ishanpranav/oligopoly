@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using MessagePack;
-using Nito.Collections;
-using Oligopoly.Cards;
 
 namespace Oligopoly.Shuffles;
 

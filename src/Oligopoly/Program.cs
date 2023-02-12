@@ -68,7 +68,7 @@ internal static class Program
             controller.AddPlayer("Jacob");
             controller.AddPlayer("Alexander");
         }
-        
+
         controller.Start();
 
         while (controller.MoveNext())

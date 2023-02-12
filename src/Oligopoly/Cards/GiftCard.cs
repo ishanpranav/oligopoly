@@ -28,7 +28,7 @@ public class GiftCard : ICard
     /// <inheritdoc/>
     public void Draw(Player player, GameController controller)
     {
-        int amount = controller.Game.Players.Count * Amount;
+        int amount = (controller.Game.Players.Count - 1) * Amount;
 
         controller.Tax(player, amount);
 
@@ -44,7 +44,7 @@ public class GiftCard : ICard
                 continue;
             }
 
-            controller.Untax(other, amount);
+            controller.Untax(other, Amount);
         }
 
         controller.Game.Discard(Id);

@@ -17,5 +17,5 @@ public enum Warning
     HouseShortage,
     HotelShortage,
     SelfProposal,
-    ProposalRejected,
+    ProposalRejected
 }

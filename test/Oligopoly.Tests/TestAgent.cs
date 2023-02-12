@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Oligopoly.Agents;
 using Oligopoly.Assets;
@@ -18,6 +17,8 @@ internal sealed class TestAgent : Agent
     private readonly Queue<Offer?> _proposals = new Queue<Offer?>();
     private readonly Queue<bool> _responses = new Queue<bool>();
     private readonly Queue<Warning> _warnings = new Queue<Warning>();
+
+    private Board _board = null!;
 
     private TestAgent() { }
 
@@ -97,6 +98,7 @@ internal sealed class TestAgent : Agent
     /// <inheritdoc/>
     public override void Connect(GameController controller)
     {
+        _board = controller.Board;
         controller.AuctionSucceeded += AuctionEnded;
         controller.AuctionFailed += AuctionEnded;
     }
@@ -141,7 +143,7 @@ internal sealed class TestAgent : Agent
     {
         _offers.TryDequeue(out bool result);
 
-        Console.WriteLine("<< Offer [{0}] for [{1}]", result, asset);
+        Console.WriteLine("<< Offer [{0}] for [{1}]", result, asset.GetDescription(_board));
 
         return result;
     }
@@ -151,7 +153,7 @@ internal sealed class TestAgent : Agent
     {
         _bids.TryDequeue(out int id);
 
-        Console.WriteLine("<< Bid [{0}] on [{1}] at [{2}]", id, offer.Asset, offer.Amount);
+        Console.WriteLine("<< Bid [{0}] on [{1}] at [{2}]", id, offer.Asset.GetDescription(_board), offer.Amount);
 
         return id;
     }
@@ -161,7 +163,14 @@ internal sealed class TestAgent : Agent
     {
         _proposals.TryDequeue(out Offer? result);
 
-        Console.WriteLine("<< Propose [{0}]", result);
+        if (result is null)
+        {
+            Console.WriteLine("<< Propose [null]");
+        }
+        else
+        {
+            Console.WriteLine("<< Propose [{0}] for [{1}] to [{2}]", result.Asset.GetDescription(_board), result.Amount, result.Player);
+        }
 
         return result;
     }

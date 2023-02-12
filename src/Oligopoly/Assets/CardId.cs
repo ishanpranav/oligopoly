@@ -19,6 +19,15 @@ public readonly struct CardId : IAsset
     public int DeckId { get; }
 
     /// <inheritdoc/>
+    public bool IsImproved
+    {
+        get
+        {
+            return true;
+        }
+    }
+
+    /// <inheritdoc/>
     public int GetPlayerId(Game game)
     {
         foreach (Player player in game.Players)
@@ -33,14 +42,18 @@ public readonly struct CardId : IAsset
     }
 
     /// <inheritdoc/>
-    public bool Transfer(GameController controller, Player sender, Player recipient)
+    public string GetDescription(Board board)
+    {
+        return board.Decks[DeckId - 1].Cards[Id - 1].Name;
+    }
+
+    /// <inheritdoc/>
+    public void Transfer(GameController controller, Player sender, Player recipient)
     {
         while (sender.CardIds.TryDequeue(out CardId cardId))
         {
             recipient.CardIds.Enqueue(cardId);
         }
-
-        return true;
     }
 
     /// <inheritdoc/>
@@ -56,11 +69,5 @@ public readonly struct CardId : IAsset
     public int Appraise(Board board, Game game)
     {
         return 50;
-    }
-
-    /// <inheritdoc/>
-    public override string ToString()
-    {
-        return $"{Id}-{DeckId}";
     }
 }

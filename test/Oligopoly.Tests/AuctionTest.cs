@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Oligopoly.Assets;
 using Oligopoly.Dice;
-using Oligopoly.Squares;
 
 namespace Oligopoly.Tests;
 

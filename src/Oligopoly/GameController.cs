@@ -639,7 +639,7 @@ public class GameController
                 break;
             }
 
-            Console.WriteLine("{0} proposed deal to {1}: {2} for {3}", player, offer.Player, offer.Asset, offer.Amount);
+            Console.WriteLine("{0} proposed deal to {1}: {2} for {3}", player, offer.Player, offer.Asset.GetDescription(Board), offer.Amount);
 
             bool response = offer.Player.Agent.Respond(Game, offer.Player);
 
@@ -650,28 +650,27 @@ public class GameController
                 break;
             }
 
+            if (offer.Asset is Deed deed && deed.Improvements > 0)
+            {
+                Warn(player, Warning.Improved);
+
+                break;
+            }
+
             int ownerId = offer.Asset.GetPlayerId(Game);
 
             if (ownerId == player.Id)
             {
-                if (!offer.Asset.Transfer(controller: this, player, offer.Player))
-                {
-                    break;
-                }
-
                 int amount = Tax(offer.Player, offer.Amount);
 
+                offer.Asset.Transfer(controller: this, player, offer.Player);
                 Untax(player, amount);
             }
             else if (ownerId == offer.Player.Id)
             {
-                if (!offer.Asset.Transfer(controller: this, offer.Player, player))
-                {
-                    break;
-                }
-
                 int amount = Tax(player, offer.Amount);
 
+                offer.Asset.Transfer(controller: this, offer.Player, player);
                 Untax(offer.Player, amount);
             }
             else

@@ -70,4 +70,14 @@ public class BoardTest
 
         CollectionAssert.AreEquivalent(expectedNames, actualNames);
     }
+
+    [TestMethod("Decks")]
+    public void TestDecksCounts()
+    {
+        Board board = Factory.CreateBoard();
+
+        Assert.AreEqual(2, board.Decks.Count);
+        Assert.AreEqual(16, board.Decks[0].Cards.Count);
+        Assert.AreEqual(16, board.Decks[1].Cards.Count);
+    }
 }
