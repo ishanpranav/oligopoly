@@ -1,6 +1,6 @@
 ﻿namespace Oligopoly;
 
-public enum JailbreakStrategy
+public enum UnpoliceStrategy
 {
     None,
     Bail,

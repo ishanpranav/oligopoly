@@ -10,7 +10,7 @@ public class JumpCardTest
     [TestMethod("Draw")]
     public void TestDraw()
     {
-        GameController controller = Factory.CreateController();
+        Controller controller = Factory.CreateController();
         Player player = controller.AddPlayer("Mark");
         JumpCard card = new JumpCard(nameof(JumpCard), distance: -3)
         {

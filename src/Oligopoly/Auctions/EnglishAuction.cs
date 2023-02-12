@@ -7,7 +7,7 @@ namespace Oligopoly.Auctions;
 public class EnglishAuction : IAuction
 {
     /// <inheritdoc/>
-    public Bid? Perform(GameController controller, Player player, IAsset asset)
+    public Bid? Perform(Controller controller, Player player, IAsset asset)
     {
         int previousBid = 1;
         Queue<Player> bidders = new Queue<Player>(controller.Game.Players);

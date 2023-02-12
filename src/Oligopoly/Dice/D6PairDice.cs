@@ -25,7 +25,7 @@ public class D6PairDice : IDice
     public int Amount { get; private set; }
 
     /// <inheritdoc/>
-    public bool Roll(GameController controller, Player player)
+    public bool Roll(Controller controller, Player player)
     {
         int first = _random.Next(minValue: 1, maxValue: 7);
         int second = _random.Next(minValue: 1, maxValue: 7);

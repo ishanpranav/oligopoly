@@ -283,7 +283,7 @@
       "name": "Chance",
       "cards": [
         {
-          "$type": "jailbreak",
+          "$type": "unpolice",
           "name": "Get Out of Jail Free"
         },
         {
@@ -364,7 +364,7 @@
       "name": "Community Chest",
       "cards": [
         {
-          "$type": "jailbreak",
+          "$type": "unpolice",
           "name": "Get Out of Jail Free"
         },
         {

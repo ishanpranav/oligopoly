@@ -39,7 +39,7 @@ public readonly struct CardId : IAsset
     }
 
     /// <inheritdoc/>
-    public void Transfer(GameController controller, Player sender, Player recipient)
+    public void Transfer(Controller controller, Player sender, Player recipient)
     {
         while (sender.CardIds.TryDequeue(out CardId cardId))
         {
@@ -48,7 +48,7 @@ public readonly struct CardId : IAsset
     }
 
     /// <inheritdoc/>
-    public void Discard(GameController controller, Player player)
+    public void Discard(Controller controller, Player player)
     {
         while (player.CardIds.TryDequeue(out CardId cardId))
         {

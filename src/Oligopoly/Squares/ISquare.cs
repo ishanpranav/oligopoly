@@ -23,5 +23,5 @@ public interface ISquare
 {
     string Name { get; }
 
-    void Advance(Player player, GameController controller);
+    void Advance(Player player, Controller controller);
 }

@@ -15,7 +15,7 @@ public class PoliceSquare : ISquare
     public string Name { get; }
 
     /// <inheritdoc/>
-    public void Advance(Player player, GameController controller)
+    public void Advance(Player player, Controller controller)
     {
         controller.Police(player);
     }

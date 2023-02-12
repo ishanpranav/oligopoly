@@ -10,7 +10,7 @@ public class PoliceSquareTest
     [DataTestMethod]
     public void TestAdvance(params int[] items)
     {
-        GameController controller = Factory.CreateController(items);
+        Controller controller = Factory.CreateController(items);
         Player player = controller.AddPlayer("Mark");
 
         player.SquareId = 25;

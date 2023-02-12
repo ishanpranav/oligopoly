@@ -13,36 +13,39 @@ public class Factory
     private static D6PairDice? s_dice;
     private static FisherYatesShuffle? s_shuffle;
     
-    public static Board CreateBoard()
+    public static Board Board
     {
-        if (s_board is null)
+        get
         {
-            string messagePackPath = "../../../../../data/board.bin";
-
-            if (File.Exists(messagePackPath))
+            if (s_board is null)
             {
-                using FileStream input = File.OpenRead(messagePackPath);
+                string messagePackPath = "../../../../../data/board.bin";
 
-                s_board = OligopolySerializer.ReadBoard(input);
-            }
-            else
-            {
-                using FileStream input = File.OpenRead("../../../../../data/board.json");
-
-                s_board = JsonSerializer.Deserialize<Board>(input, new JsonSerializerOptions()
+                if (File.Exists(messagePackPath))
                 {
-                    PropertyNameCaseInsensitive = true
-                });
+                    using FileStream input = File.OpenRead(messagePackPath);
 
-                Assert.IsNotNull(s_board);
+                    s_board = OligopolySerializer.ReadBoard(input);
+                }
+                else
+                {
+                    using FileStream input = File.OpenRead("../../../../../data/board.json");
 
-                using FileStream output = File.Create(messagePackPath);
+                    s_board = JsonSerializer.Deserialize<Board>(input, new JsonSerializerOptions()
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
 
-                OligopolySerializer.Write(output, s_board);
+                    Assert.IsNotNull(s_board);
+
+                    using FileStream output = File.Create(messagePackPath);
+
+                    OligopolySerializer.Write(output, s_board);
+                }
             }
-        }
 
-        return s_board;
+            return s_board;
+        }
     }
 
     public static Game CreateGame(Board board, IDice? dice = null, IShuffle? shuffle = null)
@@ -74,17 +77,17 @@ public class Factory
         };
     }
 
-    public static GameController CreateController()
+    public static Controller CreateController()
     {
-        Board board = CreateBoard();
+        Board board = Board;
 
-        return new GameController(board, CreateGame(board));
+        return new Controller(board, CreateGame(board));
     }
 
-    public static GameController CreateController(params int[] items)
+    public static Controller CreateController(params int[] items)
     {
-        Board board = CreateBoard();
+        Board board = Board;
 
-        return new GameController(board, CreateGame(board, new D6PairDice(new TestRandom(items))));
+        return new Controller(board, CreateGame(board, new D6PairDice(new TestRandom(items))));
     }
 }

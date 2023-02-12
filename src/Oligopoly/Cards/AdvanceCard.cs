@@ -27,7 +27,7 @@ public class AdvanceCard : ICard
     public int SquareId { get; }
 
     /// <inheritdoc/>
-    public void Draw(Player player, GameController controller)
+    public void Draw(Player player, Controller controller)
     {
         if (player.SquareId > SquareId)
         {

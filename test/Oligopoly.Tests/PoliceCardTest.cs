@@ -10,7 +10,7 @@ public class PoliceCardTest
     [TestMethod("Draw")]
     public void TestDraw()
     {
-        GameController controller = Factory.CreateController();
+        Controller controller = Factory.CreateController();
         Player player = controller.AddPlayer("Mark");
         PoliceCard card = new PoliceCard(nameof(PoliceCard))
         {

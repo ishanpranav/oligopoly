@@ -5,9 +5,9 @@ using Oligopoly.Assets;
 namespace Oligopoly.Cards;
 
 [MessagePackObject]
-public class JailbreakCard : IAppraisable, ICard
+public class UnpoliceCard : IAppraisable, ICard
 {
-    public JailbreakCard(string name)
+    public UnpoliceCard(string name)
     {
         Name = name;
     }
@@ -28,7 +28,7 @@ public class JailbreakCard : IAppraisable, ICard
     }
 
     /// <inheritdoc/>
-    public void Draw(Player player, GameController controller)
+    public void Draw(Player player, Controller controller)
     {
         player.CardIds.Enqueue(Id);
     }

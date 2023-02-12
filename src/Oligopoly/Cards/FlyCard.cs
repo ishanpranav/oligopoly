@@ -22,7 +22,7 @@ public abstract class FlyCard : ICard
     public string Name { get; }
 
     /// <inheritdoc/>
-    public void Draw(Player player, GameController controller)
+    public void Draw(Player player, Controller controller)
     {
         for (int squareId = player.SquareId + 1; squareId <= controller.Board.Squares.Count; squareId++)
         {

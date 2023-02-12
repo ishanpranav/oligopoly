@@ -4,10 +4,10 @@ namespace Oligopoly.Agents;
 
 public interface IAgent
 {
-    void Connect(GameController controller);
-    void Tax(Game game, Player player, int amount);
-    void Taxed(Game game, Player player, int amount);
-    void Untaxed(Game game, Player player, int amount);
+    void Connect(Controller controller);
+    void OnTaxing(Game game, Player player, int amount);
+    void OnTaxed(Game game, Player player, int amount);
+    void OnUntaxed(Game game, Player player, int amount);
     int Mortgage(Game game, Player player);
     int Unmortgage(Game game, Player player);
     int Improve(Game game, Player player);
@@ -16,6 +16,6 @@ public interface IAgent
     int Bid(Game game, Player player, Offer offer);
     Offer? Propose(Game game, Player player);
     bool Respond(Game game, Player player);
-    JailbreakStrategy Jailbreak(Game game, Player player);
+    UnpoliceStrategy Unpolice(Game game, Player player);
     void Warn(Game game, Player player, Warning warning);
 }

@@ -31,7 +31,7 @@ public class RepairCard : ICard
     public int HotelCost { get; }
 
     /// <inheritdoc/>
-    public void Draw(Player player, GameController controller)
+    public void Draw(Player player, Controller controller)
     {
         int cost = 0;
 

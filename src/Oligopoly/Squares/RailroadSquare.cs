@@ -10,7 +10,7 @@ public class RailroadSquare : PropertySquare
     public RailroadSquare(string name) : base(name) { }
 
     /// <inheritdoc/>
-    public override int GetRent(int squareId, Player owner, GameController controller)
+    public override int GetRent(int squareId, Player owner, Controller controller)
     {
         int count;
 

@@ -10,7 +10,7 @@ public class BoardTest
     [TestMethod("Squares (1)")]
     public void TestSquaresCount()
     {
-        Assert.AreEqual(40, Factory.CreateBoard().Squares.Count);
+        Assert.AreEqual(40, Factory.Board.Squares.Count);
     }
 
     [DataRow("GO", 1, DisplayName = "Squares (2)")]
@@ -23,7 +23,7 @@ public class BoardTest
     [DataTestMethod]
     public void TestSquares(string name, params int[] expectedIds)
     {
-        Board board = Factory.CreateBoard();
+        Board board = Factory.Board;
         List<int> actualIds = new List<int>();
 
         for (int i = 0; i < board.Squares.Count; i++)
@@ -50,7 +50,7 @@ public class BoardTest
     [DataTestMethod]
     public void TestGroups(int groupId, params string[] expectedNames)
     {
-        Board board = Factory.CreateBoard();
+        Board board = Factory.Board;
         List<string> actualNames = new List<string>();
 
         for (int i = 0; i < board.Squares.Count; i++)
@@ -74,7 +74,7 @@ public class BoardTest
     [TestMethod("Decks")]
     public void TestDecksCounts()
     {
-        Board board = Factory.CreateBoard();
+        Board board = Factory.Board;
 
         Assert.AreEqual(2, board.Decks.Count);
         Assert.AreEqual(16, board.Decks[0].Cards.Count);

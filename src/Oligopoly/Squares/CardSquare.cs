@@ -37,7 +37,7 @@ public class CardSquare : ISquare
     }
 
     /// <inheritdoc/>
-    public void Advance(Player player, GameController controller)
+    public void Advance(Player player, Controller controller)
     {
         ICard card = controller.Game.Draw(controller.Board.Decks[DeckId - 1]);
 

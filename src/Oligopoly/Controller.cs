@@ -8,12 +8,13 @@ using Oligopoly.Squares;
 
 namespace Oligopoly;
 
-public class GameController
+public class Controller
 {
     private int _id;
+    private bool _started;
     private bool _proposing;
 
-    public GameController(Board board, Game game)
+    public Controller(Board board, Game game)
     {
         Board = board;
         Game = game;
@@ -33,6 +34,11 @@ public class GameController
 
     public void Start()
     {
+        if (_started)
+        {
+            throw new InvalidOperationException();
+        }
+
         Console.WriteLine("Start of game. Players:");
 
         foreach (Player player in Game.Players)
@@ -41,10 +47,17 @@ public class GameController
 
             Console.WriteLine("\t{0}", player.Name);
         }
+
+        _started = true;
     }
 
     public Player AddPlayer(string name)
     {
+        if (_started)
+        {
+            throw new InvalidOperationException();
+        }
+
         _id++;
 
         Player result = new Player(_id, name)
@@ -98,14 +111,14 @@ public class GameController
         return true;
     }
 
-    public void Move(Player player)
+    private void Move(Player player)
     {
         Console.WriteLine();
         Console.WriteLine("{0}: Cash=${1}, Net Worth=${2}, Sentence={3}, Square={4}", player, player.Cash, player.Appraise(Board, Game), player.Sentence, player.SquareId);
 
         OnTurnStarted(new PlayerEventArgs(player));
         Propose(player);
-        Jailbreak(player);
+        Unpolice(player);
         Unmortgage(player);
         Improve(player);
 
@@ -130,20 +143,20 @@ public class GameController
         OnTurnEnded(new PlayerEventArgs(player));
     }
 
-    private void Jailbreak(Player player)
+    private void Unpolice(Player player)
     {
         if (player.Sentence > 0)
         {
-            switch (player.Agent.Jailbreak(Game, player))
+            switch (player.Agent.Unpolice(Game, player))
             {
-                case JailbreakStrategy.Bail:
+                case UnpoliceStrategy.Bail:
                     Tax(player, Board.Bail);
 
                     player.Sentence = 0;
 
                     break;
 
-                case JailbreakStrategy.Card:
+                case UnpoliceStrategy.Card:
                     if (player.CardIds.TryDequeue(out CardId cardId))
                     {
                         player.Sentence = 0;
@@ -250,7 +263,7 @@ public class GameController
 
     public int Tax(Player player, int amount)
     {
-        player.Agent.Tax(Game, player, amount);
+        player.Agent.OnTaxing(Game, player, amount);
         Propose(player);
         Unimprove(player);
         Mortgage(player);
@@ -259,7 +272,7 @@ public class GameController
 
         player.Cash -= amount;
 
-        player.Agent.Taxed(Game, player, amount);
+        player.Agent.OnTaxed(Game, player, amount);
 
         Console.WriteLine("{0} pays £{1}", player, amount);
 
@@ -274,7 +287,7 @@ public class GameController
     public void Untax(Player player, int amount)
     {
         player.Cash += amount;
-        player.Agent.Untaxed(Game, player, amount);
+        player.Agent.OnUntaxed(Game, player, amount);
 
         Console.WriteLine("{0} gets £{1}", player, amount);
     }

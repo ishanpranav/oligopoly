@@ -33,7 +33,7 @@ public class Deed : IAsset
     }
 
     /// <inheritdoc/>
-    public void Transfer(GameController controller, Player sender, Player recipient)
+    public void Transfer(Controller controller, Player sender, Player recipient)
     {
         if (Improvements > 0)
         {
@@ -55,7 +55,7 @@ public class Deed : IAsset
     }
 
     /// <inheritdoc/>
-    public void Discard(GameController controller, Player player)
+    public void Discard(Controller controller, Player player)
     {
         PlayerId = 0;
         Mortgaged = false;

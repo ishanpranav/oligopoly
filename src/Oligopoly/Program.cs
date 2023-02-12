@@ -46,14 +46,14 @@ internal static class Program
             OligopolySerializer.Write(output, s_board);
         }
 
-        GameController controller;
+        Controller controller;
 
         if (File.Exists(gamePath))
         {
             using Stream input = File.OpenRead(gamePath);
 
             game = OligopolySerializer.ReadGame(input);
-            controller = new GameController(s_board, game);
+            controller = new Controller(s_board, game);
         }
         else
         {
@@ -62,7 +62,7 @@ internal static class Program
                 Houses = s_board.Houses,
                 Hotels = s_board.Hotels
             };
-            controller = new GameController(s_board, game);
+            controller = new Controller(s_board, game);
 
             controller.AddPlayer("Mark");
             controller.AddPlayer("Jacob");

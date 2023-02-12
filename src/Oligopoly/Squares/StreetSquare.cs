@@ -30,7 +30,7 @@ public class StreetSquare : PropertySquare
     public IReadOnlyList<int> Rents { get; }
 
     /// <inheritdoc/>
-    public override int GetRent(int squareId, Player owner, GameController controller)
+    public override int GetRent(int squareId, Player owner, Controller controller)
     {
         Deed deed = controller.Game.Deeds[squareId - 1];
 

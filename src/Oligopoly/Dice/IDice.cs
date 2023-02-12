@@ -7,5 +7,5 @@ public interface IDice
 {
     int Amount { get; }
 
-    bool Roll(GameController controller, Player player);
+    bool Roll(Controller controller, Player player);
 }

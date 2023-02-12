@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json.Linq;
 using Oligopoly.Agents;
 using Oligopoly.Assets;
-using Oligopoly.EventArgs;
 
 namespace Oligopoly.Tests;
 
-internal sealed class TestAgent : Agent
+internal sealed class TestAgent : IAgent
 {
     private readonly Queue<int> _mortgages = new Queue<int>();
     private readonly Queue<int> _improvements = new Queue<int>();
@@ -17,16 +15,32 @@ internal sealed class TestAgent : Agent
     private readonly Queue<int> _bids = new Queue<int>();
     private readonly Queue<Offer?> _proposals = new Queue<Offer?>();
     private readonly Queue<bool> _responses = new Queue<bool>();
-    private readonly Queue<JailbreakStrategy> _jailbreakStrategies = new Queue<JailbreakStrategy>();
+    private readonly Queue<UnpoliceStrategy> _UnpoliceStrategies = new Queue<UnpoliceStrategy>();
     private readonly Queue<Warning> _warnings = new Queue<Warning>();
 
-    private Board _board = null!;
+#nullable disable
+    private Board _board;
+#nullable enable
 
     private TestAgent() { }
 
-    public TestAgent ThenMortgage(int value)
+    /// <inheritdoc/>
+    public void OnTaxing(Game game, Player player, int amount) { }
+
+    /// <inheritdoc/>
+    public void OnTaxed(Game game, Player player, int amount) { }
+
+    /// <inheritdoc/>
+    public void OnUntaxed(Game game, Player player, int amount) { }
+
+    public TestAgent ThenMortgage(params int[] values)
     {
-        _mortgages.Enqueue(value);
+        foreach (int value in values)
+        {
+            _mortgages.Enqueue(value);
+        }
+
+        _mortgages.Enqueue(0);
 
         return this;
     }
@@ -38,6 +52,8 @@ internal sealed class TestAgent : Agent
             _improvements.Enqueue(value);
         }
 
+        _improvements.Enqueue(0);
+
         return this;
     }
 
@@ -47,6 +63,8 @@ internal sealed class TestAgent : Agent
         {
             _unimprovements.Enqueue(value);
         }
+
+        _unimprovements.Enqueue(0);
 
         return this;
     }
@@ -68,6 +86,8 @@ internal sealed class TestAgent : Agent
             _bids.Enqueue(value);
         }
 
+        _bids.Enqueue(0);
+
         return this;
     }
 
@@ -78,19 +98,21 @@ internal sealed class TestAgent : Agent
             _proposals.Enqueue(value);
         }
 
+        _proposals.Enqueue(null);
+
         return this;
     }
 
     public TestAgent ThenRespond(bool value)
     {
         _responses.Enqueue(value);
-
+       
         return this;
     }
 
-    public TestAgent ThenJailbreak(JailbreakStrategy value)
+    public TestAgent ThenUnpolice(UnpoliceStrategy value)
     {
-        _jailbreakStrategies.Enqueue(value);
+        _UnpoliceStrategies.Enqueue(value);
 
         return this;
     }
@@ -103,13 +125,13 @@ internal sealed class TestAgent : Agent
     }
 
     /// <inheritdoc/>
-    public override void Connect(GameController controller)
+    public void Connect(Controller controller)
     {
         _board = controller.Board;
     }
 
     /// <inheritdoc/>
-    public override int Mortgage(Game game, Player player)
+    public int Mortgage(Game game, Player player)
     {
         _mortgages.TryDequeue(out int id);
 
@@ -119,7 +141,13 @@ internal sealed class TestAgent : Agent
     }
 
     /// <inheritdoc/>
-    public override int Improve(Game game, Player player)
+    public int Unmortgage(Game game, Player player)
+    {
+        return 0;
+    }
+
+    /// <inheritdoc/>
+    public int Improve(Game game, Player player)
     {
         _improvements.TryDequeue(out int id);
 
@@ -129,7 +157,7 @@ internal sealed class TestAgent : Agent
     }
 
     /// <inheritdoc/>
-    public override int Unimprove(Game game, Player player)
+    public int Unimprove(Game game, Player player)
     {
         _unimprovements.TryDequeue(out int id);
 
@@ -139,7 +167,7 @@ internal sealed class TestAgent : Agent
     }
 
     /// <inheritdoc/>
-    public override bool Offer(Game game, Player player, IAsset asset)
+    public bool Offer(Game game, Player player, IAsset asset)
     {
         _offers.TryDequeue(out bool result);
 
@@ -149,7 +177,7 @@ internal sealed class TestAgent : Agent
     }
 
     /// <inheritdoc/>
-    public override int Bid(Game game, Player player, Offer offer)
+    public int Bid(Game game, Player player, Offer offer)
     {
         _bids.TryDequeue(out int id);
 
@@ -159,7 +187,7 @@ internal sealed class TestAgent : Agent
     }
 
     /// <inheritdoc/>
-    public override Offer? Propose(Game game, Player player)
+    public Offer? Propose(Game game, Player player)
     {
         _proposals.TryDequeue(out Offer? result);
 
@@ -176,7 +204,7 @@ internal sealed class TestAgent : Agent
     }
 
     /// <inheritdoc/>
-    public override bool Respond(Game game, Player player)
+    public bool Respond(Game game, Player player)
     {
         _responses.TryDequeue(out bool result);
 
@@ -186,17 +214,17 @@ internal sealed class TestAgent : Agent
     }
 
     /// <inheritdoc/>
-    public override JailbreakStrategy Jailbreak(Game game, Player player)
+    public UnpoliceStrategy Unpolice(Game game, Player player)
     {
-        _jailbreakStrategies.TryDequeue(out JailbreakStrategy result);
+        _UnpoliceStrategies.TryDequeue(out UnpoliceStrategy result);
 
-        Console.WriteLine("<< Jailbreak [{0}]", result);
+        Console.WriteLine("<< Unpolice [{0}]", result);
 
         return result;
     }
 
     /// <inheritdoc/>
-    public override void Warn(Game game, Player player, Warning warning)
+    public void Warn(Game game, Player player, Warning warning)
     {
         _warnings.TryDequeue(out Warning expectedWarning);
 

@@ -15,7 +15,7 @@ public class EmptySquare : ISquare
     public string Name { get; }
 
     /// <inheritdoc/>
-    public void Advance(Player player, GameController controller) { }
+    public void Advance(Player player, Controller controller) { }
 
     /// <inheritdoc/>
     public override string ToString()

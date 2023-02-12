@@ -14,13 +14,13 @@ public abstract class PropertySquare : IAppraisable, ISquare
     [Key(0)]
     public string Name { get; }
 
-    public abstract int GetRent(int squareId, Player owner, GameController controller);
+    public abstract int GetRent(int squareId, Player owner, Controller controller);
 
     /// <inheritdoc/>
     public abstract int Appraise(Board board, Game game);
 
     /// <inheritdoc/>
-    public void Advance(Player player, GameController controller)
+    public void Advance(Player player, Controller controller)
     {
         Deed deed = controller.Game.Deeds[player.SquareId - 1];
 

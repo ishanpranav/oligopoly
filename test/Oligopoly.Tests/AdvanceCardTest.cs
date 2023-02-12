@@ -10,7 +10,7 @@ public class AdvanceCardTest
     [TestMethod("Draw")]
     public void TestDraw()
     {
-        GameController controller = Factory.CreateController();
+        Controller controller = Factory.CreateController();
         Player player = controller.AddPlayer("Mark");
         AdvanceCard card = new AdvanceCard(nameof(AdvanceCard), squareId: 21)
         {

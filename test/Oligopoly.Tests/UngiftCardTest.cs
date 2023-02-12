@@ -10,7 +10,7 @@ public class UngiftCardTest
     [TestMethod("Draw")]
     public void TestDraw()
     {
-        GameController controller = Factory.CreateController();
+        Controller controller = Factory.CreateController();
         Game game = controller.Game;
         Player first = controller.AddPlayer("Mark");
         Player second = controller.AddPlayer("John");

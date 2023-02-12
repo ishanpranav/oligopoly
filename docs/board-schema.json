@@ -169,7 +169,7 @@
                 "$type": {
                   "type": "string",
                   "enum": [
-                    "jailbreak",
+                    "Unpolice",
                     "police",
                     "railroad",
                     "advance",

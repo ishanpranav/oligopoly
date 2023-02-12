@@ -19,7 +19,7 @@ public class TaxSquare : ISquare
     public int Amount { get; }
 
     /// <inheritdoc/>
-    public void Advance(Player player, GameController controller)
+    public void Advance(Player player, Controller controller)
     {
         controller.Tax(player, Amount);
     }

@@ -7,7 +7,7 @@ namespace Oligopoly.Agents;
 public class Agent : IAgent
 {
     /// <inheritdoc/>
-    public virtual void Connect(GameController controller)
+    public virtual void Connect(Controller controller)
     {
         Console.WriteLine(">> Connect");
 
@@ -50,19 +50,19 @@ public class Agent : IAgent
     }
 
     /// <inheritdoc/>
-    public void Tax(Game game, Player player, int amount)
+    public void OnTaxing(Game game, Player player, int amount)
     {
         Console.WriteLine(">> Tax {0}", amount);
     }
 
     /// <inheritdoc/>
-    public void Taxed(Game game, Player player, int amount)
+    public void OnTaxed(Game game, Player player, int amount)
     {
         Console.WriteLine(">> Taxed {0}", amount);
     }
 
     /// <inheritdoc/>
-    public void Untaxed(Game game, Player player, int amount)
+    public void OnUntaxed(Game game, Player player, int amount)
     {
         Console.WriteLine(">> Untaxed {0}", amount);
     }
@@ -118,9 +118,9 @@ public class Agent : IAgent
     }
 
     /// <inheritdoc/>
-    public virtual JailbreakStrategy Jailbreak(Game game, Player player)
+    public virtual UnpoliceStrategy Unpolice(Game game, Player player)
     {
-        return JailbreakStrategy.None;
+        return UnpoliceStrategy.None;
     }
 
     /// <inheritdoc/>

@@ -26,7 +26,7 @@ public class GiftCard : ICard
     public int Amount { get; }
 
     /// <inheritdoc/>
-    public void Draw(Player player, GameController controller)
+    public void Draw(Player player, Controller controller)
     {
         int amount = (controller.Game.Players.Count - 1) * Amount;
 

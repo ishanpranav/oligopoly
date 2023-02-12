@@ -1,6 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Oligopoly.Assets;
-using Oligopoly.Dice;
 using Oligopoly.EventArgs;
 
 namespace Oligopoly.Tests;
@@ -8,33 +7,44 @@ namespace Oligopoly.Tests;
 [TestClass]
 public class AuctionTest
 {
+#nullable disable
+    private Controller _controller;
+    private Player _first;
+    private Player _second;
+    private Player _third;
+#nullable enable
+
+    [TestInitialize]
+    public void Initialize()
+    {
+        _controller = Factory.CreateController(4, 5, 6, 4, 6, 4, 6, 4);
+        _first = _controller.AddPlayer("Mark");
+        _second = _controller.AddPlayer("John");
+        _third = _controller.AddPlayer("Allison");
+    }
+
     [TestMethod("Auction (1)")]
     public void TestAuctionTwoBidders()
     {
-        Board board = Factory.CreateBoard();
-        Game game = Factory.CreateGame(board, new D6PairDice(new TestRandom(4, 5)));
-        GameController controller = new GameController(board, game);
-        Player first = controller.AddPlayer("Mark");
-        Player second = controller.AddPlayer("John");
         TestAgent firstAgent = TestAgent
             .Create()
             .ThenBid(150, 150);
         TestAgent secondAgent = TestAgent
             .Create()
             .ThenBid(175, 175);
-        Deed deed = game.Deeds[19];
+        Deed deed = _controller.Game.Deeds[19];
 
-        first.Agent = firstAgent;
-        first.SquareId = 11;
-        second.Agent = secondAgent;
-        controller.AuctionFailed += OnControllerAuctionEnded;
-        controller.AuctionSucceeded += OnControllerAuctionEnded;
+        _first.Agent = firstAgent;
+        _first.SquareId = 11;
+        _second.Agent = secondAgent;
+        _controller.AuctionFailed += OnControllerAuctionEnded;
+        _controller.AuctionSucceeded += OnControllerAuctionEnded;
 
-        controller.Start();
-        controller.Move(first);
+        _controller.Start();
+        _controller.MoveNext();
         Assert.AreEqual(2, deed.PlayerId);
-        Assert.AreEqual(1500, first.Cash);
-        Assert.AreEqual(1325, second.Cash);
+        Assert.AreEqual(1500, _first.Cash);
+        Assert.AreEqual(1325, _second.Cash);
     }
 
     private void OnControllerAuctionEnded(object? sender, AuctionEventArgs e)
@@ -42,7 +52,7 @@ public class AuctionTest
         Assert.IsTrue(e.Succeeded);
         Assert.IsNotNull(sender);
 
-        GameController controller = (GameController)sender;
+        Controller controller = (Controller)sender;
 
         Assert.AreEqual(controller.Game.Deeds[19], e.Asset);
         Assert.AreEqual(2, e.Bid.Bidder.Id);
@@ -52,37 +62,26 @@ public class AuctionTest
     [TestMethod("Auction (2)")]
     public void TestAuctionOneBidder()
     {
-        Board board = Factory.CreateBoard();
-        Game game = Factory.CreateGame(board, new D6PairDice(new TestRandom(4, 5)));
-        GameController controller = new GameController(board, game);
-        Player first = controller.AddPlayer("Mark");
-        Player second = controller.AddPlayer("John");
-        Player third = controller.AddPlayer("Allison");
+        Player third = _controller.AddPlayer("Allison");
         TestAgent firstAgent = TestAgent
             .Create()
             .ThenBid(150, 150);
-        Deed deed = game.Deeds[19];
+        Deed deed = _controller.Game.Deeds[19];
 
-        first.Agent = firstAgent;
-        first.SquareId = 11;
+        _first.Agent = firstAgent;
+        _first.SquareId = 11;
 
-        controller.Start();
-        controller.Move(first);
+        _controller.Start();
+        _controller.MoveNext();
         Assert.AreEqual(1, deed.PlayerId);
-        Assert.AreEqual(1350, first.Cash);
-        Assert.AreEqual(1500, second.Cash);
+        Assert.AreEqual(1350, _first.Cash);
+        Assert.AreEqual(1500, _second.Cash);
         Assert.AreEqual(1500, third.Cash);
     }
 
     [TestMethod("Auction (3)")]
     public void TestAuctionFailedBidder()
     {
-        Board board = Factory.CreateBoard();
-        Game game = Factory.CreateGame(board, new D6PairDice(new TestRandom(4, 5)));
-        GameController controller = new GameController(board, game);
-        Player first = controller.AddPlayer("Mark");
-        Player second = controller.AddPlayer("John");
-        Player third = controller.AddPlayer("Allison");
         TestAgent firstAgent = TestAgent
             .Create()
             .ThenBid(200, 200);
@@ -92,19 +91,19 @@ public class AuctionTest
         TestAgent thirdAgent = TestAgent
             .Create()
             .ThenBid(300, 300);
-        Deed deed = game.Deeds[19];
+        Deed deed = _controller.Game.Deeds[19];
 
-        first.Agent = firstAgent;
-        first.SquareId = 11;
-        second.Agent = secondAgent;
-        second.Cash = 250;
-        third.Agent = thirdAgent;
+        _first.Agent = firstAgent;
+        _first.SquareId = 11;
+        _second.Agent = secondAgent;
+        _second.Cash = 250;
+        _third.Agent = thirdAgent;
 
-        controller.Start();
-        controller.Move(first);
+        _controller.Start();
+        _controller.MoveNext();
         Assert.AreEqual(3, deed.PlayerId);
-        Assert.AreEqual(1500, first.Cash);
-        Assert.AreEqual(250, second.Cash);
-        Assert.AreEqual(1200, third.Cash);
+        Assert.AreEqual(1500, _first.Cash);
+        Assert.AreEqual(250, _second.Cash);
+        Assert.AreEqual(1200, _third.Cash);
     }
 }

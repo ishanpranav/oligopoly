@@ -10,9 +10,7 @@ public class GiftCardTest
     [TestMethod("Draw")]
     public void TestDraw()
     {
-        Board board = Factory.CreateBoard();
-        Game game = Factory.CreateGame(board);
-        GameController controller = new GameController(board, game);
+        Controller controller = Factory.CreateController();
         Player first = controller.AddPlayer("Mark");
         Player second = controller.AddPlayer("John");
         Player third = controller.AddPlayer("Allison");

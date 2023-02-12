@@ -26,7 +26,7 @@ public class JumpCard : ICard
     public int Distance { get; }
 
     /// <inheritdoc/>
-    public void Draw(Player player, GameController controller)
+    public void Draw(Player player, Controller controller)
     {
         controller.Jump(player, Distance);
         controller.Game.Discard(Id);

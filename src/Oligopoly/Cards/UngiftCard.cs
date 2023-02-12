@@ -27,7 +27,7 @@ public class UngiftCard : ICard
     public int Amount { get; }
 
     /// <inheritdoc/>
-    public void Draw(Player player, GameController controller)
+    public void Draw(Player player, Controller controller)
     {
         foreach (Player other in controller.Game.Players)
         {
