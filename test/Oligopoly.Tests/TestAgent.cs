@@ -17,7 +17,7 @@ internal sealed class TestAgent : IAgent
     private readonly Queue<int> _bids = new Queue<int>();
     private readonly Queue<Offer?> _proposals = new Queue<Offer?>();
     private readonly Queue<bool> _responses = new Queue<bool>();
-    private readonly Queue<UnpoliceStrategy> _UnpoliceStrategies = new Queue<UnpoliceStrategy>();
+    private readonly Queue<UnpoliceStrategy> _unpoliceStrategies = new Queue<UnpoliceStrategy>();
     private readonly Queue<Warning> _warnings = new Queue<Warning>();
 
 #nullable disable
@@ -120,13 +120,13 @@ internal sealed class TestAgent : IAgent
     public TestAgent ThenRespond(bool value)
     {
         _responses.Enqueue(value);
-       
+
         return this;
     }
 
     public TestAgent ThenUnpolice(UnpoliceStrategy value)
     {
-        _UnpoliceStrategies.Enqueue(value);
+        _unpoliceStrategies.Enqueue(value);
 
         return this;
     }
@@ -240,7 +240,7 @@ internal sealed class TestAgent : IAgent
     /// <inheritdoc/>
     public UnpoliceStrategy Unpolice(Game game, Player player)
     {
-        _UnpoliceStrategies.TryDequeue(out UnpoliceStrategy result);
+        _unpoliceStrategies.TryDequeue(out UnpoliceStrategy result);
 
         Console.WriteLine("<< Unpolice [{0}]", result);
 

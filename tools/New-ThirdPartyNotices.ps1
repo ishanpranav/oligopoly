@@ -1,13 +1,47 @@
 $path = "../THIRD-PARTY-NOTICES.md"
+$gitIgnorePath = "../docs/.gitignore"
+$gitAttributesPath = "../docs/.gitattributes"
 
-if ((Test-Path $path) -eq $true) {
-    Remove-Item -Path $path
+if (Test-Path $path) {
+    Remove-Item $path
+}
+
+if (Test-Path $gitIgnorePath) {
+    Remove-Item $gitIgnorePath
+}
+
+if (Test-Path $gitAttributesPath) {
+    Remove-Item $gitAttributesPath
+}
+
+function Get-LicensePath {
+    param ($key)
+
+    $index = $key.IndexOf('_')
+
+    if ($index -ne -1) {
+        $key = $key.Substring(0, $index)
+    }
+
+    return "../docs/" + $key + ".txt"
 }
 
 function Out-ThirdPartyNotices {
     param ($value)
 
-    Out-File -FilePath $path -Append -InputObject $value
+    Out-File -FilePath $path -InputObject $value -Append
+}
+
+function Out-GitIgnore() {
+    param ($value)
+
+    Out-File -FilePath $gitIgnorePath -InputObject $value -Append
+}
+
+function Out-GitAttributes() {
+    param ($value)
+
+    Out-File -FilePath $gitAttributesPath -InputObject $value -Append
 }
 
 function Convert-MarkdownString {
@@ -61,23 +95,30 @@ function Out-Dependencies {
         }
 
         if ($null -ne $dependency.license) {
-            $index = $dependency.license.IndexOf('_')
-
-            if ($index -eq -1) {
-                $key = $dependency.license
-            }
-            else {
-                $key = $dependency.license.SubString(0, $index)
-            }
-
-            $license = $json.licenses[$key]
-
             if ($null -eq $dependency.copyright) {
                 $dependency.copyright = ""
             }
 
-            if (-Not ($hashtable.ContainsKey($dependency.license))) {
-                $hashtable.Add($dependency.license, [string]::Format($license.text, $dependency.copyright))
+            if ($hashtable.ContainsKey($dependency.license)) {
+                $license = $hashtable[$dependency.license]
+            } else {
+                $licensePath = Get-LicensePath $dependency.license
+
+                if (Test-Path $licensePath) {
+                    $license = @{
+                        title = Get-Content $licensePath | Select-Object -First 1
+                        text = Join-String -Separator "`n" -InputObject (Get-Content $licensePath | Select-Object -Skip 1)
+                    }
+                } else {
+                    $licenseReference = $json.licenses[$dependency.license]
+                    $license = @{
+                        title = $licenseReference.title
+                        text = (Invoke-WebRequest -Uri $licenseReference.url).Content
+                    }
+                }
+
+                $license.text = [string]::Format($license.text, $dependency.copyright)
+                $hashtable.Add($dependency.license, $license)
             }
 
             Out-ThirdPartyNotices ("- License: [" + $license.title + "](#" + $dependency.license + ')')
@@ -97,7 +138,7 @@ function Out-Dependencies {
     Out-ThirdPartyNotices ""
 }
 
-$json = Get-Content "../docs/licenses.json" -Raw | ConvertFrom-Json -AsHashtable
+$json = Get-Content -Path "../docs/licenses.json" -Raw | ConvertFrom-Json -AsHashtable   
 
 Out-ThirdPartyNotices "Third-Party Notices
 ===================
@@ -129,27 +170,20 @@ Out-Dependencies $json.references
 Out-ThirdPartyNotices "Resources
 ---------
 This section contains attributions for helpful resources that assisted in the
-development of this software."
+development of this software. These elementst may be included in the source
+repository but are not redistributed with release versions of the application."
 Out-Dependencies $json.tools
 Out-ThirdPartyNotices "Licenses
 --------"
 
 foreach ($key in $hashtable.Keys | Sort-Object) {
-    $licenseText = $hashtable[$key]
-    $index = $key.IndexOf('_')
-
-    if ($index -eq -1) {
-        $license = $key
-    }
-    else {
-        $license = $key.Substring(0, $index)
-    }
-
+    $license = $hashtable[$key]
+    
     Out-ThirdPartyNotices ""
-    Out-ThirdPartyNotices ("### <a id='" + $key + "'>" + $json.licenses[$license].title + "</a>")
+    Out-ThirdPartyNotices ("### <a id='" + $key + "'>" + $license.title + "</a>")
     Out-ThirdPartyNotices ""
     Out-ThirdPartyNotices "``````"
-    Out-ThirdPartyNotices $licenseText
+    Out-ThirdPartyNotices $license.text
     Out-ThirdPartyNotices "``````"
     Out-ThirdPartyNotices "________________________________________________________________________________"
 }

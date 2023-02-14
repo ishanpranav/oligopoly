@@ -6,13 +6,12 @@ using Oligopoly.Shuffles;
 
 namespace Oligopoly.Tests;
 
-[TestClass]
-public class Factory
+internal static class Factory
 {
     private static Board? s_board;
     private static D6PairDice? s_dice;
     private static FisherYatesShuffle? s_shuffle;
-    
+
     public static Board Board
     {
         get

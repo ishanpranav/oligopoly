@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Oligopoly.Assets;
 
 namespace Oligopoly.Auctions;

@@ -617,7 +617,7 @@ public class ControllerTest
             .Create()
             .ThenUnimprove(12, 14, 15, 12, 14, 15)
             .ThenExpect(Warning.AccessDenied);
-            
+
         firstPink.PlayerId = 2;
         firstPink.Improvements = 4;
         secondPink.PlayerId = 2;

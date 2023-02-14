@@ -11,6 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 		docs\board-schema.json = docs\board-schema.json
 		data\board.json = data\board.json
+		.github\workflows\deploy-to-github-pages.yml = .github\workflows\deploy-to-github-pages.yml
 		docs\licenses.json = docs\licenses.json
 		tools\New-ThirdPartyNotices.ps1 = tools\New-ThirdPartyNotices.ps1
 	EndProjectSection
@@ -18,9 +19,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		C_5_4Users_4ishan_4source_4repos_4oligopoly_4data_4board_1json__JsonSchema = ../docs/board-schema.json
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Oligopoly.DirectX", "src\Oligopoly.DirectX\Oligopoly.DirectX.csproj", "{EA766F5B-7ECE-43B2-B789-6F94A453D9C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Oligopoly.Tests", "test\Oligopoly.Tests\Oligopoly.Tests.csproj", "{684F7F13-AA4D-4FFD-A142-61F76D9FC367}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Oligopoly.Tests", "test\Oligopoly.Tests\Oligopoly.Tests.csproj", "{684F7F13-AA4D-4FFD-A142-61F76D9FC367}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Oligopoly.WebAssembly", "src\Oligopoly.WebAssembly\Oligopoly.WebAssembly.csproj", "{76DA3D88-CBF4-49D8-A55A-37E2993DB1A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,14 +33,14 @@ Global
 		{0BA0A6A0-3B15-4C13-8B7E-5C9D635472BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0BA0A6A0-3B15-4C13-8B7E-5C9D635472BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0BA0A6A0-3B15-4C13-8B7E-5C9D635472BF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EA766F5B-7ECE-43B2-B789-6F94A453D9C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EA766F5B-7ECE-43B2-B789-6F94A453D9C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EA766F5B-7ECE-43B2-B789-6F94A453D9C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EA766F5B-7ECE-43B2-B789-6F94A453D9C7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{684F7F13-AA4D-4FFD-A142-61F76D9FC367}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{684F7F13-AA4D-4FFD-A142-61F76D9FC367}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{684F7F13-AA4D-4FFD-A142-61F76D9FC367}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{684F7F13-AA4D-4FFD-A142-61F76D9FC367}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76DA3D88-CBF4-49D8-A55A-37E2993DB1A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76DA3D88-CBF4-49D8-A55A-37E2993DB1A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76DA3D88-CBF4-49D8-A55A-37E2993DB1A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76DA3D88-CBF4-49D8-A55A-37E2993DB1A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
