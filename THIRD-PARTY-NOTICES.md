@@ -93,6 +93,11 @@ See [here](https://github.com/github/gitignore/blob/main/VisualStudio.gitignore)
 - Source: [actions/setup-dotnet](https://github.com/actions/setup-dotnet)
 - License: [MIT](#mit_github)
 
+### GitHub Pages Deploy Action &emsp;<sub><sup>*typescript*&ensp;*github action*&ensp;</sup></sub>
+- Author: James Ives
+- Source: [JamesIves/github-pages-deploy-action](https://github.com/JamesIves/github-pages-deploy-action)
+- License: [MIT](#mit_ives)
+
 ### VSTest&emsp;<sub><sup>*c\#*&ensp;</sup></sub>
 - Author: Microsoft Corporation
 - Source: [microsoft/vstest](https://github.com/microsoft/vstest)
@@ -388,6 +393,33 @@ ________________________________________________________________________________
 The MIT License (MIT)
 
 Copyright 2018 GitHub, Inc. and contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the “Software”), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+```
+________________________________________________________________________________
+
+### <a id='mit_ives'>MIT</a>
+
+```
+The MIT License (MIT)
+
+Copyright 2021 James Ives
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the “Software”), to deal
