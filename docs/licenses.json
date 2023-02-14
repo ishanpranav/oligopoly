@@ -149,10 +149,10 @@
       "title": "BlazorGitHubPagesDemo",
       "formats": [ "html", "github action" ],
       "source": "https://github.com/Swimburger/BlazorGitHubPagesDemo",
-      "author": "",
+      "author": "Niels Swimberghe",
       "resource": "https://github.com/Swimburger/BlazorGitHubPagesDemo/blob/765efe0be87d9277b2f77723205c1ec04a40c42a/.github/workflows/main.yml",
       "license": "unlicense",
-      "index": ""
+      "index": "Swimberghe, Niels"
     }
   ]
 }

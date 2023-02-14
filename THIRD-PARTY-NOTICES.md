@@ -71,13 +71,6 @@ This section contains attributions for helpful resources that assisted in the
 development of this software. These elementst may be included in the source
 repository but are not redistributed with release versions of the application.
 
-### BlazorGitHubPagesDemo&emsp;<sub><sup>*html*&ensp;*github action*&ensp;</sup></sub>
-- Author: 
-- Source: [Swimburger/BlazorGitHubPagesDemo](https://github.com/Swimburger/BlazorGitHubPagesDemo)
-- License: [The Unlicense](#unlicense)
-
-See [here](https://github.com/Swimburger/BlazorGitHubPagesDemo/blob/765efe0be87d9277b2f77723205c1ec04a40c42a/.github/workflows/main.yml) for the resource included in the repository.
-
 ### NuGet Client Tools&emsp;<sub><sup>*c\#*&ensp;</sup></sub>
 - Author: .NET Foundation and Contributors
 - Source: [NuGet/NuGet.Client](https://github.com/NuGet/NuGet.Client)
@@ -123,6 +116,13 @@ For more information about this software, please see its [third-party notices](h
 - License: [MIT](#mit_coverlet)
 
 For more information about this software, please see its [third-party notices](https://github.com/coverlet-coverage/coverlet/blob/a014bf0cd0fdb5a65a24df393d254ae98f7f45f9/THIRD-PARTY-NOTICES.txt).
+
+### BlazorGitHubPagesDemo&emsp;<sub><sup>*html*&ensp;*github action*&ensp;</sup></sub>
+- Author: Niels Swimberghe
+- Source: [Swimburger/BlazorGitHubPagesDemo](https://github.com/Swimburger/BlazorGitHubPagesDemo)
+- License: [The Unlicense](#unlicense)
+
+See [here](https://github.com/Swimburger/BlazorGitHubPagesDemo/blob/765efe0be87d9277b2f77723205c1ec04a40c42a/.github/workflows/main.yml) for the resource included in the repository.
 
 Licenses
 --------
