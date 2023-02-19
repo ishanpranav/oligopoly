@@ -68,7 +68,7 @@ inspired by third-party open-source software.
 Resources
 ---------
 This section contains attributions for helpful resources that assisted in the
-development of this software. These elementst may be included in the source
+development of this software. These elements may be included in the source
 repository but are not redistributed with release versions of the application.
 
 ### NuGet Client Tools&emsp;<sub><sup>*c\#*&ensp;</sup></sub>
@@ -81,19 +81,19 @@ repository but are not redistributed with release versions of the application.
 - Source: [github/gitignore](https://github.com/github/gitignore)
 - License: [Creative Commons Zero v1.0 Universal](#cc0-1.0)
 
-See [here](https://github.com/github/gitignore/blob/main/VisualStudio.gitignore) for the resource included in the repository.
+See [here](https://github.com/github/gitignore/blob/main/VisualStudio.gitignore) for the resource included from the repository.
 
-### Checkout V3&emsp;<sub><sup>*typescript*&ensp;*github action*&ensp;</sup></sub>
+### Checkout V3&emsp;<sub><sup>*typescript*&ensp;</sup></sub>
 - Author: GitHub, Inc.
 - Source: [actions/checkout](https://github.com/actions/checkout)
 - License: [MIT](#mit_github)
 
-### setup-dotnet&emsp;<sub><sup>*typescript*&ensp;*github action*&ensp;</sup></sub>
+### setup-dotnet&emsp;<sub><sup>*typescript*&ensp;</sup></sub>
 - Author: GitHub, Inc.
 - Source: [actions/setup-dotnet](https://github.com/actions/setup-dotnet)
 - License: [MIT](#mit_github)
 
-### GitHub Pages Deploy Action &emsp;<sub><sup>*typescript*&ensp;*github action*&ensp;</sup></sub>
+### GitHub Pages Deploy Action &emsp;<sub><sup>*typescript*&ensp;</sup></sub>
 - Author: James Ives
 - Source: [JamesIves/github-pages-deploy-action](https://github.com/JamesIves/github-pages-deploy-action)
 - License: [MIT](#mit_ives)
@@ -122,12 +122,12 @@ For more information about this software, please see its [third-party notices](h
 
 For more information about this software, please see its [third-party notices](https://github.com/coverlet-coverage/coverlet/blob/a014bf0cd0fdb5a65a24df393d254ae98f7f45f9/THIRD-PARTY-NOTICES.txt).
 
-### BlazorGitHubPagesDemo&emsp;<sub><sup>*html*&ensp;*github action*&ensp;</sup></sub>
+### BlazorGitHubPagesDemo&emsp;<sub><sup>*html*&ensp;</sup></sub>
 - Author: Niels Swimberghe
 - Source: [Swimburger/BlazorGitHubPagesDemo](https://github.com/Swimburger/BlazorGitHubPagesDemo)
 - License: [The Unlicense](#unlicense)
 
-See [here](https://github.com/Swimburger/BlazorGitHubPagesDemo/blob/765efe0be87d9277b2f77723205c1ec04a40c42a/.github/workflows/main.yml) for the resource included in the repository.
+See [here](https://github.com/Swimburger/BlazorGitHubPagesDemo/blob/765efe0be87d9277b2f77723205c1ec04a40c42a/.github/workflows/main.yml) for the resource included from the repository.
 
 Licenses
 --------

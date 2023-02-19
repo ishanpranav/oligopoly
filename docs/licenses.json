@@ -126,42 +126,6 @@
       "author": "Microsoft Corporation",
       "copyright": "Microsoft Corporation",
       "license": "mit_microsoft"
-    },
-    {
-      "title": "Checkout V3",
-      "formats": [ "typescript", "github action" ],
-      "source": "https://github.com/actions/checkout",
-      "author": "GitHub, Inc.",
-      "copyright": "2018 GitHub, Inc. and contributors",
-      "license": "mit_github",
-      "index": "GitHub, Inc., et al."
-    },
-    {
-      "title": "setup-dotnet",
-      "formats": [ "typescript", "github action" ],
-      "source": "https://github.com/actions/setup-dotnet",
-      "author": "GitHub, Inc.",
-      "copyright": "2018 GitHub, Inc. and contributors",
-      "license": "mit_github",
-      "index": "GitHub, Inc., et al."
-    },
-    {
-      "title": "BlazorGitHubPagesDemo",
-      "formats": [ "html", "github action" ],
-      "source": "https://github.com/Swimburger/BlazorGitHubPagesDemo",
-      "author": "Niels Swimberghe",
-      "resource": "https://github.com/Swimburger/BlazorGitHubPagesDemo/blob/765efe0be87d9277b2f77723205c1ec04a40c42a/.github/workflows/main.yml",
-      "license": "unlicense",
-      "index": "Swimberghe, Niels"
-    },
-    {
-      "title": "GitHub Pages Deploy Action ",
-      "formats": [ "typescript", "github action" ],
-      "source": "https://github.com/JamesIves/github-pages-deploy-action",
-      "author": "James Ives",
-      "copyright": "2021 James Ives",
-      "license": "mit_ives",
-      "index": "Ives, James"
     }
   ]
 }

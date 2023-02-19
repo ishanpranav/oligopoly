@@ -7,13 +7,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Oligopoly", "src\Oligopoly\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CA96762D-31A0-416C-9C7A-7D2EE61DC31F}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
 		docs\board-schema.json = docs\board-schema.json
 		data\board.json = data\board.json
-		.github\workflows\deploy-to-github-pages.yml = .github\workflows\deploy-to-github-pages.yml
 		docs\licenses.json = docs\licenses.json
 		tools\New-ThirdPartyNotices.ps1 = tools\New-ThirdPartyNotices.ps1
+		README.md = README.md
 	EndProjectSection
 	ProjectSection(FolderGlobals) = preProject
 		C_5_4Users_4ishan_4source_4repos_4oligopoly_4data_4board_1json__JsonSchema = ../docs/board-schema.json
@@ -21,7 +22,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Oligopoly.Tests", "test\Oligopoly.Tests\Oligopoly.Tests.csproj", "{684F7F13-AA4D-4FFD-A142-61F76D9FC367}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Oligopoly.WebAssembly", "src\Oligopoly.WebAssembly\Oligopoly.WebAssembly.csproj", "{76DA3D88-CBF4-49D8-A55A-37E2993DB1A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Oligopoly.WebAssembly", "src\Oligopoly.WebAssembly\Oligopoly.WebAssembly.csproj", "{97C89762-D0FC-487A-9124-0683D5AAC027}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Oligopoly.Web", "src\Oligopoly.Web\Oligopoly.Web.csproj", "{3B34CA6D-D54F-4EAF-A0CF-463461392E48}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,10 +40,14 @@ Global
 		{684F7F13-AA4D-4FFD-A142-61F76D9FC367}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{684F7F13-AA4D-4FFD-A142-61F76D9FC367}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{684F7F13-AA4D-4FFD-A142-61F76D9FC367}.Release|Any CPU.Build.0 = Release|Any CPU
-		{76DA3D88-CBF4-49D8-A55A-37E2993DB1A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{76DA3D88-CBF4-49D8-A55A-37E2993DB1A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{76DA3D88-CBF4-49D8-A55A-37E2993DB1A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{76DA3D88-CBF4-49D8-A55A-37E2993DB1A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97C89762-D0FC-487A-9124-0683D5AAC027}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97C89762-D0FC-487A-9124-0683D5AAC027}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97C89762-D0FC-487A-9124-0683D5AAC027}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97C89762-D0FC-487A-9124-0683D5AAC027}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B34CA6D-D54F-4EAF-A0CF-463461392E48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B34CA6D-D54F-4EAF-A0CF-463461392E48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B34CA6D-D54F-4EAF-A0CF-463461392E48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B34CA6D-D54F-4EAF-A0CF-463461392E48}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

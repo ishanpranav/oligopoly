@@ -1,9 +1,37 @@
 ﻿@page "/"
 
-<PageTitle>Index</PageTitle>
+@code {
+    private readonly Controller _controller = Factory.CreateController();
+}
 
-<h1>Hello, world!</h1>
+<table>
+    <tbody>
+        @{
+            int size = 64;
+            int perSide = size / 4;
+        }
 
-Welcome to your new app.
+        <tr>
+            @for (int i = perSide * 2; i <= perSide * 3; i++)
+            {
+                <td>Square @(i)</td>
+            }
+        </tr>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+        @for (int i = 1; i < perSide; i++)
+        {
+            <tr>
+                <td>Square @((perSide * 2) - i)</td>
+                <td colspan="@(perSide - 1)"></td>
+                <td>Square @((perSide * 3) + i)</td>
+            </tr>
+        }
+
+        <tr>
+            @for (int i = perSide; i >= 0; i--)
+            {
+                <td>Square @(i)</td>
+            }
+        </tr>
+    </tbody>
+</table>

@@ -126,7 +126,7 @@ function Out-Dependencies {
 
         if ($null -ne $dependency.resource) {
             Out-ThirdPartyNotices ""
-            Out-ThirdPartyNotices ("See [here](" + $dependency.resource + ") for the resource included in the repository.")
+            Out-ThirdPartyNotices ("See [here](" + $dependency.resource + ") for the resource included from the repository.")
         }
 
         if ($null -ne $dependency.notices) {
@@ -170,7 +170,7 @@ Out-Dependencies $json.references
 Out-ThirdPartyNotices "Resources
 ---------
 This section contains attributions for helpful resources that assisted in the
-development of this software. These elementst may be included in the source
+development of this software. These elements may be included in the source
 repository but are not redistributed with release versions of the application."
 Out-Dependencies $json.tools
 Out-ThirdPartyNotices "Licenses

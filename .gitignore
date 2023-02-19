@@ -1,5 +1,14 @@
+/data/game.json
+
+# MessagePack
 *.bin
-data/game.json
+
+# AspNetCore.SassCompiler
+*.css.map
+src/Oligopoly.WebAssembly/Components/*.razor.css
+src/Oligopoly.WebAssembly/wwwroot/styles/generated/
+
+# Visual Studio Code
 .vscode/
 
 # User-specific files

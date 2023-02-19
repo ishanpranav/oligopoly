@@ -1,0 +1,20 @@
+﻿{
+  "SourceFolder": "styles",
+  "TargetFolder": "wwwroot/styles/generated",
+  "Arguments": "--style=compressed",
+  "GenerateScopedCss": true,
+  "ScopedCssFolders": [
+    "Shared",
+    "Views",
+    "Pages",
+    "Components"
+  ],
+  "IncludePaths": [
+    "wwwroot/styles/"
+  ],
+  "Configurations": {
+    "Debug": {
+      "Arguments": "--style=expanded"
+    }
+  }
+}
