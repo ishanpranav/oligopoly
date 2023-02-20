@@ -126,6 +126,51 @@
       "author": "Microsoft Corporation",
       "copyright": "Microsoft Corporation",
       "license": "mit_microsoft"
+    },
+    {
+      "title": "ASP.NET Core",
+      "formats": [ "c#", "javascript" ],
+      "source": "https://github.com/dotnet/aspnetcore",
+      "author": ".NET Foundation and Contributors",
+      "copyright": ".NET Foundation and Contributors",
+      "license": "mit_dotnet",
+      "notices": "https://github.com/dotnet/aspnetcore/blob/main/THIRD-PARTY-NOTICES.txt",
+      "index": ".NET Foundation, et al."
+    },
+    {
+      "title": "Entity Framework Core",
+      "formats": [ "c#" ],
+      "source": "https://github.com/dotnet/efcore",
+      "author": ".NET Foundation and Contributors",
+      "copyright": ".NET Foundation and Contributors",
+      "license": "mit_dotnet",
+      "index": ".NET Foundation, et al."
+    },
+    {
+      "title": "Microsoft.Data.Sqlite",
+      "formats": [ "c#" ],
+      "source": "https://github.com/dotnet/efcore",
+      "author": ".NET Foundation and Contributors",
+      "copyright": ".NET Foundation and Contributors",
+      "license": "mit_dotnet",
+      "index": ".NET Foundation, et al."
+    },
+    {
+      "title": "SQLitePCLRaw",
+      "formats": [ "c#" ],
+      "source": "https://github.com/ericsink/SQLitePCL.raw",
+      "author": "Eric Sink",
+      "license": "apache-2.0",
+      "notices": "https://github.com/ericsink/SQLitePCL.raw/blob/master/NOTICE.TXT",
+      "index": "Sink, Eric"
+    },
+    {
+      "title": "SQLite",
+      "formats": [ "c" ],
+      "source": "https://sqlite.org/",
+      "author": "D. Richard Hipp, Dan Kennedy, Joe Mistachkin, and contributors",
+      "licenseUrl": "https://sqlite.org/copyright.html",
+      "index": "Hipp, et al."
     }
   ]
 }

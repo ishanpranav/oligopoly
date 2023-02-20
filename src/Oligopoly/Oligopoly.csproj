@@ -3,6 +3,9 @@
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
+    <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
+    <OutputPath>../../bin/$(AssemblyName)/</OutputPath>
+    <IntermediateOutputPath>../../obj/</IntermediateOutputPath>
   </PropertyGroup>
 
   <ItemGroup>

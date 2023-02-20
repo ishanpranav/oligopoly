@@ -94,7 +94,11 @@ function Out-Dependencies {
             Out-ThirdPartyNotices ("- Source: [" + [System.Web.HttpUtility]::UrlDecode($source) + "](" + $dependency.source + ")")
         }
 
-        if ($null -ne $dependency.license) {
+        if ($null -ne $dependency.licenseUrl) {
+            Out-ThirdPartyNotices ""
+            Out-ThirdPartyNotices ("See [here](" + $dependency.licenseUrl + ") for the project copyright information.")
+        }
+        elseif ($null -ne $dependency.license) {
             if ($null -eq $dependency.copyright) {
                 $dependency.copyright = ""
             }
