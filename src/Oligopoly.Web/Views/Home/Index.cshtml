@@ -2,7 +2,27 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container">
+    <form>
+        <div class="form-group col-sm-5 mb-2">
+            <label for="userInput">User</label>
+            <input type="email" class="form-control" id="userInput" placeholder="name@example.com">
+        </div>
+        <div class="form-group col-sm-5 mb-2">
+            <label for="messageTextArea">Message</label>
+            <textarea class="form-control" id="messageTextArea" rows="3"></textarea>
+        </div>
+        <div class="col-sm-5 mb-2">
+            <button type="submit" class="btn btn-primary" id="sendButton">Send</button>
+        </div>
+    </form>
 </div>
+
+<div class="container">
+    <ul id="messagesList"></ul>
+</div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js" type="text/javascript"></script>
+    <script src="~/scripts/chat.js" type="text/javascript" asp-append-version="true"></script>
+}

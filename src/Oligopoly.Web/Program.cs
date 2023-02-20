@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Oligopoly.Web.Hubs;
 
 namespace Oligopoly.Web;
 
@@ -14,6 +15,7 @@ public class Program
         string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
         builder.Services.AddRazorPages();
+        builder.Services.AddSignalR();
         builder.Services.AddControllersWithViews();
 
         WebApplication app = builder.Build();
@@ -32,6 +34,7 @@ public class Program
             name: "default",
             pattern: "{controller=Home}/{action=Index}/{id?}");
         app.MapRazorPages();
+        app.MapHub<GameHub>("/game");
         app.Run();
     }
 }
